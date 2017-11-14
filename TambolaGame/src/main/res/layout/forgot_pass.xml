@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#181A2B"
+    tools:context="com.androidhari.tambola.ForgotPass">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/logo"
+        tools:layout_editor_absoluteX="78dp"
+        tools:layout_editor_absoluteY="102dp"
+        android:layout_marginTop="51dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A Fun Way to PLay Housie Games"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="86dp"
+        tools:layout_editor_absoluteY="227dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:fontFamily="casual"
+        android:text="Forgot Password"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/verificationcode"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginTop="52dp"
+        android:background="@drawable/edittext_rounded_corners"
+        android:ems="8"
+        android:gravity="center"
+        android:hint="Your Email Addresss"
+        android:padding="5dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/holo_orange_dark" />
+
+
+    <Button
+        android:id="@+id/submit"
+
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="59dp"
+        android:background="#ef7b30"
+        android:text="Reset My Password"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="78dp"
+        tools:layout_editor_absoluteY="375dp"
+        android:layout_below="@+id/verificationcode"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
+
+</RelativeLayout>

@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Tambola</string>
+    <string name="title_activity_passbook">Passbook</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="errfname">Required Your Name</string>
+    <string name="errlname">Required Human Name</string>
+    <string name="erremail">Enter Correct Email ID</string>
+    <string name="errphne">Enter 10 Digit Mobile No</string>
+    <string name="errpass">Password should be 8 Characters</string>
+    <string name="errcnfpass">Passwords do not Match</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="category_food">category_food</string>
+    <string name="category_places">category_places</string>
+    <string name="category_usefulinfo">category_usefulinfo</string>
+
+</resources>
