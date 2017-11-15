@@ -39,6 +39,7 @@ public class TransactionHistory extends AppCompatActivity {
 
     ArrayList<prizes> dataModels = new ArrayList<>();
     SharedPreferences sp;
+    String pass;
     ListView plist;
 
     @Override
@@ -48,6 +49,8 @@ public class TransactionHistory extends AppCompatActivity {
         plist = (ListView)findViewById(R.id.prizelist);
 
         sp=getSharedPreferences("login",MODE_PRIVATE);
+        pass=sp.getString("token",null);
+
 
         filldata();
     }
@@ -61,7 +64,7 @@ public class TransactionHistory extends AppCompatActivity {
                 .url("http://game-dev.techmech.men:8080/api/wallet/transactions")
                 .get()
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization"," eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
+                .addHeader("Authorization", pass)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {

@@ -15,23 +15,34 @@
             android:name=".MainActivity"
             android:screenOrientation="landscape">
 
+
+        </activity>
+        <activity android:name="com.androidhari.tambola.FirstPage">
+
+
+        </activity>
+        <activity android:name="com.androidhari.tambola.SignUp" />
+        <activity android:name="com.androidhari.tambola.Signin">
+
+        </activity>
+        <activity android:name="com.androidhari.tambola.HomeScreen"></activity>
+        <activity android:name="com.androidhari.tambola.ForgotPass" />
+        <activity android:name="com.androidhari.tambola.ResetPass" />
+        <activity android:name="com.androidhari.tambola.Wallet">
+
+        </activity>
+        <activity android:name="com.androidhari.tambola.GameInfo" />
+        <activity android:name="com.androidhari.tambola.WalletPurchasehistory" />
+        <activity android:name="com.androidhari.tambola.PurchaseTicket" />
+        <activity android:name="com.androidhari.tambola.Countdown">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name="com.androidhari.tambola.FirstPage"></activity>
-        <activity android:name="com.androidhari.tambola.SignUp" />
-        <activity android:name="com.androidhari.tambola.Signin" />
-        <activity android:name="com.androidhari.tambola.HomeScreen"></activity>
-        <activity android:name="com.androidhari.tambola.ForgotPass" />
-        <activity android:name="com.androidhari.tambola.ResetPass" />
-        <activity android:name="com.androidhari.tambola.Wallet" />
-        <activity android:name="com.androidhari.tambola.GameInfo" />
-        <activity android:name="com.androidhari.tambola.WalletPurchasehistory" />
-        <activity android:name="com.androidhari.tambola.PurchaseTicket" />
-        <activity android:name="com.androidhari.tambola.Countdown" />
         <activity android:name="com.androidhari.tambola.TransactionHistory">
 
 

@@ -1,6 +1,8 @@
 package ua.naiksoftware.tambola;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
@@ -22,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidhari.tambola.HomeScreen;
+import com.androidhari.tambola.Signin;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -47,6 +51,7 @@ import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.client.StompClient;
@@ -166,7 +171,7 @@ TextView number;
                 });
 
         // Receive greetings
-        mStompClient.topic("/topic/game/152")
+        mStompClient.topic("/topic/game/175")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
@@ -175,13 +180,41 @@ TextView number;
 
                     String s = topicMessage.getPayload().toString();
                     JSONObject json = new JSONObject(s);
+//                    JSONArray dsd = json.getJSONArray("messageList");
+//
+//
+//
+//                    if (dsd != null || dsd.length() > 0) {
+//
+//
+//
+//                    }
+//                    else {
+//
+//                        Toast.makeText(this, "Not Null", Toast.LENGTH_SHORT).show();
+//                    }
+
+                    String message = json.getString("message");
+
+                    if (message.equalsIgnoreCase("null")){
 
 
+                    }
+                    else
+                    {
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    }
 
+                    if (json.getString("number").equalsIgnoreCase("0")){
 
-                    number.setText(json.getString("number"));
-                    addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel.class));
-
+                        number.setBackgroundColor(Color.RED);
+                        number.setText("PAUSED");
+                    }
+                    else {
+                        number.setText(json.getString("number"));
+                        number.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                        addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel.class));
+                    }
                 });
 
         mStompClient.connect();
@@ -243,7 +276,7 @@ TextView number;
         final OkHttpClient client = new OkHttpClient();
 
         final Request request = new Request.Builder()
-                .url("http://game-dev.techmech.men:8080/api/game/user/tickets/78")
+                .url("http://game-dev.techmech.men:8080/api/game/user/tickets/175")
                 .get()
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Authorization","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
@@ -470,6 +503,7 @@ TextView number;
         public String t27;
 
 
+
     }
 
     public class AdapterFish extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -588,12 +622,96 @@ TextView number;
             TextView twentyfive;
             TextView twentysix;
             TextView twentyseven;
+            Button claim;
 
 
             // create constructor to get widget reference
             public MyHolder(View itemView) {
                 super(itemView);
               //  id= (TextView)itemView.findViewById(R.id.id);
+                claim = (Button)itemView.findViewById(R.id.claim);
+                claim.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        final OkHttpClient client = new OkHttpClient();
+                        JSONObject postdata = new JSONObject();
+                        try {
+                            postdata.put("gameId","173");
+                            postdata.put("ticketId", "2");
+                        } catch(JSONException e){
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
+                        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                                postdata.toString());
+
+
+                        final Request request = new Request.Builder()
+                                .url("http://game-dev.techmech.men:8080/api/game/claim")
+                                .post(body)
+                                .addHeader("Content-Type", "application/json")
+                                .addHeader("Authorization","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
+
+                                .build();
+                        Log.e("dasdasd", body.toString());
+
+
+
+                        client.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+
+                                String mMessage = e.getMessage().toString();
+                                Log.w("failure Response", mMessage);
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+
+                                final String mMessage = response.body().string();
+
+
+                                Log.w("Response", mMessage);
+                                if (response.isSuccessful()){
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            try {
+                                                JSONObject json = new JSONObject(mMessage);
+                                                String s = json.getString("status");
+                                                String st = json.getString("message");
+                                                Toast.makeText(MainActivity.this, st, Toast.LENGTH_SHORT).show();
+
+                                                Log.w("Response",st+s);
+                                                //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+
+                                }
+
+                                else {
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(MainActivity.this, "Failed to Claim", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+
+                            }
+                        });
+
+
+                    }
+                });
                 one = (TextView) itemView.findViewById(R.id.t1);
                 two = (TextView) itemView.findViewById(R.id.t2);
 

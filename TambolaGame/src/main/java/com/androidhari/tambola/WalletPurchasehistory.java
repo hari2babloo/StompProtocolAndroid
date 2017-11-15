@@ -2,6 +2,7 @@ package com.androidhari.tambola;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,11 +37,16 @@ public class WalletPurchasehistory extends AppCompatActivity {
 
     ArrayList<prizes> dataModels = new ArrayList<>();
     ListView plist;
+    SharedPreferences sp;
+    String pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet_purchasehistory);
+
+        sp=getSharedPreferences("login",MODE_PRIVATE);
+        pass=sp.getString("token",null);
 
         plist = (ListView)findViewById(R.id.prizelist);
 
@@ -55,8 +61,7 @@ public class WalletPurchasehistory extends AppCompatActivity {
                 .url("http://game-dev.techmech.men:8080/api/game/user/games")
                 .get()
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
-
+                .addHeader("Authorization",pass)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -281,6 +286,13 @@ public class WalletPurchasehistory extends AppCompatActivity {
             viewHolder.status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    SharedPreferences.Editor e = sp.edit();
+                    e.putString("gno",dataModel.getGname());
+                    e.putString("gstime",dataModel.getGstime());
+
+                    e.commit();
+                    Toast.makeText(mContext, dataModel.getGno(), Toast.LENGTH_SHORT).show();
                     Intent in = new Intent(mContext, Countdown.class);
                     startActivity(in);
                 }

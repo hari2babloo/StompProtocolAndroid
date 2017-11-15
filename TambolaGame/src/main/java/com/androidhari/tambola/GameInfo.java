@@ -40,39 +40,32 @@ public class GameInfo extends AppCompatActivity {
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
 
+
+
     Button buytickets;
     TextView gname,gtime,tcost,pmoney,createdby,passcode;
     ListView plist;
+
 
     ArrayList<prizes> dataModels = new ArrayList<>();
 
     ArrayList<prizes> list = new ArrayList<>();
 
     SharedPreferences sp;
+    String pass,gid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_info);
-
-        buytickets = (Button)findViewById(R.id.buyticket);
-
-        buytickets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(GameInfo.this,PurchaseTicket.class);
-
-                startActivity(in);
-            }
-        });
-
         sp=getSharedPreferences("login",MODE_PRIVATE);
+        pass=sp.getString("token",null);
+        gid=sp.getString("id",null);
+        buytickets = (Button)findViewById(R.id.buyticket);
+        buytickets.setEnabled(false);
         updateview();
-
-
     }
 
     private void updateview() {
-
         gname = (TextView)findViewById(R.id.gname);
         gtime = (TextView)findViewById(R.id.gtime);
         tcost = (TextView)findViewById(R.id.tcost);
@@ -80,21 +73,17 @@ public class GameInfo extends AppCompatActivity {
         createdby = (TextView)findViewById(R.id.createdby);
         passcode = (TextView)findViewById(R.id.passcode);
         plist = (ListView)findViewById(R.id.prizelist);
-
         filldata();
     }
 
     private void filldata() {
-
-
         final OkHttpClient client = new OkHttpClient();
 
         final Request request = new Request.Builder()
-                .url("http://game-dev.techmech.men:8080/api/game/78")
+                .url("http://game-dev.techmech.men:8080/api/game/"+gid)
                 .get()
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization"," eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
-
+                .addHeader("Authorization",pass)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -141,7 +130,19 @@ public class GameInfo extends AppCompatActivity {
                                 JSONArray jsonArray = json2.getJSONArray("prizes");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json_data = jsonArray.getJSONObject(i);
-                                    String s = json_data.getString("id");
+
+                                    buytickets.setEnabled(true);
+
+                                    buytickets.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+
+                                            Intent in = new Intent(GameInfo.this,PurchaseTicket.class);
+
+
+                                            startActivity(in);
+                                        }
+                                    });
 
 
                                     dataModels.add(new prizes(json_data.getString("prizeName"),json_data.getString("prizeCost")));
@@ -153,7 +154,7 @@ public class GameInfo extends AppCompatActivity {
 //                                    dataModels.add(new prizes("Hello","Hello"));
 //                                    dataModels.add(new prizes("Hello","Hello"));
 
-                                    Log.e("sdfdsf", s);
+                                    Log.e("sdfdsf", gid);
 
 
                                 }

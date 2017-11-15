@@ -189,7 +189,7 @@ public class Signin extends AppCompatActivity {
                             try {
                                 JSONObject json = new JSONObject(mMessage);
                                 String s = json.getJSONObject("data").getString("token");
-                                String st = json.getJSONObject("data").getString("message");
+                                String st = json.getString("message");
                                 Toast.makeText(Signin.this, st, Toast.LENGTH_SHORT).show();
 
                                 Log.w("Response",st);

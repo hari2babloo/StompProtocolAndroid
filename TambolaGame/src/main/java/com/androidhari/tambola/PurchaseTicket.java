@@ -1,9 +1,13 @@
 package com.androidhari.tambola;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -34,7 +39,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import ua.naiksoftware.tambola.MainActivity;
 import ua.naiksoftware.tambola.R;
+
+import static android.view.View.GONE;
 
 public class PurchaseTicket extends AppCompatActivity {
 
@@ -42,6 +50,9 @@ public class PurchaseTicket extends AppCompatActivity {
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
 
+    SharedPreferences sp;
+    String  pass;
+    String gid;
 
     private AdapterFish mAdapter;
     JSONArray postdata2 = new JSONArray();
@@ -62,12 +73,26 @@ public class PurchaseTicket extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.purchase_ticket);
         checkout = (Button)findViewById(R.id.checkout);
+        sp=getSharedPreferences("login",MODE_PRIVATE);
+         pass=sp.getString("token",null);
+         gid = sp.getString("id",null);
 
 
         checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Checkout();
+
+                if (postdata2.length()==0){
+
+                    CrossAlert();
+                    Toast.makeText(PurchaseTicket.this, "Emppty", Toast.LENGTH_SHORT).show();
+                    //Checkout();
+                }
+                if (postdata2.length()!=0){
+                    Checkout();
+                    Toast.makeText(PurchaseTicket.this, "Not Empty", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         //Table();
@@ -76,16 +101,35 @@ public class PurchaseTicket extends AppCompatActivity {
         Authenticate();
     }
 
+    private void CrossAlert() {
+
+
+        ImageView image = new ImageView(PurchaseTicket.this);
+        image.setImageResource(R.drawable.cross);
+
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(PurchaseTicket.this).
+                        setMessage("Please Select Ticket to Purchase").
+                        setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).
+                        setView(image);
+        builder.create().show();
+    }
+
 
     private void Authenticate() {
 
         final OkHttpClient client = new OkHttpClient();
 
         final Request request = new Request.Builder()
-                .url("http://game-dev.techmech.men:8080/api/tickets/78")
+                .url("http://game-dev.techmech.men:8080/api/tickets/"+gid)
                 .get()
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
+                .addHeader("Authorization",pass)
 
                 .build();
 
@@ -214,7 +258,7 @@ public class PurchaseTicket extends AppCompatActivity {
                             mAdapter = new AdapterFish(PurchaseTicket.this, filterdata);
                             mRVFishPrice.setAdapter(mAdapter);
 
-                            mRVFishPrice.setLayoutManager(new LinearLayoutManager(PurchaseTicket.this));
+                            mRVFishPrice.setLayoutManager(new GridLayoutManager(PurchaseTicket.this,1));
                             Toast.makeText(PurchaseTicket.this, "PASS", Toast.LENGTH_SHORT).show();
 
 
@@ -431,6 +475,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
             TextView id;
             CheckBox checkBox;
+            Button claim;
 
             TextView two;
             TextView three;
@@ -492,6 +537,8 @@ public class PurchaseTicket extends AppCompatActivity {
                 twentysix= (TextView)itemView.findViewById(R.id.t26);
                 twentyseven= (TextView)itemView.findViewById(R.id.t27);
                 checkBox = (CheckBox)itemView.findViewById(R.id.checkedTextView);
+                claim = (Button)itemView.findViewById(R.id.claim);
+                claim.setVisibility(View.GONE);
 
 
 
@@ -500,7 +547,8 @@ public class PurchaseTicket extends AppCompatActivity {
 //                six = (TextView) itemView.findViewById(R.id.six);
 //                six.setVisibility(View.GONE);-
 //                seven = (TextView) itemView.findViewById(R.id.seven);
-//                seven.setVisibility(View.GONE);
+//                seven.s
+// etVisibility(View.GONE);
 //                eight = (TextView) itemView.findViewById(R.id.eight);
 //                eight.setVisibility(View.GONE);
 //                nine = (TextView) itemView.findViewById(R.id.nine);
@@ -523,7 +571,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
 
         try {
-            postdata.put("gameId", "78");
+            postdata.put("gameId", gid);
             postdata.put("ticketIds", postdata2);
         } catch(JSONException e){
             // TODO Auto-generated catch block
@@ -541,7 +589,7 @@ public class PurchaseTicket extends AppCompatActivity {
         final Request request = new Request.Builder()
                 .url("http://game-dev.techmech.men:8080/api/game/buyticket")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .addHeader("authorization","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
+                .addHeader("authorization",pass)
                 .post(body)
                 .build();
 
@@ -572,12 +620,13 @@ public class PurchaseTicket extends AppCompatActivity {
                                 JSONObject json = new JSONObject(mMessage);
                                 String s = json.getString("message");
 
+Alert();
 
                                 Toast.makeText(PurchaseTicket.this, s, Toast.LENGTH_SHORT).show();
 
                                 //   Toast.makeText(SigninForm.this, s, Toast.LENGTH_SHORT).show();
-                                Intent in = new Intent(PurchaseTicket.this,HomeScreen.class);
-                              startActivity(in);
+//                                Intent in = new Intent(PurchaseTicket.this,HomeScreen.class);
+//                              startActivity(in);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -599,6 +648,28 @@ public class PurchaseTicket extends AppCompatActivity {
                     });
                 }
 
+            }
+
+            private void Alert() {
+
+                ImageView image = new ImageView(PurchaseTicket.this);
+                image.setImageResource(R.drawable.tick);
+
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(PurchaseTicket.this).
+                                setMessage("You Have Succesfully Purchased").
+                                setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        Intent intent = new Intent(PurchaseTicket.this,Countdown.class);
+
+                                        startActivity(intent);
+
+                                    }
+                                }).
+                                setView(image);
+                builder.create().show();
             }
         });
 

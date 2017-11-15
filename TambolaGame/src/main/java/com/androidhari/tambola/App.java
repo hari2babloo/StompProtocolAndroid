@@ -6,8 +6,10 @@ public class App {
     private int mDrawable;
     private String mName;
     private float mRating;
+    private String mid;
 
-private String s;
+
+    private String s;
 
     public String getS() {
         return s;
@@ -18,11 +20,13 @@ private String s;
     }
 
 
-    public App(String name, int drawable, float rating) {
+    public App(String name, int drawable, float rating,String id) {
         mName = name;
         mDrawable = drawable;
         mRating = rating;
+        mid=id;
     }
+
 
     public float getRating() {
         return mRating;
@@ -34,6 +38,9 @@ private String s;
 
     public String getName() {
         return mName;
+    }
+    public String getId() {
+        return mid;
     }
 }
 

@@ -1,11 +1,14 @@
 package com.androidhari.tambola;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bcgdv.asia.lib.ticktock.TickTockView;
 
@@ -19,11 +22,26 @@ public class Countdown extends AppCompatActivity {
 
     TickTockView mCountDown,mCountUp;
     Button stargame;
+    SharedPreferences sp;
+    String pass,gameid,gamestarttime;
+
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.countdown);
         stargame = (Button)findViewById(R.id.startgame);
+        sp=getSharedPreferences("login",MODE_PRIVATE);
+        pass=sp.getString("token",null);
+        gameid=sp.getString("gno",null);
+        gamestarttime=sp.getString("gstime",null);
+
+        textView = (TextView)findViewById(R.id.timer);
+
+        textView.setText(gameid + "      "+ gamestarttime);
+
+
+        Toast.makeText(this, gameid  + gamestarttime, Toast.LENGTH_SHORT).show();
 
         stargame.setOnClickListener(new View.OnClickListener() {
             @Override

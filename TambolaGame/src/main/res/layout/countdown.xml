@@ -8,6 +8,12 @@
     tools:context="com.androidhari.tambola.Countdown">
 
 
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
     <com.bcgdv.asia.lib.ticktock.TickTockView
         android:id="@+id/view_ticktock_countup"
         android:layout_width="200dp"

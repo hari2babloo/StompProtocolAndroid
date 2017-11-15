@@ -51,6 +51,7 @@ public class HomeScreen extends AppCompatActivity {
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
     SharedPreferences sp;
+    String pass,id;
     //List<App> apps = getApps();
 
     List<App> apps = new ArrayList<>();
@@ -58,20 +59,22 @@ public class HomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
-        sp=getSharedPreferences("login",MODE_PRIVATE);
+
+        sp= getSharedPreferences("login",MODE_PRIVATE);
+        pass= sp.getString("token",null);
+
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
         getdata();
 
-        String pass = sp.getString("token",null);
 
-        if(pass != null && !pass.isEmpty()){
-            Toast.makeText(HomeScreen.this, pass, Toast.LENGTH_SHORT).show();
-
-            //finish current activity
-        }
+//        if(pass != null && !pass.isEmpty()){
+//            Toast.makeText(HomeScreen.this, pass, Toast.LENGTH_SHORT).show();
+//
+//            //finish current activity
+//        }
 
         logout = (Button)findViewById(R.id.logout);
         mRecyclerView= (RecyclerView) findViewById(R.id.horizontal_recycler_view);
@@ -129,7 +132,7 @@ public class HomeScreen extends AppCompatActivity {
                 .url("http://game-dev.techmech.men:8080/api/game")
                 .get()
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
+                .addHeader("Authorization",pass)
                 .build();
         Log.e("dasdasd", body.toString());
         client.newCall(request).enqueue(new Callback() {
@@ -154,11 +157,10 @@ public class HomeScreen extends AppCompatActivity {
                                 JSONArray jsonArray = json.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json_data = jsonArray.getJSONObject(i);
-                                    apps.add(new App(json_data.getString("name"),R.drawable.img , 4.6f));
+                                    apps.add(new App(json_data.getString("name"),R.drawable.img , 4.6f,json_data.getString("id")));
                                     setupAdapter();
 
-
-                                    Log.e("sdfdsf", json_data.getString("name"));
+                                    Log.e("sdfdsf", json_data.getString("id"));
 
                                 }
 
@@ -251,14 +253,18 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+                SharedPreferences.Editor e = sp.edit();
+                e.putString("id",mApps.get(getAdapterPosition()).getId());
+
+                e.commit();
+
+
                 Intent intent = new Intent(HomeScreen.this,GameInfo.class);
-
                 startActivity(intent);
+                Toast.makeText(HomeScreen.this, mApps.get(getAdapterPosition()).getId(), Toast.LENGTH_SHORT).show();
 
-
-                Toast.makeText(HomeScreen.this, mApps.get(getAdapterPosition()).getName(), Toast.LENGTH_SHORT).show();
-
-                Log.d("App", mApps.get(getAdapterPosition()).getName());
+//                Log.d("App", mApps.get(getAdapterPosition()).getName());
             }
         }
 

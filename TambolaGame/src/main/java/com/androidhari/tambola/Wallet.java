@@ -1,6 +1,7 @@
 package com.androidhari.tambola;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,19 +26,31 @@ import ua.naiksoftware.tambola.R;
 
 public class Wallet extends AppCompatActivity {
 
-    Button purchasehistory;
+    Button purchasehistory,history;
 
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
 
-
+    SharedPreferences sp;
+    String pass;
     TextView money;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet);
 
+        sp=getSharedPreferences("login",MODE_PRIVATE);
+        pass=sp.getString("token",null);
         money = (TextView)findViewById(R.id.money);
+        history = (Button)findViewById(R.id.hISTORY);
+
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Wallet.this, TransactionHistory.class);
+                startActivity(intent);
+            }
+        });
 
         purchasehistory = (Button)findViewById(R.id.purchasehistory);
 
@@ -91,7 +104,8 @@ public class Wallet extends AppCompatActivity {
                 .url("http://game-dev.techmech.men:8080/api/wallet")
                 .get()
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmNAYWJjLmNvbSIsImF1ZGllbmNlIjoid2ViIiwiY3JlYXRlZCI6MTUxMDIwMjM0NDg1NywiZXhwIjoxNTEwODA3MTQ0fQ.Nxm8omG7rrcwnUyQr2qfwsx6VsRmNfu-FtsTTGb66mUuM8F1uQ5g1MPztIXL6k1wHkpzMHEWhKKf-wf5PN_LWQ")                .build();
+                .addHeader("Authorization",pass)
+                .build();
         Log.e("dasdasd", body.toString());
         client.newCall(request).enqueue(new Callback() {
             @Override
