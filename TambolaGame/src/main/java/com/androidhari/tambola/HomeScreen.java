@@ -1,7 +1,11 @@
 package com.androidhari.tambola;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +45,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
+import static android.support.design.R.attr.windowActionBar;
+
 public class HomeScreen extends AppCompatActivity {
 
     public static final String ORIENTATION = "orientation";
@@ -60,12 +66,16 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
 
+
         sp= getSharedPreferences("login",MODE_PRIVATE);
         pass= sp.getString("token",null);
 
-
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        ActionBar ab = getSupportActionBar();
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
 
         getdata();
 
@@ -100,10 +110,10 @@ public class HomeScreen extends AppCompatActivity {
         if (mHorizontal) {
             snapAdapter.addSnap(new Snap(Gravity.CENTER_HORIZONTAL, "Bumper Games   ", apps));
 
-
-            snapAdapter.addSnap(new Snap(Gravity.START, "Live Games", apps));
-            snapAdapter.addSnap(new Snap(Gravity.END, "Todays Special", apps));
-            snapAdapter.addSnap(new Snap(Gravity.CENTER, "Top Games", apps));
+//
+//            snapAdapter.addSnap(new Snap(Gravity.START, "Live Games", apps));
+//            snapAdapter.addSnap(new Snap(Gravity.END, "Todays Special", apps));
+//            snapAdapter.addSnap(new Snap(Gravity.CENTER, "Top Games", apps));
             mRecyclerView.setAdapter(snapAdapter);
 
         } else {
@@ -398,21 +408,38 @@ public class HomeScreen extends AppCompatActivity {
 
         // getMenuInflater().inflate(R.menu.homemenu, (Menu) item);
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_item_two) {
-
-            Intent intent = new Intent(HomeScreen.this,Wallet.class);
-            startActivity(intent);
-            // Do something
-            return true;
-        }
 
 
+        switch (item.getItemId()) {
+
+
+            case R.id.logout:
+
+                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+
+            case R.id.action_item_two:
+
+                Intent intent = new Intent(HomeScreen.this, Wallet.class);
+                startActivity(intent);
+                // Do something
+                return true;
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+
+            }
 
         // If we got here, the user's action was not recognized.
         // Invoke the superclass to handle it.
-        return super.onOptionsItemSelected(item);
 
+
+        }
     }
-}
 

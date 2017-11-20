@@ -1,5 +1,6 @@
 package com.androidhari.tambola;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -29,7 +30,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
-public class Signin extends AppCompatActivity {
+public class Signin extends Activity {
 
 
     TextView forgotpass,signup;
@@ -65,8 +66,8 @@ public class Signin extends AppCompatActivity {
         Typeface face = Typeface.createFromAsset(getAssets(),
                 "fonts/segoeuil.ttf");
 
-        String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
-        awesomeValidation.addValidation(Signin.this,R.id.pass,regexPassword, R.string.errpass);
+       // String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
+      //  awesomeValidation.addValidation(Signin.this,R.id.pass,regexPassword, R.string.errpass);
         awesomeValidation.addValidation(Signin.this,R.id.username,android.util.Patterns.EMAIL_ADDRESS,R.string.errfname);
 
         forgotpass.setTypeface(face);

@@ -52,6 +52,7 @@
             android:drawableLeft="@drawable/password"
             android:drawablePadding="10dp"
             android:hint="Password"
+            android:inputType="textPassword"
             android:singleLine="true"
             android:textColor="@android:color/background_light"
             android:textColorHighlight="@android:color/background_light"

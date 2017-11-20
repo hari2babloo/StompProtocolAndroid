@@ -52,7 +52,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
     SharedPreferences sp;
     String  pass;
-    String gid;
+    String gid,gamestarttime;
 
     private AdapterFish mAdapter;
     JSONArray postdata2 = new JSONArray();
@@ -74,8 +74,10 @@ public class PurchaseTicket extends AppCompatActivity {
         setContentView(R.layout.purchase_ticket);
         checkout = (Button)findViewById(R.id.checkout);
         sp=getSharedPreferences("login",MODE_PRIVATE);
+
          pass=sp.getString("token",null);
          gid = sp.getString("id",null);
+        gamestarttime = sp.getString("gstime",null);
 
 
         checkout.setOnClickListener(new View.OnClickListener() {
@@ -383,6 +385,7 @@ public class PurchaseTicket extends AppCompatActivity {
         }
 
 
+
         // Bind data
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
@@ -393,6 +396,9 @@ public class PurchaseTicket extends AppCompatActivity {
 
             final DataFish current = data.get(position);
 
+
+
+
 //            holder.itemView.setBackgroundColor(current.isSelected() ? Color.CYAN : Color.WHITE);
 
 
@@ -402,6 +408,10 @@ public class PurchaseTicket extends AppCompatActivity {
 
 
                     postdata2.put(current.id);
+//                    filterdata.remove(current);
+//                    notifyItemRemoved(position);
+//                    notifyItemRangeChanged(position,filterdata.size());
+//                    Toast.makeText(PurchaseTicket.this, current.id, Toast.LENGTH_SHORT).show();
 
                     Log.e("Selected TicketIds", postdata2.toString());
                     Toast.makeText(PurchaseTicket.this, current.id, Toast.LENGTH_SHORT).show();
@@ -412,7 +422,10 @@ public class PurchaseTicket extends AppCompatActivity {
             });
 
 
+
             myHolder.id.setText("Ticket Id : " +current.id);
+
+
 
 //            myHolder.one.setText("Name: " + current.preferredName + "  " + current.surname);
             myHolder.one.setText(current.t1);
@@ -542,6 +555,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
 
 
+
 //                five.setVisibility(View.GONE);
 //
 //                six = (TextView) itemView.findViewById(R.id.six);
@@ -620,7 +634,7 @@ public class PurchaseTicket extends AppCompatActivity {
                                 JSONObject json = new JSONObject(mMessage);
                                 String s = json.getString("message");
 
-Alert();
+                                Alert();
 
                                 Toast.makeText(PurchaseTicket.this, s, Toast.LENGTH_SHORT).show();
 
@@ -652,6 +666,8 @@ Alert();
 
             private void Alert() {
 
+
+
                 ImageView image = new ImageView(PurchaseTicket.this);
                 image.setImageResource(R.drawable.tick);
 
@@ -661,10 +677,19 @@ Alert();
                                 setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        Intent intent = new Intent(PurchaseTicket.this,Countdown.class);
+
+
+                                        SharedPreferences.Editor e = sp.edit();
+                                        e.putString("gno",gid);
+                                        e.putString("gstime",gamestarttime);
+
+                                        e.commit();
+
+                                        Intent intent = new Intent(PurchaseTicket.this,HomeScreen.class);
 
                                         startActivity(intent);
+
+                                        dialog.dismiss();
 
                                     }
                                 }).

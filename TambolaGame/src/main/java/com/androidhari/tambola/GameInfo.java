@@ -52,7 +52,7 @@ public class GameInfo extends AppCompatActivity {
     ArrayList<prizes> list = new ArrayList<>();
 
     SharedPreferences sp;
-    String pass,gid;
+    String pass,gid,gamestarttime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,11 +115,10 @@ public class GameInfo extends AppCompatActivity {
                                 String longV = json.getJSONObject("data").getString("startTime");
                                 long millisecond = Long.parseLong(longV);
                                 // or you already have long value of date, use this instead of milliseconds variable.
-                                String dateString = DateFormat.format("dd/MM/yyyy HH:mm:ss", new Date(millisecond)).toString();
 
 
-
-                                gtime.setText(dateString);
+                                gamestarttime = DateFormat.format("dd/MM/yyyy hh:mm a", new Date(millisecond)).toString();;
+                                gtime.setText(gamestarttime);
                                 tcost.setText(json.getJSONObject("data").getString("ticketCost"));
                                 pmoney.setText(json.getJSONObject("data").getString("prizeMoney"));
                                 createdby.setText(json.getJSONObject("data").getString("createdBy"));
@@ -136,6 +135,12 @@ public class GameInfo extends AppCompatActivity {
                                     buytickets.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
+
+                                            SharedPreferences.Editor e = sp.edit();
+                                            e.putString("gid",gid);
+                                            e.putString("gstime",gamestarttime);
+
+                                            e.commit();
 
                                             Intent in = new Intent(GameInfo.this,PurchaseTicket.class);
 

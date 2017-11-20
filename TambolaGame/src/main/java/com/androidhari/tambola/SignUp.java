@@ -1,5 +1,6 @@
 package com.androidhari.tambola;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
-public class SignUp extends AppCompatActivity {
+public class SignUp extends Activity {
 
     TextView login,fname,lname,email,phno,pass,cnfpass;
     AwesomeValidation awesomeValidation;

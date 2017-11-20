@@ -9,8 +9,8 @@
         app:showAsAction="always" />
 
     <!--&lt;!&ndash; Settings, should always be in the overflow &ndash;&gt;-->
-    <!--<item android:id="@+id/action_settings"-->
-        <!--android:title="Notifications"-->
-        <!--app:showAsAction="never"/>-->
+    <item android:id="@+id/logout"
+        android:title="Logout"
+        app:showAsAction="never"/>
 
 </menu>

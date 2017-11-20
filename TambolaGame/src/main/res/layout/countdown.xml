@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context="com.androidhari.tambola.Countdown">
 
 
@@ -14,42 +15,31 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
-    <com.bcgdv.asia.lib.ticktock.TickTockView
-        android:id="@+id/view_ticktock_countup"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        app:tickAutoFitText="true"
-        app:tickDotRadius="6dp"
-        app:tickEmptyRingColor="@android:color/white"
-
-        app:tickFillRingColor="@color/colorPrimary"
-        app:tickMiddleColor="#333333"
-        app:tickMoveCounterClockwise="true"
-        app:tickRingThickness="3dp"
-        app:tickTextColor="#CCCCCC" />
+    <TextView
+        android:id="@+id/txt_headline"
+        style="@style/Base.TextAppearance.AppCompat.Headline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:text="TickTock Widget" />
 
     <com.bcgdv.asia.lib.ticktock.TickTockView
         android:id="@+id/view_ticktock_countdown"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        app:tickAutoFitText="true"
+        app:tickCircleDuration="minute"
         app:tickDotRadius="6dp"
-        app:tickEmptyRingColor="@android:color/white"
+        app:tickEmptyRingColor="@color/cardview_shadow_start_color"
+        app:tickFillRingColor="@android:color/holo_orange_dark"
+        app:tickTextColor="@android:color/holo_orange_dark"
+        app:tickTextSize="24dp" />
 
-        app:tickFillRingColor="@color/colorPrimary"
-        app:tickMiddleColor="#333333"
-        app:tickMoveCounterClockwise="true"
-        app:tickRingThickness="3dp"
-        app:tickTextColor="#CCCCCC" />
-
-    <Button
-        android:id="@+id/startgame"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fishPriceList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start Game" />
+        android:layout_height="200dp"
+        android:layout_marginTop="0dp"
+        android:paddingTop="5dp" />
 
 </LinearLayout>

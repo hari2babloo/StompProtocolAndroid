@@ -3,6 +3,7 @@ package com.androidhari.tambola;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.SimpleDateFormat;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -31,6 +33,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import ua.naiksoftware.tambola.MainActivity;
 import ua.naiksoftware.tambola.R;
 
 public class WalletPurchasehistory extends AppCompatActivity {
@@ -93,18 +96,18 @@ public class WalletPurchasehistory extends AppCompatActivity {
                                     JSONObject json_data = jsonArray.getJSONObject(i).getJSONObject("game");
 //                                    JSONObject json_data2 = jsonArray.getJSONObject(i);
                                     String status = json_data.getString("status");
-                                    Log.e("status",status);
+//                                    Log.e("status",status);
                                     String getname = json_data.getString("name");
 
 
                                     String longV = json_data.getString("startTime");
                                     long millisecond = Long.parseLong(longV);
                                     // or you already have long value of date, use this instead of milliseconds variable.
-                                    String starttime = DateFormat.format("dd/MM/yyyy HH:mm", new Date(millisecond)).toString();
-                                    Log.e("startime",starttime);
+                                    String starttime = DateFormat.format("dd/MM/yyyy hh:mm a", new Date(millisecond)).toString();
+ //                                   Log.e("startime",starttime);
                                     String gno = json_data.getString("id");
 
-                                    Log.e("fdsfsdf",getname+starttime+gno);
+  //                                  Log.e("fdsfsdf",getname+starttime+gno);
                                     dataModels.add(new prizes(gno,getname,starttime,status));
                                 }
                                 CustomAdapter adapter= new CustomAdapter(dataModels,getApplicationContext());
@@ -271,15 +274,17 @@ public class WalletPurchasehistory extends AppCompatActivity {
 
             viewHolder.gstime.setText("Start Time: " +dataModel.getGstime());
 
-            if (dataModel.status.equalsIgnoreCase("NEW")){
-
-                viewHolder.status.setText("PLAY GAME");
-                viewHolder.status.setEnabled(true);
-            }
-            else {
+            if (dataModel.status.equalsIgnoreCase("COMPLETED")){
 
                 viewHolder.status.setText("FINISHED GAME");
                 viewHolder.status.setEnabled(false);
+
+            }
+            else {
+
+                viewHolder.status.setText("PLAY GAME");
+
+                viewHolder.status.setEnabled(true);
             }
             //  viewHolder.status.setText(dataModel.status);
 
@@ -288,13 +293,65 @@ public class WalletPurchasehistory extends AppCompatActivity {
                 public void onClick(View view) {
 
                     SharedPreferences.Editor e = sp.edit();
-                    e.putString("gno",dataModel.getGname());
+                    e.putString("gno",dataModel.getGno());
                     e.putString("gstime",dataModel.getGstime());
-
                     e.commit();
-                    Toast.makeText(mContext, dataModel.getGno(), Toast.LENGTH_SHORT).show();
-                    Intent in = new Intent(mContext, Countdown.class);
-                    startActivity(in);
+
+
+                    Date date = new Date() ;
+                    java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy hh:mm a") ;
+                    dateFormat.format(date);
+                    System.out.println(dateFormat.format(date));
+                    System.out.println(dataModel.getGstime());
+
+                    try {
+                        if(dateFormat.parse(dateFormat.format(date)).after(dateFormat.parse(dataModel.getGstime())))
+                        {
+                            Intent in = new Intent(mContext, MainActivity.class);
+                            startActivity(in);
+
+                            System.out.println("Current time is greater than 12.07");
+                        }else{
+                            Intent in = new Intent(mContext, Countdown.class);
+                            startActivity(in);
+                            System.out.println("Current time is less than 12.07");
+                        }
+                    } catch (ParseException X) {
+                        X.printStackTrace();
+                    }
+
+//                    try{
+//
+//                        SimpleDateFormat formatter = new SimpleDateFormat("dd/M/yyyy hh:mm:ss a");
+//
+//
+//                        String str1 = dataModel.getGstime();
+//
+//
+//                        String str2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a").format(new Date());
+                       // String str2 = "13/10/2013";
+//                        Date date = new Date() ;
+//                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a") ;
+//                        dateFormat.format(date);
+//
+//
+//                        if(dateFormat.parse(dateFormat.format(date)).after(dateFormat.parse(dataModel.getGstime())))
+//                        {
+//
+//
+//                            System.out.println("Current time is greater than 12.07");
+//                        }else{
+//
+//
+//                            System.out.println("Current time is less than 12.07");
+//                        }
+//
+//                    }catch (ParseException e1){
+//                        e1.printStackTrace();
+//                    }
+
+                    Toast.makeText(mContext, dataModel.getGstime(), Toast.LENGTH_SHORT).show();
+
                 }
             });
             viewHolder.img.setImageResource(R.drawable.img);
@@ -304,4 +361,6 @@ public class WalletPurchasehistory extends AppCompatActivity {
             return convertView;
         }
     }
+
+
 }

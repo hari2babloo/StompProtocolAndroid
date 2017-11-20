@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
@@ -24,12 +26,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.androidhari.tambola.HomeScreen;
-import com.androidhari.tambola.Signin;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.todddavies.components.progressbar.Main;
 
 import org.java_websocket.WebSocket;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +41,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -61,8 +66,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    TextToSpeech textToSpeech;
+
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
+    String claimid,tktid;
+    int claimposition;
+    Collection secondlist = new ArrayList();
+    Collection firstlist = new ArrayList();
     private boolean tvSelected1 = false;
     private boolean tvSelected2 = false;
     private boolean tvSelected3 = false;
@@ -91,13 +102,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean tvSelected26 = false;
     private boolean tvSelected27 = false;
 
-
-
-
-
-
-
     private AdapterFish Adapter;
+    private DataFish current;
     JSONArray postdata2 = new JSONArray();
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
@@ -105,12 +111,17 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> tktrow3 = new ArrayList<String>();
     ArrayList<JSONObject> listdata = new ArrayList<>();
 
-TextView number;
+    TextView number,fastfive,firstrow,middlerow,lastrow,fullhouse,noofplayers;
+
+    Button startgame;
+
+    SharedPreferences sp;
+    String pass,gameid,gamestarttime;
     ArrayList<String> tktids = new ArrayList<>();
 
     List<DataFish> filterdata=new ArrayList<>();
 
- //   private RecyclerView mRVFishPrice;
+    //   private RecyclerView mRVFishPrice;
     private static final String TAG = "MainActivity";
 
     private SimpleAdapter mAdapter;
@@ -122,18 +133,37 @@ TextView number;
     private RecyclerView mRecyclerView;
     private Gson mGson = new GsonBuilder().create();
 
+
+
     @Override
-        protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
+        sp=getSharedPreferences("login",MODE_PRIVATE);
+        pass=sp.getString("token",null);
+        gameid=sp.getString("gno",null);
+        gamestarttime=sp.getString("gstime",null);
 
-        mDataSet.add("45");
-        mDataSet.add("86");
+        connectStomp();
 
-
-
-
+        textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.UK);
+                }
+            }
+        });
         number = (TextView)findViewById(R.id.Number);
+        fastfive = (TextView)findViewById(R.id.fastfive);
+        firstrow = (TextView)findViewById(R.id.firstrow);
+        middlerow = (TextView)findViewById(R.id.middlerow);
+        lastrow = (TextView)findViewById(R.id.lastrow);
+        fullhouse = (TextView)findViewById(R.id.fullhouse);
+        noofplayers = (TextView)findViewById(R.id.noofplayers);
+
+
         Authenticate(); //       mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mAdapter = new SimpleAdapter(mDataSet);
@@ -147,7 +177,7 @@ TextView number;
         mStompClient.disconnect();
     }
 
-    public void connectStomp(View view) {
+    public void connectStomp() {
 //        mStompClient = Stomp.over(WebSocket.class, "ws://" + ANDROID_EMULATOR_LOCALHOST
 //                + ":" + RestClient.SERVER_PORT + "/example-endpoint/websocket");
 
@@ -159,62 +189,32 @@ TextView number;
                 .subscribe(lifecycleEvent -> {
                     switch (lifecycleEvent.getType()) {
                         case OPENED:
-                            toast("Stomp connection opened");
+  //                          toast("Stomp connection opened");
                             break;
                         case ERROR:
                             Log.e(TAG, "Stomp connection error", lifecycleEvent.getException());
-                            toast("Stomp connection error");
+  //                          toast("Stomp connection error");
                             break;
                         case CLOSED:
-                            toast("Stomp connection closed");
+    //                        toast("Stomp connection closed");
                     }
                 });
 
         // Receive greetings
-        mStompClient.topic("/topic/game/175")
+        mStompClient.topic("/topic/game/"+gameid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
-
                     Log.d(TAG, "Received " + topicMessage.getPayload());
-
+                    addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel.class));
                     String s = topicMessage.getPayload().toString();
                     JSONObject json = new JSONObject(s);
-//                    JSONArray dsd = json.getJSONArray("messageList");
-//
-//
-//
-//                    if (dsd != null || dsd.length() > 0) {
-//
-//
-//
-//                    }
-//                    else {
-//
-//                        Toast.makeText(this, "Not Null", Toast.LENGTH_SHORT).show();
-//                    }
-
                     String message = json.getString("message");
 
-                    if (message.equalsIgnoreCase("null")){
 
 
-                    }
-                    else
-                    {
-                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                    }
 
-                    if (json.getString("number").equalsIgnoreCase("0")){
 
-                        number.setBackgroundColor(Color.RED);
-                        number.setText("PAUSED");
-                    }
-                    else {
-                        number.setText(json.getString("number"));
-                        number.setBackgroundColor(Color.parseColor("#FFFF8800"));
-                        addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel.class));
-                    }
                 });
 
         mStompClient.connect();
@@ -227,7 +227,8 @@ TextView number;
                     Log.d(TAG, "STOMP echo send successfully");
                 }, throwable -> {
                     Log.e(TAG, "Error send STOMP echo", throwable);
-                    toast(throwable.getMessage());
+  //
+                    //                  toast(throwable.getMessage());
                 });
     }
 
@@ -239,22 +240,60 @@ TextView number;
                     Log.d(TAG, "REST echo send successfully");
                 }, throwable -> {
                     Log.e(TAG, "Error send REST echo", throwable);
-                    toast(throwable.getMessage());
+  //                  toast(throwable.getMessage());
                 });
     }
 
     private void addItem(EchoModel echoModel) {
 
 
+
+        if (echoModel.getNumber()==0){
+            number.setBackgroundColor(Color.RED);
+//            Toast.makeText(this, "ZeroIsMaxDateTimeField", Toast.LENGTH_SHORT).show();
+        }
+        else if (echoModel.getNumber()!=0){
+
+            number.setText(echoModel.getNumber().toString());
+            number.setBackgroundColor(Color.parseColor("#FFFF8800"));
+
+            textToSpeech.speak(echoModel.getNumber().toString(), TextToSpeech.QUEUE_FLUSH, null);
+        }
+
+        if (echoModel.getMessage()!=null){
+
+            Toast.makeText(this, echoModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+        }
+        if (echoModel.getMessageList()!=null){
+
+            Toast.makeText(this, echoModel.getMessageList().toString(), Toast.LENGTH_SHORT).show();
+        }
+        if (echoModel.getValidClaim()==true){
+            refreshticket();
+        }
+
+        else if (echoModel.getGameCompleted()==true){
+            number.setBackgroundColor(Color.RED);
+            Toast.makeText(this, "GAME FINISHED", Toast.LENGTH_SHORT).show();
+            Intent in = new Intent(MainActivity.this, HomeScreen.class);
+            startActivity(in);
+            Log.e("Game","Game Finished");
+        }
+
+
+
         mDataSet.add(echoModel.getNumber().toString());
-    //    mDataSet.add(echoModel.getNumber() + " - " + mTimeFormat.format(new Date()));
-       mAdapter.notifyDataSetChanged();
+
+
+        //    mDataSet.add(echoModel.getNumber() + " - " + mTimeFormat.format(new Date()));
+        mAdapter.notifyDataSetChanged();
         mRecyclerView.smoothScrollToPosition(mDataSet.size() - 1);
     }
 
+
     private void toast(String text) {
         Log.i(TAG, text);
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     protected <T> FlowableTransformer<T, T> applySchedulers() {
@@ -271,16 +310,201 @@ TextView number;
         super.onDestroy();
     }
 
+
+    private void refreshticket() {
+
+
+            final OkHttpClient client = new OkHttpClient();
+            JSONObject postdata = new JSONObject();
+
+
+//            RequestBody body = RequestBody.create(MEDIA_TYPE,
+//                    postdata.toString());
+
+
+            final Request request = new Request.Builder()
+                    .url("http://game-dev.techmech.men:8080/api/game/user/tickets/"+gameid)
+                    .get()
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization",pass)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                    String mMessage = e.getMessage().toString();
+                    Log.w("failure Response", mMessage);
+
+//                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+
+                    final String mMessage3 = response.body().string();
+
+
+ //                   Log.w("Response", mMessage);
+                    if (response.isSuccessful()){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                String mm = mMessage3;
+                                mm=mMessage3.replace("null","' '");
+                                JSONObject json2 = null;
+                                try {
+                                    json2 = new JSONObject(mm);
+                                    JSONArray jsonArray2 = json2.getJSONArray("data");
+                                    for (int i = 0; i < jsonArray2.length(); i++) {
+
+                                        JSONObject fd2 = jsonArray2.getJSONObject(i);
+
+                                        String s = fd2.getString("id");
+                                        secondlist.add(s);
+
+                                    }
+
+
+
+                                    Log.e("FirstList", String.valueOf(firstlist));
+                                    Log.e("Secondlist", String.valueOf(secondlist));
+
+
+
+                                    JSONObject json_data2 = jsonArray2.getJSONObject(0).getJSONObject("game");
+
+                                    JSONArray sds = json_data2.getJSONArray("prizes");
+
+                                    for (int i = 0; i < sds.length(); i++) {
+
+                                        JSONObject fd = sds.getJSONObject(i);
+
+                                        String prizename = fd.getString("prizeName");
+                                        String prizecost = fd.getString("prizeCost");
+                                        String prizeCompleted = fd.getString("prizeCompleted");
+
+                                        if (prizeCompleted.equalsIgnoreCase("TRUE")){
+
+
+
+                                            if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+                                            {
+
+                                                fullhouse.setText("FULL_HOUISE: FINISHED " +prizecost );
+
+                                            }
+
+                                            else
+                                            if (prizename.equalsIgnoreCase("FIRST_ROW")){
+
+
+                                                firstrow.setText("FIRST ROW: FINISHED  "+prizecost);
+
+                                            }
+                                            else
+                                            if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
+                                                middlerow.setText("MIDDLE_ROW: FINISHED "+prizecost);
+
+                                            }
+                                            else
+                                            if (prizename.equalsIgnoreCase("FAST_FIVE")){
+
+                                                fastfive.setText("FAST FIVE: FINISHED  "+prizecost);
+
+
+                                            }
+                                            else
+                                            if (prizename.equalsIgnoreCase("LAST_ROW")) {
+
+                                                lastrow.setText("LAST ROW: FINISHED "+prizecost);
+
+
+                                            }
+
+
+
+                                        }
+
+
+
+                                    }
+                                   // firstlist.removeAll(secondlist);
+                                    if (secondlist.isEmpty()|| secondlist.size()==0){
+
+
+                                        Intent in = new Intent(MainActivity.this, HomeScreen.class);
+                                        startActivity(in);
+                                        Log.e("NO Tickets" , "You Have No Tickets to Play Game");
+//                                        filterdata.remove(claimposition);
+//                                        mRVFishPrice.getAdapter().notifyItemRemoved(claimposition);
+                                        Toast.makeText(MainActivity.this, "You Have No Tickets to Play", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+
+
+                                    else if (secondlist.size() == firstlist.size()){
+                                        Log.e("Won Prize" , "Won Prize");
+                                        secondlist.clear();
+                                    }
+
+
+                                    else
+
+                                    if(firstlist.size()>secondlist.size()){
+
+
+
+                                        filterdata.remove(current);
+                                        mRVFishPrice.getAdapter().notifyItemRemoved(claimposition);
+                                        mRVFishPrice.getAdapter().notifyItemRangeChanged(claimposition,filterdata.size());
+                                    //  Log.e("Removed Ticket","removed Ticket");
+                                   //  firstlist =  secondlist;
+                                        secondlist.clear();
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+
+
+
+
+                            }
+                        });
+
+                    }
+
+                    else {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                            }
+                        });
+                    }
+
+                }
+            });
+
+
+    }
+
+
     private void Authenticate() {
 
         final OkHttpClient client = new OkHttpClient();
 
         final Request request = new Request.Builder()
-                .url("http://game-dev.techmech.men:8080/api/game/user/tickets/175")
+                .url("http://game-dev.techmech.men:8080/api/game/user/tickets/"+gameid)
                 .get()
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
-
+                .addHeader("Authorization",pass)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -315,7 +539,24 @@ TextView number;
 
                                 JSONArray jsonArray = json.getJSONArray("data");
 
-                                JSONObject json_data2 = jsonArray.getJSONObject(0).getJSONObject("game");
+
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+
+                                        JSONObject fd = jsonArray.getJSONObject(i);
+
+                                        String s = fd.getString("id");
+
+
+                                        firstlist.add(s);
+
+
+                                    }
+                                    Log.e("firstlist", String.valueOf(firstlist));
+                                    JSONObject json_data2 = jsonArray.getJSONObject(0).getJSONObject("game");
+
+
+                                noofplayers.setText( "No of Players:   "+json_data2.getString("noOfPlayers"));
+
 
                                 JSONArray sds = json_data2.getJSONArray("prizes");
                                 LinearLayout linearLayout = new LinearLayout(MainActivity.this);
@@ -324,22 +565,46 @@ TextView number;
 
                                     JSONObject fd = sds.getJSONObject(i);
 
-                                    String s= fd.getString("prizeName");
-                                    String d = fd.getString("prizeCost");
+                                    String prizename= fd.getString("prizeName");
+                                    String prizecost = fd.getString("prizeCost");
+
+                                    String prizeCompleted = fd.getString("prizeCompleted");
 
 
-                                    TextView msg = new TextView(MainActivity.this);
-//                                    msg.setBackgroundResource(R.drawable.rectangle);
-                                    msg.setText(s+"       :  "+d);
-                                    msg.setPadding(2, 2, 2, 2);
-                                    msg.setTextColor(getResources().getColor(R.color.colorPrimary));
-                                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.LEFT);
+                                    if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+                                    {
 
-                                    msg.setLayoutParams(params);
-                                    LinearLayout chat = (LinearLayout) findViewById(R.id.hari);
-                                    chat.addView(msg);
+                                        fullhouse.setText("FULL_HOUISE: " + prizecost);
 
-                                    Log.d("erewrwer",s+d);
+                                    }
+
+                                    else
+                                    if (prizename.equalsIgnoreCase("FIRST_ROW")){
+
+
+                                        firstrow.setText("FIRST ROW:  "+prizecost);
+
+                                    }
+                                    else
+                                    if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
+                                        middlerow.setText("MIDDLE_ROW:  "+prizecost);
+
+                                    }
+                                    else
+                                    if (prizename.equalsIgnoreCase("FAST_FIVE")){
+
+                                        fastfive.setText("MIDDLE_ROW:  "+prizecost);
+
+
+                                    }
+                                    else
+                                    if (prizename.equalsIgnoreCase("LAST_ROW")) {
+
+                                        lastrow.setText("MIDDLE_ROW:  "+prizecost);
+
+
+                                    }
+
 
                                 }
 
@@ -351,13 +616,7 @@ TextView number;
                                     JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
                                     JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
                                     JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
-
-
-
-//                                    row1.add(dasd.get(0));
-//                                    row2.add(dasd.get(1));
-//                                    row3.add(dasd.get(2));
-                                    String s = json_data.getString("id");
+                                   String s = json_data.getString("id");
 
                                     for ( int j = 0; j <row1.length();j++ ){
 
@@ -428,19 +687,15 @@ TextView number;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-
 //                            Table();
                             mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
                             Adapter = new AdapterFish(MainActivity.this, filterdata);
                             mRVFishPrice.setAdapter(Adapter);
 //                            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
 
-                                mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
-                      //      mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.HORIZONTAL,true));
-                            Toast.makeText(MainActivity.this, "PASS", Toast.LENGTH_SHORT).show();
-
-
+                            mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
+                            //      mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.HORIZONTAL,true));
+  ///                          Toast.makeText(MainActivity.this, "PASS", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -453,7 +708,7 @@ TextView number;
                     @Override
                     public void run() {
 
-                        Toast.makeText(MainActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -512,7 +767,7 @@ TextView number;
 
 
         List<DataFish> data = Collections.emptyList();
-        DataFish current;
+
         int currentPos = 0;
         private Context context;
         private LayoutInflater inflater;
@@ -529,9 +784,6 @@ TextView number;
             View view = inflater.inflate(R.layout.ticket, parent, false);
 
             final MyHolder holder = new MyHolder(view);
-
-
-
             return holder;
         }
 
@@ -540,18 +792,108 @@ TextView number;
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
-
             // Get current position of item in recyclerview to bind data and assign values from list
             final MyHolder myHolder = (MyHolder) holder;
+             current = data.get(position);
+            myHolder.claim.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            final DataFish current = data.get(position);
+                    myHolder.getAdapterPosition();
+
+                    claimposition = position;
+                    claimid = current.id;
+
+                    Log.e("position", String.valueOf(claimposition));
+
+                    Log.e("ticketid",current.id);
 
 
+                    final OkHttpClient client = new OkHttpClient();
+                    JSONObject postdata = new JSONObject();
+                    try {
+                        postdata.put("gameId",gameid);
+                        postdata.put("ticketId", claimid);
+                    } catch(JSONException e){
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                    RequestBody body = RequestBody.create(MEDIA_TYPE,
+                            postdata.toString());
+
+
+//                        Log.e("postclaim", String.valueOf(positionposition));
+
+                    final Request request = new Request.Builder()
+                            .url("http://game-dev.techmech.men:8080/api/game/claim")
+                            .post(body)
+                            .addHeader("Content-Type", "application/json")
+                            .addHeader("Authorization",pass)
+
+                            .build();
+                    //        Log.e("dasdasd", body.toString());
+
+
+
+                    client.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+
+                            String mMessage = e.getMessage().toString();
+                            Log.w("failure Response", mMessage);
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+
+                            final String mMessage = response.body().string();
+
+
+                            Log.w("Response", mMessage);
+                            if (response.isSuccessful()){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        try {
+                                            JSONObject json = new JSONObject(mMessage);
+                                            String s = json.getString("status");
+                                            String st = json.getString("message");
+                                            Toast.makeText(MainActivity.this, st, Toast.LENGTH_SHORT).show();
+//
+                                            Log.w("Response",st+s);
+                                            //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+
+                            }
+
+                            else {
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+ //d                                       Toast.makeText(MainActivity.this, "Failed to Claim", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+
+                }
+            });
 
 
 
 
 //            myHolder.one.setText("Name: " + current.preferredName + "  " + current.surname);
+            myHolder.checkBox.setVisibility(View.GONE);
             myHolder.one.setText(current.t1);
             myHolder.two.setText( current.t2);
             myHolder.three.setText(current.t3);
@@ -625,93 +967,16 @@ TextView number;
             Button claim;
 
 
+
+
             // create constructor to get widget reference
             public MyHolder(View itemView) {
                 super(itemView);
-              //  id= (TextView)itemView.findViewById(R.id.id);
+                //  id= (TextView)itemView.findViewById(R.id.id);
                 claim = (Button)itemView.findViewById(R.id.claim);
-                claim.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        final OkHttpClient client = new OkHttpClient();
-                        JSONObject postdata = new JSONObject();
-                        try {
-                            postdata.put("gameId","173");
-                            postdata.put("ticketId", "2");
-                        } catch(JSONException e){
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                        RequestBody body = RequestBody.create(MEDIA_TYPE,
-                                postdata.toString());
+                checkBox =(CheckBox)findViewById(R.id.checkedTextView);
 
 
-                        final Request request = new Request.Builder()
-                                .url("http://game-dev.techmech.men:8080/api/game/claim")
-                                .post(body)
-                                .addHeader("Content-Type", "application/json")
-                                .addHeader("Authorization","eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYWplc2gua29tYmF0aHVsYUBnbWFpbC5jb20iLCJhdWRpZW5jZSI6IndlYiIsImNyZWF0ZWQiOjE1MTAzMDg3NDc5NDgsImV4cCI6MTUxMDkxMzU0N30.cM4HMOE2yoMO78PF5sHstSEYOlME647R-cXiW3FF5TvCkdXx80sej3VfgPgxdtaIPbE4bgI_6MYWqPJ6ZVugnQ")
-
-                                .build();
-                        Log.e("dasdasd", body.toString());
-
-
-
-                        client.newCall(request).enqueue(new Callback() {
-                            @Override
-                            public void onFailure(Call call, IOException e) {
-
-                                String mMessage = e.getMessage().toString();
-                                Log.w("failure Response", mMessage);
-                            }
-
-                            @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-
-                                final String mMessage = response.body().string();
-
-
-                                Log.w("Response", mMessage);
-                                if (response.isSuccessful()){
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-
-                                            try {
-                                                JSONObject json = new JSONObject(mMessage);
-                                                String s = json.getString("status");
-                                                String st = json.getString("message");
-                                                Toast.makeText(MainActivity.this, st, Toast.LENGTH_SHORT).show();
-
-                                                Log.w("Response",st+s);
-                                                //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-
-                                }
-
-                                else {
-
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(MainActivity.this, "Failed to Claim", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-
-                            }
-                        });
-
-
-                    }
-                });
                 one = (TextView) itemView.findViewById(R.id.t1);
                 two = (TextView) itemView.findViewById(R.id.t2);
 
@@ -742,12 +1007,12 @@ TextView number;
                             // Finally, add the drawable background to TextView
                             one.setBackground(sd);
 
-                            //one.setBackgroundColor(Color.YELLOW);
+                            //five.setBackgroundColor(Color.YELLOW);
 
-//                            one.setTextColor(Color.BLACK);
+//                            five.setTextColor(Color.BLACK);
                             tvSelected1 = false;
                         }
-                                else {
+                        else {
 
                             one.setWidth(60);
                             one.setHeight(60);
@@ -759,7 +1024,7 @@ TextView number;
                             // Specify the shape of ShapeDrawable
                             sd.setShape(new RectShape());
 
-                       // Specify the border color of shape
+                            // Specify the border color of shape
                             sd.getPaint().setColor(Color.GREEN);
 
                             // Set the border width
@@ -771,8 +1036,8 @@ TextView number;
                             // Finally, add the drawable background to TextView
                             one.setBackground(sd);
                             one.setBackgroundColor(Color.parseColor("#FFFF8800"));
-                                tvSelected1 = true;
-                            }
+                            tvSelected1 = true;
+                        }
                     }
                 });
 
@@ -780,7 +1045,6 @@ TextView number;
                 two.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         if (tvSelected2) {
 //                            one.setBackgroundColor(Color.WHITE);
                             two.setWidth(60);
@@ -804,18 +1068,16 @@ TextView number;
                             // Finally, add the drawable background to TextView
                             two.setBackground(sd);
 
-                            //two.setBackgroundColor(Color.YELLOW);
+                            //five.setBackgroundColor(Color.YELLOW);
 
-//                            two.setTextColor(Color.BLACK);
+//                            five.setTextColor(Color.BLACK);
                             tvSelected2 = false;
                         }
                         else {
 
                             two.setWidth(60);
                             two.setHeight(60);
-                            two.setPadding(20,20,20,20);
-
-
+                            two.setPadding(10,10,10,10);
 
 
                             ShapeDrawable sd = new ShapeDrawable();
@@ -831,7 +1093,6 @@ TextView number;
 
                             // Specify the style is a Stroke
                             sd.getPaint().setStyle(Paint.Style.STROKE);
-
 
                             // Finally, add the drawable background to TextView
                             two.setBackground(sd);
@@ -870,9 +1131,9 @@ TextView number;
                             // Finally, add the drawable background to TextView
                             three.setBackground(sd);
 
-                            //three.setBackgroundColor(Color.YELLOW);
+                            //five.setBackgroundColor(Color.YELLOW);
 
-//                            three.setTextColor(Color.BLACK);
+//                            five.setTextColor(Color.BLACK);
                             tvSelected3 = false;
                         }
                         else {
@@ -905,65 +1166,65 @@ TextView number;
                     }
                 });
                 four = (TextView) itemView.findViewById(R.id.t4);
-four.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        if (tvSelected4) {
+                four.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (tvSelected4) {
 //                            one.setBackgroundColor(Color.WHITE);
-            four.setWidth(60);
-            four.setHeight(60);
-            four.setBackgroundColor(Color.WHITE);
-            four.setPadding(10,10,10,10);
-            ShapeDrawable sd = new ShapeDrawable();
+                            four.setWidth(60);
+                            four.setHeight(60);
+                            four.setBackgroundColor(Color.WHITE);
+                            four.setPadding(10,10,10,10);
+                            ShapeDrawable sd = new ShapeDrawable();
 
-            // Specify the shape of ShapeDrawable
-            sd.setShape(new RectShape());
+                            // Specify the shape of ShapeDrawable
+                            sd.setShape(new RectShape());
 
-            // Specify the border color of shape
-            sd.getPaint().setColor(Color.BLUE);
+                            // Specify the border color of shape
+                            sd.getPaint().setColor(Color.BLUE);
 
-            // Set the border width
-            sd.getPaint().setStrokeWidth(5f);
+                            // Set the border width
+                            sd.getPaint().setStrokeWidth(5f);
 
-            // Specify the style is a Stroke
-            sd.getPaint().setStyle(Paint.Style.STROKE);
+                            // Specify the style is a Stroke
+                            sd.getPaint().setStyle(Paint.Style.STROKE);
 
-            // Finally, add the drawable background to TextView
-            four.setBackground(sd);
+                            // Finally, add the drawable background to TextView
+                            four.setBackground(sd);
 
-            //four.setBackgroundColor(Color.YELLOW);
+                            //five.setBackgroundColor(Color.YELLOW);
 
-//                            four.setTextColor(Color.BLACK);
-            tvSelected4 = false;
-        }
-        else {
+//                            five.setTextColor(Color.BLACK);
+                            tvSelected4 = false;
+                        }
+                        else {
 
-            four.setWidth(60);
-            four.setHeight(60);
-            four.setPadding(10,10,10,10);
+                            four.setWidth(60);
+                            four.setHeight(60);
+                            four.setPadding(10,10,10,10);
 
 
-            ShapeDrawable sd = new ShapeDrawable();
+                            ShapeDrawable sd = new ShapeDrawable();
 
-            // Specify the shape of ShapeDrawable
-            sd.setShape(new RectShape());
+                            // Specify the shape of ShapeDrawable
+                            sd.setShape(new RectShape());
 
-            // Specify the border color of shape
-            sd.getPaint().setColor(Color.GREEN);
+                            // Specify the border color of shape
+                            sd.getPaint().setColor(Color.GREEN);
 
-            // Set the border width
-            sd.getPaint().setStrokeWidth(5f);
+                            // Set the border width
+                            sd.getPaint().setStrokeWidth(5f);
 
-            // Specify the style is a Stroke
-            sd.getPaint().setStyle(Paint.Style.STROKE);
+                            // Specify the style is a Stroke
+                            sd.getPaint().setStyle(Paint.Style.STROKE);
 
-            // Finally, add the drawable background to TextView
-            four.setBackground(sd);
-            four.setBackgroundColor(Color.parseColor("#FFFF8800"));
-            tvSelected4 = true;
-        }
-    }
-});
+                            // Finally, add the drawable background to TextView
+                            four.setBackground(sd);
+                            four.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            tvSelected4 = true;
+                        }
+                    }
+                });
                 five = (TextView) itemView.findViewById(R.id.t5);
 
                 five.setOnClickListener(new View.OnClickListener() {

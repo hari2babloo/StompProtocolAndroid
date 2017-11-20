@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#0e1960</color>
     <color name="colorAccent">#ff4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="mid_gray">#605F64</color>
+    <color name="gray_text">#7F8285</color>
+    <color name="rim_color_gray">#B0B0B0</color>
+    <color name="center_text">#d31145</color>
+    <color name="round_progress_blue">#2173B9</color>
 </resources>

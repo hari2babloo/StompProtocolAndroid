@@ -1,14 +1,16 @@
-package ua.naiksoftware.tambola;
+package com.androidhari.tambola;
+
+/**
+ * Created by b on 17/11/17.
+ */
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by Naik on 24.02.17.
- */
-public class EchoModel {
+
+public class StompResponse {
 
     @SerializedName("number")
     @Expose

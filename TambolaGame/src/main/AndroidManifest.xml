@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ua.naiksoftware.tambola">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        tools:replace= "android:theme"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".MainActivity"
@@ -17,25 +20,9 @@
 
 
         </activity>
-        <activity android:name="com.androidhari.tambola.FirstPage">
-
-
-        </activity>
+        <activity android:name="com.androidhari.tambola.FirstPage"></activity>
         <activity android:name="com.androidhari.tambola.SignUp" />
         <activity android:name="com.androidhari.tambola.Signin">
-
-        </activity>
-        <activity android:name="com.androidhari.tambola.HomeScreen"></activity>
-        <activity android:name="com.androidhari.tambola.ForgotPass" />
-        <activity android:name="com.androidhari.tambola.ResetPass" />
-        <activity android:name="com.androidhari.tambola.Wallet">
-
-        </activity>
-        <activity android:name="com.androidhari.tambola.GameInfo" />
-        <activity android:name="com.androidhari.tambola.WalletPurchasehistory" />
-        <activity android:name="com.androidhari.tambola.PurchaseTicket" />
-        <activity android:name="com.androidhari.tambola.Countdown">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,8 +30,24 @@
             </intent-filter>
 
         </activity>
-        <activity android:name="com.androidhari.tambola.TransactionHistory">
+        <activity android:name="com.androidhari.tambola.HomeScreen" />
+        <activity android:name="com.androidhari.tambola.ForgotPass" />
+        <activity android:name="com.androidhari.tambola.ResetPass" />
+        <activity android:name="com.androidhari.tambola.Wallet"></activity>
+        <activity android:name="com.androidhari.tambola.GameInfo" />
+        <activity android:name="com.androidhari.tambola.WalletPurchasehistory" />
+        <activity android:name="com.androidhari.tambola.PurchaseTicket">
 
+
+        </activity>
+        <activity android:name="com.androidhari.tambola.Countdown">
+
+
+
+
+        </activity>
+        <activity android:name="com.androidhari.tambola.TransactionHistory"></activity>
+        <activity android:name="com.androidhari.tambola.Countdown2">
 
 
         </activity>
