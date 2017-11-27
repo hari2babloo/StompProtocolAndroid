@@ -456,8 +456,6 @@ public class MainActivity extends AppCompatActivity {
 
                                     if(firstlist.size()>secondlist.size()){
 
-
-
                                         filterdata.remove(current);
                                         mRVFishPrice.getAdapter().notifyItemRemoved(claimposition);
                                         mRVFishPrice.getAdapter().notifyItemRangeChanged(claimposition,filterdata.size());

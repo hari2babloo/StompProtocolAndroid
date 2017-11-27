@@ -70,8 +70,7 @@ public class GameInfo extends AppCompatActivity {
         gtime = (TextView)findViewById(R.id.gtime);
         tcost = (TextView)findViewById(R.id.tcost);
         pmoney = (TextView)findViewById(R.id.Pmoney);
-        createdby = (TextView)findViewById(R.id.createdby);
-        passcode = (TextView)findViewById(R.id.passcode);
+
         plist = (ListView)findViewById(R.id.prizelist);
         filldata();
     }
@@ -110,7 +109,7 @@ public class GameInfo extends AppCompatActivity {
                             try {
                                 JSONObject json = new JSONObject(mMessage);
 
-                                gname.setText(json.getJSONObject("data").getString("name"));
+                                gname.setText("Game Name: " + json.getJSONObject("data").getString("name"));
 
                                 String longV = json.getJSONObject("data").getString("startTime");
                                 long millisecond = Long.parseLong(longV);
@@ -121,8 +120,7 @@ public class GameInfo extends AppCompatActivity {
                                 gtime.setText(gamestarttime);
                                 tcost.setText(json.getJSONObject("data").getString("ticketCost"));
                                 pmoney.setText(json.getJSONObject("data").getString("prizeMoney"));
-                                createdby.setText(json.getJSONObject("data").getString("createdBy"));
-                                passcode.setText(json.getJSONObject("data").getString("passCode"));
+
 
 
                                 JSONObject json2 = json.getJSONObject("data");
@@ -230,17 +228,17 @@ public class GameInfo extends AppCompatActivity {
         }
     }
 
-    public class CustomAdapter extends ArrayAdapter<prizes> implements View.OnClickListener{
+    public class CustomAdapter extends ArrayAdapter<prizes>{
 
         private ArrayList<prizes> dataSet;
         Context mContext;
 
         // View lookup cache
         private  class ViewHolder {
-            TextView txtName;
+            TextView rs;
             TextView txtType;
             TextView txtVersion;
-            ImageView info;
+
         }
 
         public CustomAdapter(ArrayList<prizes> data, Context context) {
@@ -250,21 +248,7 @@ public class GameInfo extends AppCompatActivity {
 
         }
 
-        @Override
-        public void onClick(View v) {
 
-            int position=(Integer) v.getTag();
-            Object object= getItem(position);
-            prizes dataModel=(prizes) object;
-
-            switch (v.getId())
-            {
-                case R.id.item_info:
-                    Snackbar.make(v, "Release date " +dataModel.getPcost(), Snackbar.LENGTH_LONG)
-                            .setAction("No action", null).show();
-                    break;
-            }
-        }
 
         private int lastPosition = -1;
 
@@ -282,10 +266,10 @@ public class GameInfo extends AppCompatActivity {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(R.layout.row_item, parent, false);
-                viewHolder.txtName = (TextView) convertView.findViewById(R.id.name);
+
                 viewHolder.txtType = (TextView) convertView.findViewById(R.id.type);
                 viewHolder.txtVersion = (TextView) convertView.findViewById(R.id.version_number);
-                viewHolder.info = (ImageView) convertView.findViewById(R.id.item_info);
+                viewHolder.rs = (TextView)convertView.findViewById(R.id.rs);
 
                 result=convertView;
 

@@ -222,10 +222,10 @@ public class WalletPurchasehistory extends AppCompatActivity {
 
             switch (v.getId())
             {
-                case R.id.item_info:
-                    Snackbar.make(v, "Release date " +dataModel.getGname(), Snackbar.LENGTH_LONG)
-                            .setAction("No action", null).show();
-                    break;
+//                case R.id.item_info:
+//                    Snackbar.make(v, "Release date " +dataModel.getGname(), Snackbar.LENGTH_LONG)
+//                            .setAction("No action", null).show();
+//                    break;
                 case R.id.status:
                     Toast.makeText(mContext, "Hllo", Toast.LENGTH_SHORT).show();
 
