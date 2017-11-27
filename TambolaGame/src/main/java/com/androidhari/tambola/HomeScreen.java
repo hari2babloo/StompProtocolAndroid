@@ -1,6 +1,8 @@
 package com.androidhari.tambola;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -46,6 +48,7 @@ import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
 import static android.support.design.R.attr.windowActionBar;
+import static android.view.View.GONE;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -57,10 +60,13 @@ public class HomeScreen extends AppCompatActivity {
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
     SharedPreferences sp;
+    ProgressDialog pd;
     String pass,id;
     //List<App> apps = getApps();
 
     List<App> apps = new ArrayList<>();
+    List<App> apps1 = new ArrayList<>();
+    List<App> apps2 = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +79,9 @@ public class HomeScreen extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        ActionBar ab = getSupportActionBar();
-        // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
+//        ActionBar ab = getSupportActionBar();
+//        // Enable the Up button
+//        ab.setDisplayHomeAsUpEnabled(true);
 
         getdata();
 
@@ -86,7 +92,7 @@ public class HomeScreen extends AppCompatActivity {
 //            //finish current activity
 //        }
 
-        logout = (Button)findViewById(R.id.logout);
+//        logout = (Button)findViewById(R.id.logout);
         mRecyclerView= (RecyclerView) findViewById(R.id.horizontal_recycler_view);
         //      Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        toolbar.inflateMenu(R.menu.main);
@@ -108,11 +114,10 @@ public class HomeScreen extends AppCompatActivity {
 
         SnapAdapter snapAdapter = new SnapAdapter();
         if (mHorizontal) {
-            snapAdapter.addSnap(new Snap(Gravity.CENTER_HORIZONTAL, "Bumper Games   ", apps));
 
-//
-//            snapAdapter.addSnap(new Snap(Gravity.START, "Live Games", apps));
-//            snapAdapter.addSnap(new Snap(Gravity.END, "Todays Special", apps));
+            snapAdapter.addSnap(new Snap(Gravity.START, "Bumper Games", apps1));
+            snapAdapter.addSnap(new Snap(Gravity.CENTER_HORIZONTAL, "Upcoming Games   ", apps));
+            snapAdapter.addSnap(new Snap(Gravity.END, "Private Games", apps2));
 //            snapAdapter.addSnap(new Snap(Gravity.CENTER, "Top Games", apps));
             mRecyclerView.setAdapter(snapAdapter);
 
@@ -133,6 +138,11 @@ public class HomeScreen extends AppCompatActivity {
 
     }
     private void getdata() {
+
+        pd = new ProgressDialog(HomeScreen.this);
+        pd.setMessage("Getting Games Data");
+        pd.setCancelable(false);
+        pd.show();
         final OkHttpClient client = new OkHttpClient();
         JSONObject postdata = new JSONObject();
 
@@ -157,6 +167,8 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
+                pd.cancel();
+                pd.dismiss();
                 final String mMessage = response.body().string();
                 if (response.isSuccessful()){
                     runOnUiThread(new Runnable() {
@@ -167,7 +179,28 @@ public class HomeScreen extends AppCompatActivity {
                                 JSONArray jsonArray = json.getJSONArray("data");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject json_data = jsonArray.getJSONObject(i);
-                                    apps.add(new App(json_data.getString("name"),R.drawable.img , 4.6f,json_data.getString("id")));
+
+                                    String gameType = json_data.getString("gameType");
+
+                                    if (gameType.equalsIgnoreCase("0")){
+
+                                        apps.add(new App(json_data.getString("name"),R.drawable.img , 4.6f,json_data.getString("id")));
+                                    }
+
+                                    else
+
+                                    if (gameType.equalsIgnoreCase("1")){
+
+                                        apps1.add(new App(json_data.getString("name"),R.drawable.img , 4.6f,json_data.getString("id")));
+                                    }
+
+                                    else
+
+                                    if (gameType.equalsIgnoreCase("2")){
+
+                                        apps2.add(new App(json_data.getString("name"),R.drawable.img , 4.6f,json_data.getString("id")));
+                                    }
+
                                     setupAdapter();
 
                                     Log.e("sdfdsf", json_data.getString("id"));
@@ -189,6 +222,8 @@ public class HomeScreen extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            pd.cancel();
+                            pd.dismiss();
                             Toast.makeText(HomeScreen.this, "Fail", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -258,6 +293,7 @@ public class HomeScreen extends AppCompatActivity {
                 imageView = (ImageView) itemView.findViewById(R.id.imageView);
                 nameTextView = (TextView) itemView.findViewById(R.id.nameTextView);
                 ratingTextView = (TextView) itemView.findViewById(R.id.ratingTextView);
+                ratingTextView.setVisibility(GONE);
             }
 
             @Override
@@ -411,19 +447,28 @@ public class HomeScreen extends AppCompatActivity {
 
 
         switch (item.getItemId()) {
+//            case R.id.logout:
+//
+//                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+//                // User chose the "Favorite" action, mark the current item
+//                // as a favorite...
+//                return true;
 
+            case R.id.action_item_one:
 
-            case R.id.logout:
-
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
+                Intent intent = new Intent(HomeScreen.this, HomeScreen.class);
+                startActivity(intent);
+                // Do something
                 return true;
-
             case R.id.action_item_two:
 
-                Intent intent = new Intent(HomeScreen.this, Wallet.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(HomeScreen.this, Wallet.class);
+                startActivity(intent2);
+                // Do something
+                return true;
+            case R.id.action_item_three:
+
+Logout();
                 // Do something
                 return true;
 
@@ -441,5 +486,82 @@ public class HomeScreen extends AppCompatActivity {
 
 
         }
+    private void Logout() {
+
+        pd = new ProgressDialog(HomeScreen.this);
+        pd.setMessage("Logging You Out");
+        pd.setCancelable(false);
+        pd.show();
+        final OkHttpClient client = new OkHttpClient();
+        JSONObject postdata = new JSONObject();
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                postdata.toString());
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/user/logout")
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                pd.dismiss();
+                pd.cancel();
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                pd.dismiss();
+                pd.cancel();
+                final String mMessage = response.body().string();
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+                                String s = json.getString("message");
+
+
+                                Toast.makeText(HomeScreen.this, s, Toast.LENGTH_SHORT).show();
+
+                                sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.clear();
+                                editor.commit();
+                                finish();
+
+                                Intent in = new Intent(HomeScreen.this,FirstPage.class);
+                                startActivity(in);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+                }
+
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pd.cancel();
+                            pd.dismiss();
+                            Toast.makeText(HomeScreen.this, "Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+        });
+    }
     }
 

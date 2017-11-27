@@ -38,6 +38,8 @@
         </activity>
         <activity android:name="com.androidhari.tambola.Countdown">
         </activity>
+        <activity android:name="com.androidhari.tambola.AddMoney">
+        </activity>
         <activity android:name="com.androidhari.tambola.TransactionHistory"></activity>
         <activity android:name="com.androidhari.tambola.Countdown2">
 

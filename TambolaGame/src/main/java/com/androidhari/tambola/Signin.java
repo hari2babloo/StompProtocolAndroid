@@ -1,6 +1,7 @@
 package com.androidhari.tambola;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -35,6 +36,7 @@ public class Signin extends Activity {
 
     TextView forgotpass,signup;
     SharedPreferences sp;
+    ProgressDialog pd;
 
 
     AwesomeValidation awesomeValidation;
@@ -130,12 +132,17 @@ public class Signin extends Activity {
 
                 }
             });
-            Toast.makeText(this, "Signin", Toast.LENGTH_SHORT).show();
+  //          Toast.makeText(this, "Signin", Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void Authenticate() {
+
+        pd = new ProgressDialog(Signin.this);
+        pd.setMessage("Signing In");
+        pd.setCancelable(false);
+        pd.show();
 
 
         final OkHttpClient client = new OkHttpClient();
@@ -167,6 +174,8 @@ public class Signin extends Activity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                pd.cancel();
+                pd.cancel();
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
@@ -179,7 +188,8 @@ public class Signin extends Activity {
             public void onResponse(Call call, Response response) throws IOException {
 
                 final String mMessage = response.body().string();
-
+                pd.cancel();
+                pd.dismiss();
 
                 Log.w("Response", mMessage);
                 if (response.isSuccessful()){
@@ -218,7 +228,11 @@ public class Signin extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(Signin.this, "Failed to login", Toast.LENGTH_SHORT).show();
+
+                            pd.cancel();
+                            pd.dismiss();
+
+                            Toast.makeText(Signin.this, "User already logged in other system, please logout", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

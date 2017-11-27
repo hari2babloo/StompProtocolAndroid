@@ -8,10 +8,19 @@
     tools:context="com.androidhari.tambola.TransactionHistory">
 
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FF9800"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <ListView
         android:id="@+id/prizelist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp" />
+        android:background="@color/black" />
 
 </LinearLayout>

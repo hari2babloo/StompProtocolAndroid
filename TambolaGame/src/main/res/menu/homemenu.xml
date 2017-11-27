@@ -3,14 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_item_one"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Send"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_item_two"
         android:title="Send"
         android:icon="@drawable/walleticon"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_item_three"
+        android:icon="@android:drawable/ic_lock_power_off"
+        android:title="Send"
+        app:showAsAction="always" />
+
     <!--&lt;!&ndash; Settings, should always be in the overflow &ndash;&gt;-->
-    <item android:id="@+id/logout"
-        android:title="Logout"
-        app:showAsAction="never"/>
+    <!--<item android:id="@+id/logout"-->
+        <!--android:title="Logout"-->
+        <!--app:showAsAction="never"/>-->
 
 </menu>

@@ -3,6 +3,7 @@ package com.androidhari.tambola;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,6 +54,7 @@ public class GameInfo extends AppCompatActivity {
 
     SharedPreferences sp;
     String pass,gid,gamestarttime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,19 +110,28 @@ public class GameInfo extends AppCompatActivity {
 
                             try {
                                 JSONObject json = new JSONObject(mMessage);
-
+                                Typeface face = Typeface.createFromAsset(getAssets(),
+                                        "fonts/segoeuil.ttf");
                                 gname.setText("Game Name: " + json.getJSONObject("data").getString("name"));
 
+                                gname.setTypeface(face);
                                 String longV = json.getJSONObject("data").getString("startTime");
                                 long millisecond = Long.parseLong(longV);
                                 // or you already have long value of date, use this instead of milliseconds variable.
 
 
-                                gamestarttime = DateFormat.format("dd/MM/yyyy hh:mm a", new Date(millisecond)).toString();;
-                                gtime.setText(gamestarttime);
-                                tcost.setText(json.getJSONObject("data").getString("ticketCost"));
-                                pmoney.setText(json.getJSONObject("data").getString("prizeMoney"));
+                                gamestarttime = DateFormat.format("dd/MM/yyyy hh:mm a", new Date(millisecond)).toString();
 
+
+
+
+                                gtime.setTypeface(face);
+                                gtime.setText("Date & Start Time : "+gamestarttime);
+                                tcost.setText("Ticket Cost : " +json.getJSONObject("data").getString("ticketCost"));
+                                tcost.setTypeface(face);
+                                pmoney.setText("Prize Money : "+json.getJSONObject("data").getString("prizeMoney"));
+
+                                pmoney.setTypeface(face);
 
 
                                 JSONObject json2 = json.getJSONObject("data");
@@ -235,7 +246,7 @@ public class GameInfo extends AppCompatActivity {
 
         // View lookup cache
         private  class ViewHolder {
-            TextView rs;
+
             TextView txtType;
             TextView txtVersion;
 
@@ -268,8 +279,9 @@ public class GameInfo extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.row_item, parent, false);
 
                 viewHolder.txtType = (TextView) convertView.findViewById(R.id.type);
+
                 viewHolder.txtVersion = (TextView) convertView.findViewById(R.id.version_number);
-                viewHolder.rs = (TextView)convertView.findViewById(R.id.rs);
+
 
                 result=convertView;
 
@@ -285,7 +297,11 @@ public class GameInfo extends AppCompatActivity {
 
             //          viewHolder.txtName.setText(dataModel.getPcost());
             viewHolder.txtType.setText(dataModel.getPname());
+            Typeface face = Typeface.createFromAsset(getAssets(),
+                    "fonts/segoeuil.ttf");
+            viewHolder.txtType.setTypeface(face);
             viewHolder.txtVersion.setText(dataModel.getPcost());
+            viewHolder.txtVersion.setTypeface(face);
 //            viewHolder.info.setOnClickListener(this);
 //            viewHolder.info.setTag(position);
             // Return the completed view to render on screen

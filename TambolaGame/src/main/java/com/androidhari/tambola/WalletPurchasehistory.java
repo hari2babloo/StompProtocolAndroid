@@ -1,15 +1,21 @@
 package com.androidhari.tambola;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -30,8 +36,10 @@ import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.tambola.MainActivity;
 import ua.naiksoftware.tambola.R;
@@ -40,6 +48,11 @@ public class WalletPurchasehistory extends AppCompatActivity {
 
     ArrayList<prizes> dataModels = new ArrayList<>();
     ListView plist;
+
+
+    ProgressDialog pd;
+    public static final MediaType MEDIA_TYPE =
+            MediaType.parse("application/json");
     SharedPreferences sp;
     String pass;
 
@@ -47,6 +60,9 @@ public class WalletPurchasehistory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet_purchasehistory);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
 
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
@@ -57,6 +73,10 @@ public class WalletPurchasehistory extends AppCompatActivity {
     }
 
     private void getdata() {
+        pd = new ProgressDialog(WalletPurchasehistory.this);
+        pd.setMessage("Getting your Games");
+        pd.setCancelable(false);
+        pd.show();
 
         final OkHttpClient client = new OkHttpClient();
 
@@ -70,6 +90,8 @@ public class WalletPurchasehistory extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                pd.dismiss();
+                pd.cancel();
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
@@ -82,6 +104,8 @@ public class WalletPurchasehistory extends AppCompatActivity {
                 //               Log.w("Response", mMessage);
                 if (response.isSuccessful()){
 
+                    pd.dismiss();
+                    pd.cancel();
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -139,6 +163,8 @@ public class WalletPurchasehistory extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            pd.dismiss();
+                            pd.cancel();
                             Toast.makeText(WalletPurchasehistory.this, "Fail", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -254,7 +280,7 @@ public class WalletPurchasehistory extends AppCompatActivity {
                 viewHolder.status = (Button)convertView.findViewById(R.id.status);
                 viewHolder.img = (ImageView) convertView.findViewById(R.id.img);
 
-                //       viewHolder.info = (ImageView) convertView.findViewById(R.id.item_info);
+                //       viewHolder.info = (ImageView) convertView.findViewBy-Id(R.id.item_info);
 
                 result=convertView;
 
@@ -264,25 +290,31 @@ public class WalletPurchasehistory extends AppCompatActivity {
                 result=convertView;
             }
 
+            Typeface face = Typeface.createFromAsset(getAssets(),
+                    "fonts/segoeuil.ttf");
+
 //            Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
 //            result.startAnimation(animation);
             lastPosition = position;
 
             //          viewHolder.txtName.setText(dataModel.getPcost());
             viewHolder.gno.setText("Game Number:"+dataModel.getGno());
-            viewHolder.gname.setText("Game name:"+dataModel.getGname());
-
-            viewHolder.gstime.setText("Start Time: " +dataModel.getGstime());
+            viewHolder.gno.setTypeface(face);
+            viewHolder.gname.setText("Game Name:"+dataModel.getGname());
+            viewHolder.gname.setTypeface(face);
+            viewHolder.gstime.setText("Start Time:" +dataModel.getGstime());
+            viewHolder.gstime.setTypeface(face);
 
             if (dataModel.status.equalsIgnoreCase("COMPLETED")){
 
-                viewHolder.status.setText("FINISHED GAME");
+                viewHolder.status.setText("FINISHED");
                 viewHolder.status.setEnabled(false);
+                viewHolder.status.setBackgroundColor(Color.RED);
 
             }
             else {
 
-                viewHolder.status.setText("PLAY GAME");
+                viewHolder.status.setText("PLAY");
 
                 viewHolder.status.setEnabled(true);
             }
@@ -355,12 +387,127 @@ public class WalletPurchasehistory extends AppCompatActivity {
                 }
             });
             viewHolder.img.setImageResource(R.drawable.img);
-//            viewHolder.info.setOnClickListener(this);
-//            viewHolder.info.setTag(position);
-            // Return the completed view to render on screen
             return convertView;
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.homemenu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        // getMenuInflater().inflate(R.menu.homemenu, (Menu) item);
+        int id = item.getItemId();
+
+
+        switch (item.getItemId()) {
+
+            case R.id.action_item_two:
+
+                Intent intent = new Intent(WalletPurchasehistory.this, Wallet.class);
+                startActivity(intent);
+                // Do something
+                return true;
+            case R.id.action_item_one:
+
+                Intent intent2 = new Intent(WalletPurchasehistory.this, HomeScreen.class);
+                startActivity(intent2);
+                // Do something
+                return true;
+            case R.id.action_item_three:
+
+                Logout();
+                // Do something
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void Logout() {
+
+        pd = new ProgressDialog(WalletPurchasehistory.this);
+        pd.setMessage("Logging You Out");
+        pd.setCancelable(false);
+        pd.show();
+        final OkHttpClient client = new OkHttpClient();
+        JSONObject postdata = new JSONObject();
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                postdata.toString());
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/user/logout")
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                pd.dismiss();
+                pd.cancel();
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                pd.dismiss();
+                pd.cancel();
+                final String mMessage = response.body().string();
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+                                String s = json.getString("message");
+
+
+                                Toast.makeText(WalletPurchasehistory.this, s, Toast.LENGTH_SHORT).show();
+
+                                sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.clear();
+                                editor.commit();
+                                finish();
+
+                                Intent in = new Intent(WalletPurchasehistory.this,FirstPage.class);
+                                startActivity(in);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+                }
+
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pd.cancel();
+                            pd.dismiss();
+                            Toast.makeText(WalletPurchasehistory.this, "Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+        });
+    }
 }
+

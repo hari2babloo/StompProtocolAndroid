@@ -5,8 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_dark"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.androidhari.tambola.Wallet">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FF9800"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <TextView
         android:id="@+id/money"
@@ -33,68 +43,59 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bbkg"
         android:gravity="center"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/purchasehistory"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/round"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/orange"
             android:drawableTop="@android:drawable/ic_dialog_email"
-            android:paddingTop="20dp"
-            android:text="Purchases"
-            android:textColor="#fff" />
-
-        <Button
-            android:id="@+id/createdgames"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/round"
-            android:drawableTop="@android:drawable/ic_dialog_email"
-            android:paddingTop="20dp"
-            android:text="cREATED gAMES"
+            android:paddingRight="20dp"
+            android:text="Purchased Games"
             android:textColor="#fff" />
 
         <Button
             android:id="@+id/hISTORY"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/round"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/orange"
             android:drawableTop="@android:drawable/ic_dialog_email"
-            android:paddingTop="20dp"
-            android:text="hISTORY"
+            android:paddingLeft="20dp"
+            android:text="My History"
             android:textColor="#fff" />
 
     </LinearLayout>
 
 
     <!--<android.support.design.widget.TabLayout-->
-        <!--android:id="@+id/tab_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/toolbar"-->
-        <!--android:background="?android:attr/colorFocusedHighlight"-->
-        <!--android:elevation="6dp"-->
-        <!--android:minHeight="?attr/actionBarSize"-->
-        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+    <!--android:id="@+id/tab_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/toolbar"-->
+    <!--android:background="?android:attr/colorFocusedHighlight"-->
+    <!--android:elevation="6dp"-->
+    <!--android:minHeight="?attr/actionBarSize"-->
+    <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />-->
 
     <!--<android.support.v4.view.ViewPager-->
-        <!--android:id="@+id/pager"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:layout_below="@id/tab_layout">-->
+    <!--android:id="@+id/pager"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:layout_below="@id/tab_layout">-->
 
-        <!--<Button-->
-            <!--android:id="@+id/button2"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="20dp"-->
+    <!--<Button-->
+    <!--android:id="@+id/button2"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="20dp"-->
 
-            <!--android:background="@drawable/bbkg"-->
-            <!--android:gravity="center"-->
-            <!--android:text="Login"-->
-            <!--android:textColor="#FFFFFF" />-->
+    <!--android:background="@drawable/bbkg"-->
+    <!--android:gravity="center"-->
+    <!--android:text="Login"-->
+    <!--android:textColor="#FFFFFF" />-->
     <!--</android.support.v4.view.ViewPager>-->
 
 

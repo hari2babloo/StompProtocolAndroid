@@ -1,6 +1,7 @@
 package com.androidhari.tambola;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class SignUp extends Activity {
     TextView login,fname,lname,email,phno,pass,cnfpass;
     AwesomeValidation awesomeValidation;
     Button submit;
+    ProgressDialog pd;
 
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
@@ -94,6 +96,12 @@ public class SignUp extends Activity {
     private void Signup() {
 
 
+        pd = new ProgressDialog(SignUp.this);
+        pd.setMessage("Logging You Out");
+        pd.setCancelable(false);
+        pd.show();
+
+
 
         final OkHttpClient client = new OkHttpClient();
 
@@ -133,6 +141,8 @@ public class SignUp extends Activity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                pd.dismiss();
+                pd.cancel();
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
@@ -144,7 +154,8 @@ public class SignUp extends Activity {
 
                 final String mMessage = response.body().string();
 
-
+pd.dismiss();
+                pd.cancel();
                 Log.w("Response", mMessage);
                 if (response.isSuccessful()){
                     runOnUiThread(new Runnable() {
@@ -172,6 +183,9 @@ public class SignUp extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
+                            pd.dismiss();
+                            pd.cancel();
                             Toast.makeText(SignUp.this, "Email Already Exists", Toast.LENGTH_SHORT).show();
                         }
                     });

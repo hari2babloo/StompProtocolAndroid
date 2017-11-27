@@ -5,23 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
+    android:gravity="center_vertical"
     android:orientation="vertical"
     tools:context="com.androidhari.tambola.GameInfo">
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/gname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
                 android:text="Game Name"
                 android:textColor="@android:color/background_light"
                 android:textSize="18sp" />
@@ -30,6 +34,8 @@
                 android:id="@+id/gtime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
                 android:text="Game Start Time and Date"
                 android:textColor="@android:color/background_light"
                 android:textSize="18sp" />
@@ -38,19 +44,25 @@
                 android:id="@+id/Prizes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Prizes"
-                android:textColor="@android:color/background_light" />
+                android:textAllCaps="true"
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold" />
 
             <ListView
                 android:id="@+id/prizelist"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                android:layout_height="150dp" />
 
             <TextView
                 android:id="@+id/tcost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
                 android:text="Ticket Cost"
+                android:textColor="#FFFFFF"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -58,14 +70,19 @@
                 android:id="@+id/Pmoney"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Prize Money"
+                android:textColor="#FFFFFF"
                 android:textSize="24sp" />
 
             <Button
                 android:id="@+id/buyticket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Buy Tickets" />
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bbkg"
+                android:text="Buy Tickets"
+                android:textColor="@android:color/background_light" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
