@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -331,6 +332,7 @@ public class WalletPurchasehistory extends AppCompatActivity {
 
                     Date date = new Date() ;
                     java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy hh:mm a") ;
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+05:30"));
                     dateFormat.format(date);
                     System.out.println(dateFormat.format(date));
                     System.out.println(dataModel.getGstime());

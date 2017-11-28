@@ -179,7 +179,7 @@ public class PurchaseTicket extends AppCompatActivity {
                             try {
 
                                 String mm = mMessage;
-                                mm=mMessage.replace("null","00");
+                                mm=mMessage.replace("null","' '");
                                 JSONObject json = new JSONObject(mm);
 
                                 JSONArray jsonArray = json.getJSONArray("data");

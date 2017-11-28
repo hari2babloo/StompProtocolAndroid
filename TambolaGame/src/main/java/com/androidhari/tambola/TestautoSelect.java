@@ -419,57 +419,14 @@ public class TestautoSelect extends AppCompatActivity {
                     public void onClick(View v) {
 
                         if (tvSelected1) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            one.setWidth(60);
-                            one.setHeight(60);
-                            one.setBackgroundColor(Color.WHITE);
-                            one.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            one.setBackground(sd);
-
-                            //five.setBackgroundColor(Color.YELLOW);
-
-//                            five.setTextColor(Color.BLACK);
-                            tvSelected1 = false;
+//
+//
+                            one.setBackground(getDrawable(R.drawable.ticketborder2));
+              tvSelected1 = false;
                         }
                         else {
 
-                            one.setWidth(60);
-                            one.setHeight(60);
-                            one.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            one.setBackground(sd);
-                            one.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            one.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected1 = true;
                         }
                     }

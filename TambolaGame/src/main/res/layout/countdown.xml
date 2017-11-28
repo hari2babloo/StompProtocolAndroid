@@ -41,6 +41,12 @@
         android:textColor="@color/cardview_light_background" />
 
     <TextView
+        android:id="@+id/timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
         android:id="@+id/txt_headline"
         style="@style/Base.TextAppearance.AppCompat.Headline"
         android:layout_width="match_parent"

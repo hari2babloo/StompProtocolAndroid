@@ -1,5 +1,6 @@
 package ua.naiksoftware.tambola;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.androidhari.tambola.Countdown;
 import com.androidhari.tambola.HomeScreen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
             MediaType.parse("application/json");
     String claimid,tktid;
     int claimposition;
+    ProgressDialog pd;
+
     Collection secondlist = new ArrayList();
     Collection firstlist = new ArrayList();
     private boolean tvSelected1 = false;
@@ -104,11 +108,16 @@ public class MainActivity extends AppCompatActivity {
 
     private AdapterFish Adapter;
     private DataFish current;
+
+    List<String> completednumbers = new ArrayList<>();
     JSONArray postdata2 = new JSONArray();
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
     ArrayList<String> tktrow2 = new ArrayList<String>();
     ArrayList<String> tktrow3 = new ArrayList<String>();
+    ArrayList<String> reftktrow1 = new ArrayList<String>();
+    ArrayList<String> reftktrow2 = new ArrayList<String>();
+    ArrayList<String> reftktrow3 = new ArrayList<String>();
     ArrayList<JSONObject> listdata = new ArrayList<>();
 
     TextView number,fastfive,firstrow,middlerow,lastrow,fullhouse,noofplayers;
@@ -120,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> tktids = new ArrayList<>();
 
     List<DataFish> filterdata=new ArrayList<>();
+    List<DataFish> refresheddata=new ArrayList<>();
 
     //   private RecyclerView mRVFishPrice;
     private static final String TAG = "MainActivity";
@@ -268,11 +278,23 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(this, echoModel.getMessageList().toString(), Toast.LENGTH_SHORT).show();
         }
+
+
+        if (echoModel.getCompletedNumbers()!=null){
+
+
+        }
         if (echoModel.getValidClaim()==true){
-            refreshticket();
+
+
+            Log.e("complerted ", String.valueOf(completednumbers));
+            Authenticate2();
+
+
+            Log.e("fdfsd", echoModel.getCompletedNumbers().toString());
         }
 
-        else if (echoModel.getGameCompleted()==true){
+         if (echoModel.getGameCompleted()==true){
             number.setBackgroundColor(Color.RED);
             Toast.makeText(this, "GAME FINISHED", Toast.LENGTH_SHORT).show();
             Intent in = new Intent(MainActivity.this, HomeScreen.class);
@@ -280,6 +302,8 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Game","Game Finished");
         }
 
+
+        mDataSet.clear();
 
 
         mDataSet.add(echoModel.getNumber().toString());
@@ -315,13 +339,6 @@ public class MainActivity extends AppCompatActivity {
 
 
             final OkHttpClient client = new OkHttpClient();
-            JSONObject postdata = new JSONObject();
-
-
-//            RequestBody body = RequestBody.create(MEDIA_TYPE,
-//                    postdata.toString());
-
-
             final Request request = new Request.Builder()
                     .url("http://game-dev.techmech.men:8080/api/game/user/tickets/"+gameid)
                     .get()
@@ -336,7 +353,6 @@ public class MainActivity extends AppCompatActivity {
                     String mMessage = e.getMessage().toString();
                     Log.w("failure Response", mMessage);
 
-//                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -352,15 +368,15 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
 
-                                String mm = mMessage3;
-                                mm=mMessage3.replace("null","' '");
-                                JSONObject json2 = null;
+                                String mm2 = mMessage3;
+                                mm2=mMessage3.replace("null","' '");
+                                JSONObject json3 = null;
                                 try {
-                                    json2 = new JSONObject(mm);
-                                    JSONArray jsonArray2 = json2.getJSONArray("data");
-                                    for (int i = 0; i < jsonArray2.length(); i++) {
+                                    json3 = new JSONObject(mm2);
+                                    JSONArray jsonArray3 = json3.getJSONArray("data");
+                                    for (int m = 0; m < jsonArray3.length(); m++) {
 
-                                        JSONObject fd2 = jsonArray2.getJSONObject(i);
+                                        JSONObject fd2 = jsonArray3.getJSONObject(m);
 
                                         String s = fd2.getString("id");
                                         secondlist.add(s);
@@ -374,13 +390,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                                    JSONObject json_data2 = jsonArray2.getJSONObject(0).getJSONObject("game");
+                                    JSONObject json_data4 = jsonArray3.getJSONObject(0).getJSONObject("game");
 
-                                    JSONArray sds = json_data2.getJSONArray("prizes");
+                                    JSONArray sds2 = json_data4.getJSONArray("prizes");
 
-                                    for (int i = 0; i < sds.length(); i++) {
+                                    for (int i = 0; i < sds2.length(); i++) {
 
-                                        JSONObject fd = sds.getJSONObject(i);
+                                        JSONObject fd = sds2.getJSONObject(i);
 
                                         String prizename = fd.getString("prizeName");
                                         String prizecost = fd.getString("prizeCost");
@@ -428,40 +444,80 @@ public class MainActivity extends AppCompatActivity {
 
                                         }
 
+                                        for (int n = 0; n < sds2.length(); n++){
+                                            JSONObject json_data = sds2.getJSONObject(i).getJSONObject("ticket");
+                                            DataFish data = new DataFish();
+                                            String ticket = json_data.getString("ticket");
+                                            JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
+                                            JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
+                                            JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
+                                            String s = json_data.getString("id");
+
+                                            for ( int j = 0; j <row1.length();j++ ){
 
 
-                                    }
-                                   // firstlist.removeAll(secondlist);
-                                    if (secondlist.isEmpty()|| secondlist.size()==0){
+
+                                                reftktrow1.add(row1.getString(j));
+
+//                                                Log.w("Row 1 ", String.valueOf(reftktrow1));
+
+                                            }
+
+                                            for ( int j = 0; j <row2.length();j++ ){
 
 
-                                        Intent in = new Intent(MainActivity.this, HomeScreen.class);
-                                        startActivity(in);
-                                        Log.e("NO Tickets" , "You Have No Tickets to Play Game");
-//                                        filterdata.remove(claimposition);
-//                                        mRVFishPrice.getAdapter().notifyItemRemoved(claimposition);
-                                        Toast.makeText(MainActivity.this, "You Have No Tickets to Play", Toast.LENGTH_SHORT).show();
+
+  //                                              reftktrow2.add(row2.getString(j));
+
+                                                Log.w("Row 2", String.valueOf(reftktrow2));
+
+                                            }
 
 
-                                    }
+                                            for ( int j = 0; j <row3.length();j++ ){
 
 
-                                    else if (secondlist.size() == firstlist.size()){
-                                        Log.e("Won Prize" , "Won Prize");
-                                        secondlist.clear();
-                                    }
+
+                                                reftktrow3.add(row3.getString(j));
+
+ //                                               Log.w("Row 3", String.valueOf(reftktrow3));
+
+                                            }
+                                            data.id = s;
+                                            data.t1 = row1.getString(0);
+                                            data.t2 = row1.getString(1);
+                                            data.t3 = row1.getString(2);
+                                            data.t4 = row1.getString(3);
+                                            data.t5 = row1.getString(4);
+                                            data.t6 = row1.getString(5);
+                                            data.t7 = row1.getString(6);
+                                            data.t8 = row1.getString(7);
+                                            data.t9 = row1.getString(8);
+                                            data.t10 = row2.getString(0);
+                                            data.t11 = row2.getString(1);
+                                            data.t12 = row2.getString(2);
+                                            data.t13 = row2.getString(3);
+                                            data.t14 = row2.getString(4);
+                                            data.t15 = row2.getString(5);
+                                            data.t16 = row2.getString(6);
+                                            data.t17 = row2.getString(7);
+                                            data.t18 = row2.getString(8);
+                                            data.t19 = row3.getString(0);
+                                            data.t20 = row3.getString(1);
+                                            data.t21 = row3.getString(2);
+                                            data.t22 = row3.getString(3);
+                                            data.t23 = row3.getString(4);
+                                            data.t24 = row3.getString(5);
+                                            data.t25 = row3.getString(6);
+                                            data.t26 = row3.getString(7);
+                                            data.t27 = row3.getString(8);
 
 
-                                    else
+                                            refresheddata.add(data);
+//                                    Log.w("Response", data.t1);
 
-                                    if(firstlist.size()>secondlist.size()){
+                                        }
 
-                                        filterdata.remove(current);
-                                        mRVFishPrice.getAdapter().notifyItemRemoved(claimposition);
-                                        mRVFishPrice.getAdapter().notifyItemRangeChanged(claimposition,filterdata.size());
-                                    //  Log.e("Removed Ticket","removed Ticket");
-                                   //  firstlist =  secondlist;
-                                        secondlist.clear();
                                     }
 
                                 } catch (JSONException e) {
@@ -469,7 +525,16 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
 
+                              //  mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
+                                Adapter = new AdapterFish(MainActivity.this, refresheddata);
 
+
+
+                                mRVFishPrice.setAdapter(Adapter);
+//                            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+
+                                mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
+                                mRVFishPrice.setHasFixedSize(true);
 
 
                             }
@@ -718,6 +783,239 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void Authenticate2() {
+
+
+        pd = new ProgressDialog(MainActivity.this);
+        pd.setMessage("Please Wait While we are Validating..");
+        pd.setCancelable(false);
+        pd.show();
+        final OkHttpClient client = new OkHttpClient();
+
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/game/user/tickets/"+gameid)
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+
+                final String mMessage = response.body().string();
+
+
+                tktrow1.clear();
+                tktrow2.clear();
+                tktrow3.clear();
+                filterdata.clear();
+
+//                Log.w("Response", mMessage);
+
+                if (response.isSuccessful()){
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            try {
+
+                                String mm = mMessage;
+                                mm=mMessage.replace("null","' '");
+                                JSONObject json = new JSONObject(mm);
+
+                                JSONArray jsonArray = json.getJSONArray("data");
+
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject fd = jsonArray.getJSONObject(i);
+
+                                    String s = fd.getString("id");
+
+
+                                    firstlist.add(s);
+
+
+                                }
+                                Log.e("firstlist", String.valueOf(firstlist));
+                                JSONObject json_data2 = jsonArray.getJSONObject(0).getJSONObject("game");
+
+
+                                noofplayers.setText( "No of Players:   "+json_data2.getString("noOfPlayers"));
+
+
+                                JSONArray sds = json_data2.getJSONArray("prizes");
+                                LinearLayout linearLayout = new LinearLayout(MainActivity.this);
+                                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                                for (int i = 0; i < sds.length(); i++) {
+
+                                    JSONObject fd = sds.getJSONObject(i);
+
+                                    String prizename= fd.getString("prizeName");
+                                    String prizecost = fd.getString("prizeCost");
+
+                                    String prizeCompleted = fd.getString("prizeCompleted");
+
+
+                                    if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+                                    {
+
+                                        fullhouse.setText("FULL_HOUISE: " + prizecost);
+
+                                    }
+
+                                    else
+                                    if (prizename.equalsIgnoreCase("FIRST_ROW")){
+
+
+                                        firstrow.setText("FIRST ROW:  "+prizecost);
+
+                                    }
+                                    else
+                                    if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
+                                        middlerow.setText("MIDDLE_ROW:  "+prizecost);
+
+                                    }
+                                    else
+                                    if (prizename.equalsIgnoreCase("FAST_FIVE")){
+
+                                        fastfive.setText("MIDDLE_ROW:  "+prizecost);
+
+
+                                    }
+                                    else
+                                    if (prizename.equalsIgnoreCase("LAST_ROW")) {
+
+                                        lastrow.setText("MIDDLE_ROW:  "+prizecost);
+
+
+                                    }
+
+
+                                }
+
+
+                                for (int i = 0; i < jsonArray.length(); i++){
+                                    JSONObject json_data = jsonArray.getJSONObject(i).getJSONObject("ticket");
+                                    DataFish data = new DataFish();
+                                    String ticket = json_data.getString("ticket");
+                                    JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
+                                    JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
+                                    JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
+
+                                    String s = json_data.getString("id");
+
+                                    for ( int j = 0; j <row1.length();j++ ){
+
+
+
+                                        tktrow1.add(row1.getString(j));
+
+                                        Log.w("Row 1 ", String.valueOf(tktrow1));
+
+                                    }
+
+                                    for ( int j = 0; j <row2.length();j++ ){
+
+
+
+                                        tktrow2.add(row2.getString(j));
+
+                                        Log.w("Row 2", String.valueOf(tktrow2));
+
+                                    }
+
+
+                                    for ( int j = 0; j <row3.length();j++ ){
+
+
+
+                                        tktrow2.add(row3.getString(j));
+
+                                        Log.w("Row 3", String.valueOf(tktrow3));
+
+                                    }
+                                    data.id = s;
+                                    data.t1 = row1.getString(0);
+                                    data.t2 = row1.getString(1);
+                                    data.t3 = row1.getString(2);
+                                    data.t4 = row1.getString(3);
+                                    data.t5 = row1.getString(4);
+                                    data.t6 = row1.getString(5);
+                                    data.t7 = row1.getString(6);
+                                    data.t8 = row1.getString(7);
+                                    data.t9 = row1.getString(8);
+                                    data.t10 = row2.getString(0);
+                                    data.t11 = row2.getString(1);
+                                    data.t12 = row2.getString(2);
+                                    data.t13 = row2.getString(3);
+                                    data.t14 = row2.getString(4);
+                                    data.t15 = row2.getString(5);
+                                    data.t16 = row2.getString(6);
+                                    data.t17 = row2.getString(7);
+                                    data.t18 = row2.getString(8);
+                                    data.t19 = row3.getString(0);
+                                    data.t20 = row3.getString(1);
+                                    data.t21 = row3.getString(2);
+                                    data.t22 = row3.getString(3);
+                                    data.t23 = row3.getString(4);
+                                    data.t24 = row3.getString(5);
+                                    data.t25 = row3.getString(6);
+                                    data.t26 = row3.getString(7);
+                                    data.t27 = row3.getString(8);
+
+
+                                    filterdata.add(data);
+//                                    Log.w("Response", data.t1);
+
+                                }
+
+                                Log.e("Data", String.valueOf(row1));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+//                            Table();
+//                            mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
+                            Adapter = new AdapterFish(MainActivity.this, filterdata);
+                            mRVFishPrice.setAdapter(Adapter);
+//                            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+
+                            mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
+                            //      mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.HORIZONTAL,true));
+                            ///                          Toast.makeText(MainActivity.this, "PASS", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
+//                    mAdapter.notifyDataSetChanged();
+
+                }
+
+                else runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+//                        Toast.makeText(MainActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+
+            }
+
+
+        });
+    }
 
     public class DataFish {
 
@@ -811,7 +1109,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject postdata = new JSONObject();
                     try {
                         postdata.put("gameId",gameid);
-                        postdata.put("ticketId", claimid);
+                        postdata.put("ticketId", current.id);
                     } catch(JSONException e){
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -887,12 +1185,41 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
-
-
 //            myHolder.one.setText("Name: " + current.preferredName + "  " + current.surname);
        //     myHolder.checkBox.setVisibility(View.GONE);
-            myHolder.one.setText(current.t1);
+
+
+
+            if (completednumbers.contains("39")){
+                myHolder.one.setText(current.t1);
+                myHolder.one.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.one.setText(current.t1);
+            }
+
+            if (completednumbers.contains("42")){
+                myHolder.two.setText(current.t2);
+                myHolder.two.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.two.setText(current.t2);
+            }
+            if (completednumbers.contains("72")){
+                myHolder.three.setText(current.t3);
+                myHolder.three.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.three.setText(current.t3);
+            }
+
+
             myHolder.two.setText( current.t2);
             myHolder.three.setText(current.t3);
             myHolder.four.setText(current.t4);
@@ -983,57 +1310,14 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
                         if (tvSelected1) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            one.setWidth(60);
-                            one.setHeight(60);
-                            one.setBackgroundColor(Color.WHITE);
-                            one.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            one.setBackground(sd);
-
-                            //five.setBackgroundColor(Color.YELLOW);
-
-//                            five.setTextColor(Color.BLACK);
+                            one.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected1 = false;
                         }
                         else {
 
-                            one.setWidth(60);
-                            one.setHeight(60);
-                            one.setPadding(10,10,10,10);
+                            one.setBackground(getDrawable(R.drawable.ticketbrder));
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            one.setBackground(sd);
-                            one.setBackgroundColor(Color.parseColor("#FFFF8800"));
                             tvSelected1 = true;
                         }
                     }
@@ -1044,58 +1328,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected2) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            two.setWidth(60);
-                            two.setHeight(60);
-                            two.setBackgroundColor(Color.WHITE);
-                            two.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            two.setBackground(sd);
-
-                            //five.setBackgroundColor(Color.YELLOW);
-
-//                            five.setTextColor(Color.BLACK);
+                            two.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected2 = false;
                         }
                         else {
 
-                            two.setWidth(60);
-                            two.setHeight(60);
-                            two.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            two.setBackground(sd);
-                            two.setBackgroundColor(Color.parseColor("#FFFF8800"));
-                            tvSelected2 = true;
+                            two.setBackground(getDrawable(R.drawable.ticketbrder));
                         }
 
                     }
@@ -1107,57 +1346,13 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
 
                         if (tvSelected3) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            three.setWidth(60);
-                            three.setHeight(60);
-                            three.setBackgroundColor(Color.WHITE);
-                            three.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            three.setBackground(sd);
-
-                            //five.setBackgroundColor(Color.YELLOW);
-
-//                            five.setTextColor(Color.BLACK);
+                            three.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected3 = false;
                         }
                         else {
 
-                            three.setWidth(60);
-                            three.setHeight(60);
-                            three.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            three.setBackground(sd);
-                            three.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            three.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected3 = true;
                         }
 
@@ -1168,57 +1363,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected4) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            four.setWidth(60);
-                            four.setHeight(60);
-                            four.setBackgroundColor(Color.WHITE);
-                            four.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            four.setBackground(sd);
-
-                            //five.setBackgroundColor(Color.YELLOW);
-
-//                            five.setTextColor(Color.BLACK);
+                            four.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected4 = false;
                         }
                         else {
 
-                            four.setWidth(60);
-                            four.setHeight(60);
-                            four.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            four.setBackground(sd);
-                            four.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            four.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected4 = true;
                         }
                     }
@@ -1229,57 +1380,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected5) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            five.setWidth(60);
-                            five.setHeight(60);
-                            five.setBackgroundColor(Color.WHITE);
-                            five.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            five.setBackground(sd);
-
-                            //five.setBackgroundColor(Color.YELLOW);
-
-//                            five.setTextColor(Color.BLACK);
+                            five.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected5 = false;
                         }
                         else {
 
-                            five.setWidth(60);
-                            five.setHeight(60);
-                            five.setPadding(10,10,10,10);
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            five.setBackground(sd);
-                            five.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            five.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected5 = true;
                         }
                     }
@@ -1290,57 +1398,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected6) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            six.setWidth(60);
-                            six.setHeight(60);
-                            six.setBackgroundColor(Color.WHITE);
-                            six.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            six.setBackground(sd);
-
-                            //six.setBackgroundColor(Color.YELLOW);
-
-//                            six.setTextColor(Color.BLACK);
+                            six.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected6 = false;
                         }
                         else {
 
-                            six.setWidth(60);
-                            six.setHeight(60);
-                            six.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            six.setBackground(sd);
-                            six.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            six.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected6 = true;
                         }
                     }
@@ -1351,57 +1415,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected7) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            seven.setWidth(60);
-                            seven.setHeight(60);
-                            seven.setBackgroundColor(Color.WHITE);
-                            seven.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            seven.setBackground(sd);
-
-                            //seven.setBackgroundColor(Color.YELLOW);
-
-//                            seven.setTextColor(Color.BLACK);
+                            seven.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected7 = false;
                         }
                         else {
 
-                            seven.setWidth(60);
-                            seven.setHeight(60);
-                            seven.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            seven.setBackground(sd);
-                            seven.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            seven.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected7 = true;
                         }
                     }
@@ -1411,57 +1431,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected8) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            eight.setWidth(60);
-                            eight.setHeight(60);
-                            eight.setBackgroundColor(Color.WHITE);
-                            eight.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            eight.setBackground(sd);
-
-                            //eight.setBackgroundColor(Color.YELLOW);
-
-//                            eight.setTextColor(Color.BLACK);
+                            eight.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected8 = false;
                         }
                         else {
 
-                            eight.setWidth(60);
-                            eight.setHeight(60);
-                            eight.setPadding(10,10,10,10);
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            eight.setBackground(sd);
-                            eight.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            eight.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected8 = true;
                         }
                     }
@@ -1472,57 +1449,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected9) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            nine.setWidth(60);
-                            nine.setHeight(60);
-                            nine.setBackgroundColor(Color.WHITE);
-                            nine.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            nine.setBackground(sd);
-
-                            //nine.setBackgroundColor(Color.YELLOW);
-
-//                            nine.setTextColor(Color.BLACK);
+                            nine.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected9 = false;
                         }
                         else {
 
-                            nine.setWidth(60);
-                            nine.setHeight(60);
-                            nine.setPadding(10,10,10,10);
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            nine.setBackground(sd);
-                            nine.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            nine.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected9 = true;
                         }
                     }
@@ -1533,57 +1467,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected10) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            ten.setWidth(60);
-                            ten.setHeight(60);
-                            ten.setBackgroundColor(Color.WHITE);
-                            ten.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            ten.setBackground(sd);
-
-                            //ten.setBackgroundColor(Color.YELLOW);
-
-//                            ten.setTextColor(Color.BLACK);
+                            ten.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected10 = false;
                         }
                         else {
 
-                            ten.setWidth(60);
-                            ten.setHeight(60);
-                            ten.setPadding(10,10,10,10);
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            ten.setBackground(sd);
-                            ten.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            ten.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected10 = true;
                         }
                     }
@@ -1594,57 +1485,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected11) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            eleven.setWidth(60);
-                            eleven.setHeight(60);
-                            eleven.setBackgroundColor(Color.WHITE);
-                            eleven.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            eleven.setBackground(sd);
-
-                            //eleven.setBackgroundColor(Color.YELLOW);
-
-//                            eleven.setTextColor(Color.BLACK);
+                            eleven.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected11 = false;
                         }
                         else {
 
-                            eleven.setWidth(60);
-                            eleven.setHeight(60);
-                            eleven.setPadding(10,10,10,10);
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            eleven.setBackground(sd);
-                            eleven.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            eleven.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected11 = true;
                         }
                     }
@@ -1655,57 +1503,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected12) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            twelve.setWidth(60);
-                            twelve.setHeight(60);
-                            twelve.setBackgroundColor(Color.WHITE);
-                            twelve.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twelve.setBackground(sd);
-
-                            //twelve.setBackgroundColor(Color.YELLOW);
-
-//                            twelve.setTextColor(Color.BLACK);
+                            twelve.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected12 = false;
                         }
                         else {
 
-                            twelve.setWidth(60);
-                            twelve.setHeight(60);
-                            twelve.setPadding(10,10,10,10);
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twelve.setBackground(sd);
-                            twelve.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            twelve.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected12 = true;
                         }
                     }
@@ -1715,57 +1520,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected13) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            thirteen.setWidth(60);
-                            thirteen.setHeight(60);
-                            thirteen.setBackgroundColor(Color.WHITE);
-                            thirteen.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            thirteen.setBackground(sd);
-
-                            //thirteen.setBackgroundColor(Color.YELLOW);
-
-//                            thirteen.setTextColor(Color.BLACK);
+                            thirteen.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected13 = false;
                         }
                         else {
 
-                            thirteen.setWidth(60);
-                            thirteen.setHeight(60);
-                            thirteen.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            thirteen.setBackground(sd);
-                            thirteen.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            thirteen.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected13 = true;
                         }
                     }
@@ -1776,57 +1537,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected14) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            fourteen.setWidth(60);
-                            fourteen.setHeight(60);
-                            fourteen.setBackgroundColor(Color.WHITE);
-                            fourteen.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            fourteen.setBackground(sd);
-
-                            //fourteen.setBackgroundColor(Color.YELLOW);
-
-//                            fourteen.setTextColor(Color.BLACK);
+                            fourteen.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected14 = false;
                         }
                         else {
 
-                            fourteen.setWidth(60);
-                            fourteen.setHeight(60);
-                            fourteen.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            fourteen.setBackground(sd);
-                            fourteen.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            fourteen.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected14 = true;
                         }
                     }
@@ -1836,57 +1553,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected15) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            fifteen.setWidth(60);
-                            fifteen.setHeight(60);
-                            fifteen.setBackgroundColor(Color.WHITE);
-                            fifteen.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            fifteen.setBackground(sd);
-
-                            //fifteen.setBackgroundColor(Color.YELLOW);
-
-//                            fifteen.setTextColor(Color.BLACK);
+                            fifteen.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected15 = false;
                         }
                         else {
 
-                            fifteen.setWidth(60);
-                            fifteen.setHeight(60);
-                            fifteen.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            fifteen.setBackground(sd);
-                            fifteen.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            fifteen.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected15 = true;
                         }
                     }
@@ -1897,57 +1570,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v)
                     { if (tvSelected16) {
-//                            one.setBackgroundColor(Color.WHITE);
-                        sixteen.setWidth(60);
-                        sixteen.setHeight(60);
-                        sixteen.setBackgroundColor(Color.WHITE);
-                        sixteen.setPadding(10,10,10,10);
-                        ShapeDrawable sd = new ShapeDrawable();
 
-                        // Specify the shape of ShapeDrawable
-                        sd.setShape(new RectShape());
-
-                        // Specify the border color of shape
-                        sd.getPaint().setColor(Color.BLUE);
-
-                        // Set the border width
-                        sd.getPaint().setStrokeWidth(5f);
-
-                        // Specify the style is a Stroke
-                        sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                        // Finally, add the drawable background to TextView
-                        sixteen.setBackground(sd);
-
-                        //sixteen.setBackgroundColor(Color.YELLOW);
-
-//                            sixteen.setTextColor(Color.BLACK);
+                        sixteen.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected16 = false;
                     }
                     else {
 
-                        sixteen.setWidth(60);
-                        sixteen.setHeight(60);
-                        sixteen.setPadding(10,10,10,10);
-
-
-                        ShapeDrawable sd = new ShapeDrawable();
-
-                        // Specify the shape of ShapeDrawable
-                        sd.setShape(new RectShape());
-
-                        // Specify the border color of shape
-                        sd.getPaint().setColor(Color.GREEN);
-
-                        // Set the border width
-                        sd.getPaint().setStrokeWidth(5f);
-
-                        // Specify the style is a Stroke
-                        sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                        // Finally, add the drawable background to TextView
-                        sixteen.setBackground(sd);
-                        sixteen.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                        sixteen.setBackground(getDrawable(R.drawable.ticketbrder));
                         tvSelected16 = true;
                     }
 
@@ -1959,57 +1588,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected17) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            seventeen.setWidth(60);
-                            seventeen.setHeight(60);
-                            seventeen.setBackgroundColor(Color.WHITE);
-                            seventeen.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            seventeen.setBackground(sd);
-
-                            //seventeen.setBackgroundColor(Color.YELLOW);
-
-//                            seventeen.setTextColor(Color.BLACK);
+                            seventeen.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected17 = false;
                         }
                         else {
 
-                            seventeen.setWidth(60);
-                            seventeen.setHeight(60);
-                            seventeen.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            seventeen.setBackground(sd);
-                            seventeen.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            seventeen.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected17 = true;
                         }
                     }
@@ -2020,57 +1605,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected18) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            eighteen.setWidth(60);
-                            eighteen.setHeight(60);
-                            eighteen.setBackgroundColor(Color.WHITE);
-                            eighteen.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            eighteen.setBackground(sd);
-
-                            //eighteen.setBackgroundColor(Color.YELLOW);
-
-//                            eighteen.setTextColor(Color.BLACK);
+                            eighteen.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected18 = false;
                         }
                         else {
 
-                            eighteen.setWidth(60);
-                            eighteen.setHeight(60);
-                            eighteen.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            eighteen.setBackground(sd);
-                            eighteen.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            eighteen.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected18 = true;
                         }
                     }
@@ -2081,57 +1622,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected19) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            nineteen.setWidth(60);
-                            nineteen.setHeight(60);
-                            nineteen.setBackgroundColor(Color.WHITE);
-                            nineteen.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            nineteen.setBackground(sd);
-
-                            //nineteen.setBackgroundColor(Color.YELLOW);
-
-//                            nineteen.setTextColor(Color.BLACK);
+                            nineteen.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected19 = false;
                         }
                         else {
 
-                            nineteen.setWidth(60);
-                            nineteen.setHeight(60);
-                            nineteen.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            nineteen.setBackground(sd);
-                            nineteen.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            nineteen.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected19 = true;
                         }
                     }
@@ -2142,57 +1639,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected20) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            twenty.setWidth(60);
-                            twenty.setHeight(60);
-                            twenty.setBackgroundColor(Color.WHITE);
-                            twenty.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twenty.setBackground(sd);
-
-                            //twenty.setBackgroundColor(Color.YELLOW);
-
-//                            twenty.setTextColor(Color.BLACK);
+                            twenty.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected20 = false;
                         }
                         else {
 
-                            twenty.setWidth(60);
-                            twenty.setHeight(60);
-                            twenty.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twenty.setBackground(sd);
-                            twenty.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            twenty.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected20 = true;
                         }
                     }
@@ -2202,57 +1655,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected21) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            twentyone.setWidth(60);
-                            twentyone.setHeight(60);
-                            twentyone.setBackgroundColor(Color.WHITE);
-                            twentyone.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentyone.setBackground(sd);
-
-                            //twentyone.setBackgroundColor(Color.YELLOW);
-
-//                            twentyone.setTextColor(Color.BLACK);
+                            twentyone.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected21 = false;
                         }
                         else {
 
-                            twentyone.setWidth(60);
-                            twentyone.setHeight(60);
-                            twentyone.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentyone.setBackground(sd);
-                            twentyone.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            twentyone.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected21 = true;
                         }
                     }
@@ -2263,57 +1672,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected22) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            twentytwo.setWidth(60);
-                            twentytwo.setHeight(60);
-                            twentytwo.setBackgroundColor(Color.WHITE);
-                            twentytwo.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentytwo.setBackground(sd);
-
-                            //twentytwo.setBackgroundColor(Color.YELLOW);
-
-//                            twentytwo.setTextColor(Color.BLACK);
+                            twentytwo.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected22 = false;
                         }
                         else {
 
-                            twentytwo.setWidth(60);
-                            twentytwo.setHeight(60);
-                            twentytwo.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentytwo.setBackground(sd);
-                            twentytwo.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            twentytwo.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected22 = true;
                         }
                     }
@@ -2324,57 +1689,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected23) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            twentythree.setWidth(60);
-                            twentythree.setHeight(60);
-                            twentythree.setBackgroundColor(Color.WHITE);
-                            twentythree.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentythree.setBackground(sd);
-
-                            //twentythree.setBackgroundColor(Color.YELLOW);
-
-//                            twentythree.setTextColor(Color.BLACK);
+                            twentythree.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected23 = false;
                         }
                         else {
 
-                            twentythree.setWidth(60);
-                            twentythree.setHeight(60);
-                            twentythree.setPadding(10,10,10,10);
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentythree.setBackground(sd);
-                            twentythree.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            twentythree.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected23 = true;
                         }
                     }
@@ -2384,57 +1706,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected24) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            twentyfour.setWidth(60);
-                            twentyfour.setHeight(60);
-                            twentyfour.setBackgroundColor(Color.WHITE);
-                            twentyfour.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentyfour.setBackground(sd);
-
-                            //twentyfour.setBackgroundColor(Color.YELLOW);
-
-//                            twentyfour.setTextColor(Color.BLACK);
+                            twentyfour.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected24 = false;
                         }
                         else {
 
-                            twentyfour.setWidth(60);
-                            twentyfour.setHeight(60);
-                            twentyfour.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentyfour.setBackground(sd);
-                            twentyfour.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            twentyfour.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected24 = true;
                         }
                     }
@@ -2444,57 +1722,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected25) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            twentyfive.setWidth(60);
-                            twentyfive.setHeight(60);
-                            twentyfive.setBackgroundColor(Color.WHITE);
-                            twentyfive.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentyfive.setBackground(sd);
-
-                            //twentyfive.setBackgroundColor(Color.YELLOW);
-
-//                            twentyfive.setTextColor(Color.BLACK);
+                            twentyfive.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected25 = false;
                         }
                         else {
 
-                            twentyfive.setWidth(60);
-                            twentyfive.setHeight(60);
-                            twentyfive.setPadding(10,10,10,10);
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentyfive.setBackground(sd);
-                            twentyfive.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            twentyfive.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected25 = true;
                         }
                     }
@@ -2504,57 +1739,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected26) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            twentysix.setWidth(60);
-                            twentysix.setHeight(60);
-                            twentysix.setBackgroundColor(Color.WHITE);
-                            twentysix.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentysix.setBackground(sd);
-
-                            //twentysix.setBackgroundColor(Color.YELLOW);
-
-//                            twentysix.setTextColor(Color.BLACK);
+                            twentysix.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected26 = false;
                         }
                         else {
 
-                            twentysix.setWidth(60);
-                            twentysix.setHeight(60);
-                            twentysix.setPadding(10,10,10,10);
-
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentysix.setBackground(sd);
-                            twentysix.setBackgroundColor(Color.parseColor("#FFFF8800"));
+                            twentysix.setBackground(getDrawable(R.drawable.ticketbrder));
                             tvSelected26 = true;
                         }
                     }
@@ -2565,57 +1756,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (tvSelected27) {
-//                            one.setBackgroundColor(Color.WHITE);
-                            twentyseven.setWidth(60);
-                            twentyseven.setHeight(60);
-                            twentyseven.setBackgroundColor(Color.WHITE);
-                            twentyseven.setPadding(10,10,10,10);
-                            ShapeDrawable sd = new ShapeDrawable();
 
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.BLUE);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentyseven.setBackground(sd);
-
-                            //twentyseven.setBackgroundColor(Color.YELLOW);
-
-//                            twentyseven.setTextColor(Color.BLACK);
+                            twentyseven.setBackground(getDrawable(R.drawable.ticketborder2));
                             tvSelected27 = false;
                         }
                         else {
 
-                            twentyseven.setWidth(60);
-                            twentyseven.setHeight(60);
-                            twentyseven.setPadding(10,10,10,10);
+                            twentyseven.setBackground(getDrawable(R.drawable.ticketbrder));
 
-
-                            ShapeDrawable sd = new ShapeDrawable();
-
-                            // Specify the shape of ShapeDrawable
-                            sd.setShape(new RectShape());
-
-                            // Specify the border color of shape
-                            sd.getPaint().setColor(Color.GREEN);
-
-                            // Set the border width
-                            sd.getPaint().setStrokeWidth(5f);
-
-                            // Specify the style is a Stroke
-                            sd.getPaint().setStyle(Paint.Style.STROKE);
-
-                            // Finally, add the drawable background to TextView
-                            twentyseven.setBackground(sd);
-                            twentyseven.setBackgroundColor(Color.parseColor("#FFFF8800"));
                             tvSelected27 = true;
                         }
                     }
@@ -2626,5 +1774,35 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+   //     mStompClient.disconnect();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+   //     mStompClient.disconnect();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        mStompClient.connect();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+  //      mStompClient.connect();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    //    mStompClient.connect();
     }
 }

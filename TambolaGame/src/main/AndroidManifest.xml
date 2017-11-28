@@ -16,34 +16,8 @@
         tools:replace="android:theme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity android:name="com.androidhari.tambola.FirstPage">
-
-
-
-        </activity>
-        <activity android:name="com.androidhari.tambola.SignUp" />
-        <activity android:name="com.androidhari.tambola.Signin">
-
-        </activity>
-        <activity android:name="com.androidhari.tambola.HomeScreen">
-
-
-
-
-        </activity>
-        <activity android:name="com.androidhari.tambola.ForgotPass" />
-        <activity android:name="com.androidhari.tambola.ResetPass" />
-        <activity android:name="com.androidhari.tambola.Wallet" />
-        <activity android:name="com.androidhari.tambola.GameInfo" />
-        <activity android:name="com.androidhari.tambola.WalletPurchasehistory" />
-        <activity android:name="com.androidhari.tambola.PurchaseTicket"></activity>
-        <activity android:name="com.androidhari.tambola.Countdown"></activity>
-        <activity android:name="com.androidhari.tambola.AddMoney"></activity>
-        <activity android:name="com.androidhari.tambola.TransactionHistory" />
-        <activity android:name="com.androidhari.tambola.Countdown2"></activity>
-        <activity android:name="com.androidhari.tambola.TestautoSelect">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,6 +25,23 @@
             </intent-filter>
 
         </activity>
+        <activity android:name="com.androidhari.tambola.SignUp" />
+        <activity android:name="com.androidhari.tambola.Signin"></activity>
+        <activity android:name="com.androidhari.tambola.HomeScreen"></activity>
+        <activity android:name="com.androidhari.tambola.ForgotPass" />
+        <activity android:name="com.androidhari.tambola.ResetPass" />
+        <activity android:name="com.androidhari.tambola.Wallet" />
+        <activity android:name="com.androidhari.tambola.GameInfo" />
+        <activity android:name="com.androidhari.tambola.WalletPurchasehistory" />
+        <activity android:name="com.androidhari.tambola.PurchaseTicket" />
+        <activity android:name="com.androidhari.tambola.Countdown" />
+        <activity android:name="com.androidhari.tambola.AddMoney" />
+        <activity android:name="com.androidhari.tambola.TransactionHistory" />
+        <activity android:name="com.androidhari.tambola.Countdown2" />
+        <activity android:name="com.androidhari.tambola.TestautoSelect">
+
+        </activity>
+        <activity android:name=".Main2Activity"></activity>
     </application>
 
 </manifest>

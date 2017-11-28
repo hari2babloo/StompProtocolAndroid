@@ -70,7 +70,7 @@ public class Countdown extends AppCompatActivity {
     SharedPreferences sp;
     private AdapterFish Adapter;
     ProgressDialog pd;
-    String pass,gameid,gamestarttime,gstime;
+    String pass,gameid,gamestarttime,gstime,longV;
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
     ArrayList<String> tktrow2 = new ArrayList<String>();
@@ -83,7 +83,7 @@ public class Countdown extends AppCompatActivity {
     long elapsedSeconds;
     private TickTockView mCountDown = null;
     private TextView mTxtHeadline = null;
-    TextView textView;
+    TextView textView,timer;
       private RecyclerView mRVFishPrice;
 
     @Override
@@ -99,6 +99,7 @@ public class Countdown extends AppCompatActivity {
         gamestarttime=sp.getString("gstime",null);
 
 
+        timer =(TextView)findViewById(R.id.timer);
         pd = new ProgressDialog(Countdown.this);
         pd.setMessage("Getting Server Time");
         pd.setCancelable(false);
@@ -135,7 +136,7 @@ public class Countdown extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                final String longV = response.body().string();
+                 longV = response.body().string();
                 pd.cancel();
                 pd.dismiss();
 
@@ -155,7 +156,6 @@ public class Countdown extends AppCompatActivity {
                             long millisecond = Long.parseLong(longV);
                             // or you already have long value of date, use this instead of milliseconds variable.
                             String endtime = DateFormat.format("dd/MM/yyyy hh:mm a", new Date(millisecond)).toString();
-
                             Date date1 = null;
                             Date date2 = null;
                             try {
@@ -229,6 +229,16 @@ public class Countdown extends AppCompatActivity {
                         startActivity(intent);
 
                     }
+
+                    String Timer = String.format("%1$02d%4$s %2$02d%5$s %3$02d%6$s",
+                            hasDays ? days : hours,
+                            hasDays ? hours : minutes,
+                            hasDays ? minutes : seconds,
+                            hasDays ? "/" : "h",
+                            hasDays ? "h" : "m",
+                            hasDays ? "m" : "s");
+
+
                     mTxtHeadline.setText(String.format("%1$02d%4$s %2$02d%5$s %3$02d%6$s",
                             hasDays ? days : hours,
                             hasDays ? hours : minutes,
@@ -502,18 +512,19 @@ public class Countdown extends AppCompatActivity {
         Calendar start = Calendar.getInstance();
 
 
-        start.add(Calendar.MINUTE, -1);
 
+        start.add(Calendar.SECOND, -1);
 
         if (mCountDown != null) {
             mCountDown.start(start, end);
         }
 
+
+
     }
     @Override
     protected void onStart() {
         super.onStart();
-
 
 
 

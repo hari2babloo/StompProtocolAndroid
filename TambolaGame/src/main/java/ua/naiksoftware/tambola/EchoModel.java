@@ -9,7 +9,6 @@ import java.util.List;
  * Created by Naik on 24.02.17.
  */
 public class EchoModel {
-
     @SerializedName("number")
     @Expose
     private Integer number;
@@ -33,10 +32,13 @@ public class EchoModel {
     private Object prizeName;
     @SerializedName("messageList")
     @Expose
-    private List<String> messageList = null;
+    private Object messageList;
     @SerializedName("message")
     @Expose
     private Object message;
+    @SerializedName("completedNumbers")
+    @Expose
+    private List<Integer> completedNumbers = null;
 
     public Integer getNumber() {
         return number;
@@ -94,11 +96,11 @@ public class EchoModel {
         this.prizeName = prizeName;
     }
 
-    public List<String> getMessageList() {
+    public Object getMessageList() {
         return messageList;
     }
 
-    public void setMessageList(List<String> messageList) {
+    public void setMessageList(Object messageList) {
         this.messageList = messageList;
     }
 
@@ -109,5 +111,14 @@ public class EchoModel {
     public void setMessage(Object message) {
         this.message = message;
     }
+
+    public List<Integer> getCompletedNumbers() {
+        return completedNumbers;
+    }
+
+    public void setCompletedNumbers(List<Integer> completedNumbers) {
+        this.completedNumbers = completedNumbers;
+    }
+
 
 }
