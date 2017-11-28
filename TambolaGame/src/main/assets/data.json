@@ -1,0 +1,1094 @@
+{
+    "status": "SUCCESS",
+    "data": [
+        {
+            "id": 595,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 35,
+                "ticket": "[[\"1\",\"15\",\"21\",null,\"40\",null,null,\"70\",null],[\"8\",null,null,\"31\",null,\"51\",\"64\",null,\"88\"],[null,null,\"28\",null,\"41\",\"58\",\"69\",\"74\",null]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 691,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 45,
+                "ticket": "[[\"3\",null,null,null,\"40\",\"54\",null,\"77\",\"81\"],[\"9\",null,\"23\",\"38\",null,\"55\",null,null,\"82\"],[null,\"14\",\"28\",null,\"44\",null,\"62\",\"79\",null]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 692,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 46,
+                "ticket": "[[null,\"18\",null,\"31\",\"47\",\"50\",null,null,\"80\"],[null,\"19\",null,null,null,\"58\",\"61\",\"78\",\"85\"],[\"7\",null,\"28\",\"33\",null,null,\"68\",null,\"90\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 709,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 52,
+                "ticket": "[[null,\"15\",null,\"34\",\"40\",null,null,\"75\",\"87\"],[null,\"17\",\"24\",\"36\",null,\"58\",null,\"77\",null],[\"7\",\"19\",null,null,null,\"59\",\"67\",null,\"89\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 911,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 72,
+                "ticket": "[[null,null,\"20\",\"32\",\"44\",\"56\",null,\"73\",null],[\"8\",null,null,\"37\",\"47\",null,\"64\",\"76\",null],[\"9\",\"15\",\"27\",null,\"48\",null,null,null,\"84\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 912,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 56,
+                "ticket": "[[null,\"15\",\"25\",null,null,null,\"61\",\"70\",\"81\"],[\"3\",null,null,\"31\",\"48\",\"51\",null,null,\"86\"],[null,\"19\",null,\"34\",\"49\",null,\"65\",null,\"90\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 913,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 57,
+                "ticket": "[[\"9\",null,null,null,\"40\",\"51\",null,\"77\",\"89\"],[null,\"19\",\"21\",\"31\",null,\"56\",\"61\",null,null],[null,null,\"25\",\"34\",\"45\",\"58\",\"64\",null,null]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 920,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 62,
+                "ticket": "[[\"2\",null,null,\"30\",\"40\",\"53\",null,\"72\",null],[\"3\",\"19\",\"25\",null,null,null,\"60\",null,\"81\"],[null,null,null,null,\"47\",\"54\",\"64\",\"79\",\"84\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 921,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 61,
+                "ticket": "[[\"2\",\"13\",null,null,null,\"57\",\"60\",\"75\",null],[\"3\",\"18\",\"26\",null,null,null,\"64\",\"79\",null],[null,null,\"27\",\"39\",\"48\",\"58\",null,null,\"82\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 922,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 62,
+                "ticket": "[[\"2\",null,null,\"30\",\"40\",\"53\",null,\"72\",null],[\"3\",\"19\",\"25\",null,null,null,\"60\",null,\"81\"],[null,null,null,null,\"47\",\"54\",\"64\",\"79\",\"84\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 1098,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 96,
+                "ticket": "[[null,\"17\",\"21\",null,null,\"54\",\"68\",null,\"87\"],[\"9\",null,null,\"35\",\"44\",\"59\",null,null,\"89\"],[null,null,\"25\",\"38\",\"48\",null,null,\"76\",\"90\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 1099,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 96,
+                "ticket": "[[null,\"17\",\"21\",null,null,\"54\",\"68\",null,\"87\"],[\"9\",null,null,\"35\",\"44\",\"59\",null,null,\"89\"],[null,null,\"25\",\"38\",\"48\",null,null,\"76\",\"90\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 1100,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 143,
+                "ticket": "[[\"1\",null,\"21\",\"36\",\"46\",null,\"60\",null,null],[null,\"10\",\"28\",null,null,\"55\",\"64\",\"76\",null],[\"9\",\"12\",null,null,null,\"59\",\"66\",null,\"90\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 1101,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 143,
+                "ticket": "[[\"1\",null,\"21\",\"36\",\"46\",null,\"60\",null,null],[null,\"10\",\"28\",null,null,\"55\",\"64\",\"76\",null],[\"9\",\"12\",null,null,null,\"59\",\"66\",null,\"90\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 1232,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 98,
+                "ticket": "[[\"3\",null,\"22\",null,null,\"50\",\"64\",\"70\",null],[\"5\",\"13\",\"26\",\"34\",null,null,null,\"77\",null],[null,\"18\",null,null,\"40\",\"52\",\"67\",null,\"82\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 1233,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 99,
+                "ticket": "[[null,null,\"20\",\"31\",\"42\",\"50\",\"64\",null,null],[null,\"18\",null,\"38\",null,\"55\",null,\"79\",\"83\"],[\"8\",null,\"25\",null,\"47\",null,\"65\",null,\"86\"]]"
+            },
+            "invlaidClaim": false
+        },
+        {
+            "id": 1234,
+            "game": {
+                "id": 82,
+                "name": "bumper",
+                "startTime": 1514377500000,
+                "ticketCost": 10,
+                "prizeMoney": 21000,
+                "totalGameMoney": 0,
+                "minGameMoney": 23100,
+                "companyCost": 2100,
+                "companyCommission": 10,
+                "gameType": 1,
+                "createdBy": "admin@admin.com",
+                "createdDate": null,
+                "prizes": [
+                    {
+                        "id": 322,
+                        "prizeName": "FAST_FIVE",
+                        "prizeCost": 1000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 323,
+                        "prizeName": "LAST_ROW",
+                        "prizeCost": 5000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 321,
+                        "prizeName": "MIDDLE_ROW",
+                        "prizeCost": 3000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 319,
+                        "prizeName": "FULL_HOUISE",
+                        "prizeCost": 10000,
+                        "prizeCompleted": false
+                    },
+                    {
+                        "id": 320,
+                        "prizeName": "FIRST_ROW",
+                        "prizeCost": 2000,
+                        "prizeCompleted": false
+                    }
+                ],
+                "rules": [
+                    {
+                        "id": 22,
+                        "ruleName": "RULE1"
+                    }
+                ],
+                "status": "NEW",
+                "passCode": null,
+                "noOfPlayers": 13
+            },
+            "userId": 37,
+            "ticket": {
+                "id": 100,
+                "ticket": "[[null,\"15\",null,\"33\",\"41\",\"50\",\"62\",null,null],[null,\"19\",\"27\",\"36\",null,\"51\",\"64\",null,null],[\"2\",null,\"28\",null,\"45\",null,null,\"76\",\"87\"]]"
+            },
+            "invlaidClaim": false
+        }
+    ],
+    "message": ""
+}

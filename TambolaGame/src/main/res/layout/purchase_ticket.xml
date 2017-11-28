@@ -4,8 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical"
     tools:context="com.androidhari.tambola.PurchaseTicket">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?android:attr/colorFocusedHighlight"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
         android:id="@+id/myTableLayout"
@@ -20,7 +30,8 @@
         android:id="@+id/fishPriceList"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_weight="1"
         android:paddingTop="5dp" />
 
@@ -28,6 +39,8 @@
         android:id="@+id/checkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Checkout" />
+        android:background="@drawable/bbkg"
+        android:text="Checkout"
+        android:textColor="@color/cardview_light_background" />
 
 </LinearLayout>

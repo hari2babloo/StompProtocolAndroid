@@ -1,5 +1,6 @@
 package com.androidhari.tambola;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,6 +47,7 @@ public class GameInfo extends AppCompatActivity {
     Button buytickets;
     TextView gname,gtime,tcost,pmoney,createdby,passcode;
     ListView plist;
+    ProgressDialog pd;
 
 
     ArrayList<prizes> dataModels = new ArrayList<>();
@@ -78,6 +80,11 @@ public class GameInfo extends AppCompatActivity {
     }
 
     private void filldata() {
+
+        pd = new ProgressDialog(GameInfo.this);
+        pd.setMessage("Getting Game Information");
+        pd.setCancelable(false);
+        pd.show();
         final OkHttpClient client = new OkHttpClient();
 
         final Request request = new Request.Builder()
@@ -91,6 +98,9 @@ public class GameInfo extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
 
+                pd.dismiss();
+                pd.cancel();
+
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
 
@@ -101,6 +111,8 @@ public class GameInfo extends AppCompatActivity {
 
                 final String mMessage = response.body().string();
 
+                pd.dismiss();
+                pd.cancel();
 
                 Log.w("Response", mMessage);
                 if (response.isSuccessful()){
@@ -183,7 +195,7 @@ public class GameInfo extends AppCompatActivity {
                                 //                              ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
 
                                 String s = json.getJSONObject("data").getString("name");
-                                Toast.makeText(GameInfo.this, s, Toast.LENGTH_SHORT).show();
+ //                               Toast.makeText(GameInfo.this, s, Toast.LENGTH_SHORT).show();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -201,6 +213,9 @@ public class GameInfo extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
+                            pd.dismiss();
+                            pd.cancel();
                             Toast.makeText(GameInfo.this, "Fail", Toast.LENGTH_SHORT).show();
                         }
                     });

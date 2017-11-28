@@ -66,7 +66,6 @@ public class WalletPurchasehistory extends AppCompatActivity {
 
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
-
         plist = (ListView)findViewById(R.id.prizelist);
 
         getdata();
@@ -315,7 +314,7 @@ public class WalletPurchasehistory extends AppCompatActivity {
             else {
 
                 viewHolder.status.setText("PLAY");
-
+                viewHolder.status.setBackgroundColor(Color.parseColor("#FFFF8800"));
                 viewHolder.status.setEnabled(true);
             }
             //  viewHolder.status.setText(dataModel.status);

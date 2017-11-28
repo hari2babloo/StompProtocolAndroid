@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,13 +17,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ticket Id" />
+            android:text="Ticket Id"
+            android:textColor="@color/cardview_light_background" />
 
         <CheckBox
             android:id="@+id/checkedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:backgroundTint="@color/orange"
+            app:buttonTint="@color/cardview_light_background" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,10 +48,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-
                 android:text="99"
-                android:textIsSelectable="true" />
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t2"
@@ -55,9 +59,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
                 android:text="99"
-                android:textIsSelectable="true" />
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t3"
@@ -65,9 +70,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
                 android:text="99"
-                android:textIsSelectable="true" />
+                android:textColor="@color/white"
+                android:textIsSelectable="false"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t4"
@@ -75,8 +82,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t5"
@@ -84,8 +93,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t6"
@@ -93,8 +104,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t7"
@@ -102,8 +115,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t8"
@@ -111,8 +126,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t9"
@@ -121,8 +138,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
                 android:elevation="0dp"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -141,9 +160,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
+                android:text="99"
+                android:textColor="@color/white"
 
-                android:text="99" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t11"
@@ -151,8 +172,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t12"
@@ -160,8 +183,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t13"
@@ -169,8 +194,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t14"
@@ -178,8 +205,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t15"
@@ -187,8 +216,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t16"
@@ -196,8 +227,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t17"
@@ -205,8 +238,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t18"
@@ -215,8 +250,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
                 android:elevation="0dp"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -250,9 +287,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
+                android:text="99"
+                android:textColor="@color/white"
 
-                android:text="99" />
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t20"
@@ -260,8 +299,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t21"
@@ -269,8 +310,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t22"
@@ -278,8 +321,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t23"
@@ -287,8 +332,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t24"
@@ -296,8 +343,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t25"
@@ -305,8 +354,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t26"
@@ -314,8 +365,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
-                android:padding="5dp"
-                android:text="99" />
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/t27"
@@ -324,15 +377,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/ticketbrder"
                 android:elevation="0dp"
-                android:padding="5dp"
-                android:text="99" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
+                android:text="99"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

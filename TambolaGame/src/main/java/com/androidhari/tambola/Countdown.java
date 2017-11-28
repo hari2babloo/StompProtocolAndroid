@@ -1,6 +1,7 @@
 package com.androidhari.tambola;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,10 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -64,6 +69,7 @@ public class Countdown extends AppCompatActivity {
     Button stargame;
     SharedPreferences sp;
     private AdapterFish Adapter;
+    ProgressDialog pd;
     String pass,gameid,gamestarttime,gstime;
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
@@ -85,45 +91,117 @@ public class Countdown extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.countdown);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
         gameid=sp.getString("gno",null);
         gamestarttime=sp.getString("gstime",null);
 
+
+        pd = new ProgressDialog(Countdown.this);
+        pd.setMessage("Getting Server Time");
+        pd.setCancelable(false);
+        pd.show();
+
+
+        final OkHttpClient client = new OkHttpClient();
+
+
+
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/game/time")
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+                .build();
+
+
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                pd.cancel();
+                pd.cancel();
+
+                String mMessage = e.getMessage().toString();
+ //               Log.w("failure Response", mMessage);
+
+//                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String longV = response.body().string();
+                pd.cancel();
+                pd.dismiss();
+
+                ///    Log.w("Response", mMessage);
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            //        JSONObject json = new JSONObject(mMessage);
+
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+
+                            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+05:30"));
+                            Calendar c = Calendar.getInstance();
+
+                            long millisecond = Long.parseLong(longV);
+                            // or you already have long value of date, use this instead of milliseconds variable.
+                            String endtime = DateFormat.format("dd/MM/yyyy hh:mm a", new Date(millisecond)).toString();
+
+                            Date date1 = null;
+                            Date date2 = null;
+                            try {
+                                date2 = simpleDateFormat.parse(gamestarttime);
+                                date1 = simpleDateFormat.parse(endtime);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            printDifference(date1,date2);
+
+                            Authenticate();
+
+//                            Toast.makeText(Signin.this, "Success", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            pd.cancel();
+                            pd.dismiss();
+
+                            Toast.makeText(Countdown.this, "Cancel", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+        });
+
   //      Toast.makeText(this, gameid, Toast.LENGTH_SHORT).show();
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-
-        simpleDateFormat.setTimeZone(java.util.TimeZone.getTimeZone("GMT+05:30"));
-        Calendar c = Calendar.getInstance();
-
-        Toast.makeText(this, gamestarttime, Toast.LENGTH_SHORT).show();
-        Date date1 = null;
-        Date date2 = null;
-        try {
-            date2 = simpleDateFormat.parse(gamestarttime);
-        date1 = Calendar.getInstance(TimeZone.getTimeZone("GMT+05:30")).getTime();;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        printDifference(date1,date2);
 
         mTxtHeadline = (TextView) findViewById(R.id.txt_headline);
 
         mCountDown = (TickTockView) findViewById(R.id.view_ticktock_countdown);
 
-
-
-
-
-
-
         textView = (TextView)findViewById(R.id.timer);
 
-        textView.setText(gameid + "      "+ gamestarttime);
+        textView.setText("Game Start Time : "+ gamestarttime);
 
 
-        Authenticate();
         //Toast.makeText(this, gameid  + gamestarttime, Toast.LENGTH_SHORT).show();
 
         if (mCountDown != null) {
@@ -176,7 +254,15 @@ public class Countdown extends AppCompatActivity {
 
            }
 
+
     private void Authenticate() {
+
+        pd = new ProgressDialog(Countdown.this);
+        pd.setMessage("Getting Your Tickets");
+        pd.setCancelable(false);
+        pd.show();
+
+
 
         final OkHttpClient client = new OkHttpClient();
 
@@ -192,9 +278,11 @@ public class Countdown extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                pd.cancel();
+                pd.dismiss();
 
                 String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
+ //               Log.w("failure Response", mMessage);
             }
 
             @Override
@@ -205,7 +293,8 @@ public class Countdown extends AppCompatActivity {
 
 
 
-               Log.w("Response", mMessage);
+//
+//               Log.w("Response", mMessage);
 
                 if (response.isSuccessful()){
 
@@ -214,6 +303,9 @@ public class Countdown extends AppCompatActivity {
                         public void run() {
 
                             try {
+
+                                pd.cancel();
+                                pd.dismiss();
 
                                 String mm = mMessage;
                                 mm=mMessage.replace("null","' '");
@@ -245,7 +337,7 @@ public class Countdown extends AppCompatActivity {
 //                                    LinearLayout chat = (LinearLayout) findViewById(R.id.hari);
 //                                    chat.addView(msg);
 
-                                    Log.d("erewrwer",s+d);
+//                                    Log.d("erewrwer",s+d);
 
                                 }
 
@@ -326,7 +418,7 @@ public class Countdown extends AppCompatActivity {
 
                                 }
 
-                                Log.e("Data", String.valueOf(row1));
+//                                Log.e("Data", String.valueOf(row1));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -341,7 +433,8 @@ public class Countdown extends AppCompatActivity {
 
                             mRVFishPrice.setLayoutManager(new GridLayoutManager(Countdown.this,1));
                             //      mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.HORIZONTAL,true));
-                            Toast.makeText(Countdown.this, "PASS", Toast.LENGTH_SHORT).show();
+//
+//                            Toast.makeText(Countdown.this, "PASS", Toast.LENGTH_SHORT).show();
 
 
                         }
@@ -355,6 +448,8 @@ public class Countdown extends AppCompatActivity {
                 else runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        pd.dismiss();
+                        pd.cancel();
 
                         Toast.makeText(Countdown.this, "FAIL", Toast.LENGTH_SHORT).show();
 
@@ -397,10 +492,7 @@ public class Countdown extends AppCompatActivity {
                 "%d days, %d hours, %d minutes, %d seconds%n",
                 elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
 
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
+
         Calendar end = Calendar.getInstance();
         end.add(Calendar.DAY_OF_MONTH, (int) elapsedDays);
         end.add(Calendar.HOUR, (int) elapsedHours);
@@ -416,6 +508,12 @@ public class Countdown extends AppCompatActivity {
         if (mCountDown != null) {
             mCountDown.start(start, end);
         }
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
 
 
 
@@ -664,5 +762,124 @@ public class Countdown extends AppCompatActivity {
 
         }
 
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.homemenu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // getMenuInflater().inflate(R.menu.homemenu, (Menu) item);
+        int id = item.getItemId();
+
+
+        switch (item.getItemId()) {
+
+            case R.id.action_item_two:
+
+                Intent intent = new Intent(Countdown.this, Wallet.class);
+                startActivity(intent);
+                // Do something
+                return true;
+            case R.id.action_item_one:
+
+                Intent intent2 = new Intent(Countdown.this, HomeScreen.class);
+                startActivity(intent2);
+                // Do something
+                return true;
+            case R.id.action_item_three:
+
+                Logout();
+                // Do something
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void Logout() {
+
+        pd = new ProgressDialog(Countdown.this);
+        pd.setMessage("Logging You Out");
+        pd.setCancelable(false);
+        pd.show();
+        final OkHttpClient client = new OkHttpClient();
+        JSONObject postdata = new JSONObject();
+
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/user/logout")
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                pd.dismiss();
+                pd.cancel();
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                pd.dismiss();
+                pd.cancel();
+                final String mMessage = response.body().string();
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+                                String s = json.getString("message");
+
+
+                                Toast.makeText(Countdown.this, s, Toast.LENGTH_SHORT).show();
+
+                                sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.clear();
+                                editor.commit();
+                                finish();
+
+                                Intent in = new Intent(Countdown.this,FirstPage.class);
+                                startActivity(in);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+                }
+
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pd.cancel();
+                            pd.dismiss();
+                            Toast.makeText(Countdown.this, "Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+        });
     }
 }

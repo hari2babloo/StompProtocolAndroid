@@ -12,4 +12,5 @@
     <color name="rim_color_gray">#B0B0B0</color>
     <color name="center_text">#d31145</color>
     <color name="round_progress_blue">#2173B9</color>
+    <color name="jade">#00a86b</color>
 </resources>

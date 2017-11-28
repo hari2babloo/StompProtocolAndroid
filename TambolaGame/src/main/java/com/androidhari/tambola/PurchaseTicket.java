@@ -1,5 +1,6 @@
 package com.androidhari.tambola;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,8 +11,11 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -54,6 +58,8 @@ public class PurchaseTicket extends AppCompatActivity {
     String  pass;
     String gid,gamestarttime;
 
+    ProgressDialog pd;
+
     private AdapterFish mAdapter;
     JSONArray postdata2 = new JSONArray();
     ArrayList row1 = new ArrayList();
@@ -74,7 +80,8 @@ public class PurchaseTicket extends AppCompatActivity {
         setContentView(R.layout.purchase_ticket);
         checkout = (Button)findViewById(R.id.checkout);
         sp=getSharedPreferences("login",MODE_PRIVATE);
-
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
          pass=sp.getString("token",null);
          gid = sp.getString("id",null);
         gamestarttime = sp.getString("gstime",null);
@@ -87,12 +94,12 @@ public class PurchaseTicket extends AppCompatActivity {
                 if (postdata2.length()==0){
 
                     CrossAlert();
-                    Toast.makeText(PurchaseTicket.this, "Emppty", Toast.LENGTH_SHORT).show();
+ //                   Toast.makeText(PurchaseTicket.this, "Emppty", Toast.LENGTH_SHORT).show();
                     //Checkout();
                 }
                 if (postdata2.length()!=0){
                     Checkout();
-                    Toast.makeText(PurchaseTicket.this, "Not Empty", Toast.LENGTH_SHORT).show();
+ //                   Toast.makeText(PurchaseTicket.this, "Not Empty", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -125,6 +132,11 @@ public class PurchaseTicket extends AppCompatActivity {
 
     private void Authenticate() {
 
+        pd = new ProgressDialog(PurchaseTicket.this);
+        pd.setMessage("Getting Your Tickets");
+        pd.setCancelable(false);
+        pd.show();
+
         final OkHttpClient client = new OkHttpClient();
 
         final Request request = new Request.Builder()
@@ -139,6 +151,9 @@ public class PurchaseTicket extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
 
+                pd.dismiss();
+                pd.cancel();
+
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
             }
@@ -150,6 +165,8 @@ public class PurchaseTicket extends AppCompatActivity {
                 final String mMessage = response.body().string();
 
 
+                pd.dismiss();
+                pd.cancel();
 
 //                Log.w("Response", mMessage);
 
@@ -259,9 +276,10 @@ public class PurchaseTicket extends AppCompatActivity {
                             mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
                             mAdapter = new AdapterFish(PurchaseTicket.this, filterdata);
                             mRVFishPrice.setAdapter(mAdapter);
+                            mRVFishPrice.setHasFixedSize(true);
 
                             mRVFishPrice.setLayoutManager(new GridLayoutManager(PurchaseTicket.this,1));
-                            Toast.makeText(PurchaseTicket.this, "PASS", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(PurchaseTicket.this, "PASS", Toast.LENGTH_SHORT).show();
 
 
                         }
@@ -414,7 +432,7 @@ public class PurchaseTicket extends AppCompatActivity {
 //                    Toast.makeText(PurchaseTicket.this, current.id, Toast.LENGTH_SHORT).show();
 
                     Log.e("Selected TicketIds", postdata2.toString());
-                    Toast.makeText(PurchaseTicket.this, current.id, Toast.LENGTH_SHORT).show();
+ //                   Toast.makeText(PurchaseTicket.this, current.id, Toast.LENGTH_SHORT).show();
 
                     //                  Log.e("Final", String.valueOf(isChecked));
 
@@ -423,8 +441,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
 
 
-            myHolder.id.setText("Ticket Id : " +current.id);
-
+            myHolder.id.setText("Select Ticket " );
 
 
 //            myHolder.one.setText("Name: " + current.preferredName + "  " + current.surname);
@@ -579,6 +596,11 @@ public class PurchaseTicket extends AppCompatActivity {
 
     private void Checkout() {
 
+        pd = new ProgressDialog(PurchaseTicket.this);
+        pd.setMessage("Purchasing Tickets");
+        pd.setCancelable(false);
+        pd.show();
+
         final OkHttpClient client = new OkHttpClient();
         JSONObject postdata = new JSONObject();
 
@@ -612,6 +634,8 @@ public class PurchaseTicket extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                pd.dismiss();
+                pd.cancel();
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
@@ -622,7 +646,8 @@ public class PurchaseTicket extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
 
                 final String mMessage = response.body().string();
-
+                pd.dismiss();
+                pd.cancel();
 
                 Log.w("Response", mMessage);
                 if (response.isSuccessful()){
@@ -636,7 +661,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
                                 Alert();
 
-                                Toast.makeText(PurchaseTicket.this, s, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(PurchaseTicket.this, s, Toast.LENGTH_SHORT).show();
 
                                 //   Toast.makeText(SigninForm.this, s, Toast.LENGTH_SHORT).show();
 //                                Intent in = new Intent(PurchaseTicket.this,HomeScreen.class);
@@ -657,6 +682,9 @@ public class PurchaseTicket extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
+                            pd.dismiss();
+                            pd.cancel();
                             Toast.makeText(PurchaseTicket.this, "Fail", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -685,7 +713,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
                                         e.commit();
 
-                                        Intent intent = new Intent(PurchaseTicket.this,HomeScreen.class);
+                                        Intent intent = new Intent(PurchaseTicket.this,Countdown.class);
 
                                         startActivity(intent);
 
@@ -701,4 +729,126 @@ public class PurchaseTicket extends AppCompatActivity {
 
 //        Log.e("Final", String.valueOf(isChecked));
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.homemenu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // getMenuInflater().inflate(R.menu.homemenu, (Menu) item);
+        int id = item.getItemId();
+
+
+        switch (item.getItemId()) {
+
+            case R.id.action_item_two:
+
+                Intent intent = new Intent(PurchaseTicket.this, Wallet.class);
+                startActivity(intent);
+                // Do something
+                return true;
+            case R.id.action_item_one:
+
+                Intent intent2 = new Intent(PurchaseTicket.this, HomeScreen.class);
+                startActivity(intent2);
+                // Do something
+                return true;
+            case R.id.action_item_three:
+
+                Logout();
+                // Do something
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void Logout() {
+
+        pd = new ProgressDialog(PurchaseTicket.this);
+        pd.setMessage("Logging You Out");
+        pd.setCancelable(false);
+        pd.show();
+        final OkHttpClient client = new OkHttpClient();
+        JSONObject postdata = new JSONObject();
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                postdata.toString());
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/user/logout")
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                pd.dismiss();
+                pd.cancel();
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                pd.dismiss();
+                pd.cancel();
+                final String mMessage = response.body().string();
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+                                String s = json.getString("message");
+
+
+                                Toast.makeText(PurchaseTicket.this, s, Toast.LENGTH_SHORT).show();
+
+                                sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.clear();
+                                editor.commit();
+                                finish();
+
+                                Intent in = new Intent(PurchaseTicket.this,FirstPage.class);
+                                startActivity(in);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+                }
+
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pd.cancel();
+                            pd.dismiss();
+                            Toast.makeText(PurchaseTicket.this, "Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+        });
+    }
 }
+
+

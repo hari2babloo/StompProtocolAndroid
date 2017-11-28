@@ -3,14 +3,17 @@
 
 
     <stroke
-        android:width="2dp"
-        android:color="@color/colorPrimary"
+        android:width="0.5dp"
+        android:color="@color/white"
         >
     </stroke>
 
+    <solid android:color="@color/jade"></solid>
 
-    <corners
-        android:radius="2dp"></corners>
+    <!--<corners-->
+        <!--android:radius="2dp">-->
+
+    <!--</corners>-->
     <size
         android:height="40dp"
         android:width="40dp"></size>
