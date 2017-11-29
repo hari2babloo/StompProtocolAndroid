@@ -84,7 +84,7 @@ public class Countdown extends AppCompatActivity {
     long elapsedSeconds;
     private TickTockView mCountDown = null;
     private TextView mTxtHeadline = null;
-    TextView textView,timer;
+    TextView textView,timer,timer0,timer1,timer2;
       private RecyclerView mRVFishPrice;
 
     @Override
@@ -101,10 +101,14 @@ public class Countdown extends AppCompatActivity {
 
 
         timer =(TextView)findViewById(R.id.timer);
+        timer0 =(TextView)findViewById(R.id.timer0);
+        timer1 =(TextView)findViewById(R.id.timer1);
+        timer2=(TextView)findViewById(R.id.timer2);
         pd = new ProgressDialog(Countdown.this);
         pd.setMessage("Getting Server Time");
         pd.setCancelable(false);
         pd.show();
+
 
 
         final OkHttpClient client = new OkHttpClient();
@@ -197,6 +201,7 @@ public class Countdown extends AppCompatActivity {
         mTxtHeadline = (TextView) findViewById(R.id.txt_headline);
 
         mCountDown = (TickTockView) findViewById(R.id.view_ticktock_countdown);
+        mCountDown.setVisibility(View.GONE);
 
         textView = (TextView)findViewById(R.id.timer);
 
@@ -243,19 +248,47 @@ public class Countdown extends AppCompatActivity {
 
                     String string = Timer;
 
+                    if (string.substring(0, 3).contains("d")){
+
+
+                        timer0.setText(string.substring(0, 2)+"\nDays");
+                    }
+                    else {
+                        timer0.setText(string.substring(0, 2)+"\nHours");
+
+                    }
+
+                    if (string.substring(3, 6).contains("h")){
+
+
+                        timer1.setText(string.substring(3, 5)+"\nHours");
+                    }
+                    else {
+                        timer1.setText(string.substring(3, 5)+"\nMins");
+
+                    }
+                    if (string.substring(6, 9).contains("m")){
+
+
+                        timer2.setText(string.substring(6, 8)+"\nMins");
+                    }
+                    else {
+                        timer2.setText(string.substring(6, 8)+"\nSecs");
+
+                    }
+
+
+//                    timer0.setText(string.substring(0, 3));
+//                    timer1.setText(string.substring(3, 6));
+//                    timer2.setText(string.substring(6, 9));
+
                     System.out.println(string.substring(0, 3));
-                    System.out.println(string.substring(4, 6));
-                    System.out.println(string.substring(7, 9));
+                    System.out.println(string.substring(3, 6));
+                    System.out.println(string.substring(6, 9));
                     System.out.println(string.substring(6, 8));
 
 
-                    mTxtHeadline.setText(String.format("%1$02d%4$s %2$02d%5$s %3$02d%6$s",
-                            hasDays ? days : hours,
-                            hasDays ? hours : minutes,
-                            hasDays ? minutes : seconds,
-                            hasDays ? "days" : "hours",
-                            hasDays ? "hours" : "minutes",
-                            hasDays ? "minutes" : "seconds"));
+                    mTxtHeadline.setText("Game is Going to Start in:");
 
                   //  Log.e("time",s);
                     return String.format("%1$02d%4$s %2$02d%5$s %3$02d%6$s",
@@ -632,7 +665,7 @@ public class Countdown extends AppCompatActivity {
          final  DataFish current = data.get(position);
 //            myHolder.one.setText("Name: " + current.preferredName + "  " + current.surname);
 
-            myHolder.id.setText( "Ticket ID:  "+current.id);
+//            myHolder.id.setText( "Ticket ID:  "+current.id);
             myHolder.one.setText(current.t1);
             myHolder.two.setText( current.t2);
             myHolder.three.setText(current.t3);
@@ -716,6 +749,7 @@ public class Countdown extends AppCompatActivity {
                 checkBox = (CheckBox)itemView.findViewById(R.id.checkedTextView);
                 checkBox.setVisibility(View.GONE);
                 id= (TextView) itemView.findViewById(R.id.id);
+                id.setVisibility(View.GONE);
                 one = (TextView) itemView.findViewById(R.id.t1);
                 two = (TextView) itemView.findViewById(R.id.t2);
             three = (TextView) itemView.findViewById(R.id.t3);
