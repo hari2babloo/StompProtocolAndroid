@@ -120,19 +120,20 @@ public class Signin extends Activity {
 
         else {
 
-            login.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
-                    if (awesomeValidation.validate()){
-                        Authenticate();
-                    }
-
-
+                if (awesomeValidation.validate()){
+                    Authenticate();
                 }
-            });
-  //          Toast.makeText(this, "Signin", Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+           Toast.makeText(this, "Signin", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -183,7 +184,6 @@ public class Signin extends Activity {
 //                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
 
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 

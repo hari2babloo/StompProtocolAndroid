@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     private AdapterFish Adapter;
     private DataFish current;
 
-    List<String> completednumbers = new ArrayList<>();
+    List<Integer> completednumbers = new ArrayList<>();
     JSONArray postdata2 = new JSONArray();
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
@@ -267,6 +267,9 @@ public class MainActivity extends AppCompatActivity {
             number.setText(echoModel.getNumber().toString());
             number.setBackgroundColor(Color.parseColor("#FFFF8800"));
 
+            completednumbers = echoModel.getCompletedNumbers();
+            Log.e("dsfsdfsdfs", String.valueOf(echoModel.getCompletedNumbers()));
+
             textToSpeech.speak(echoModel.getNumber().toString(), TextToSpeech.QUEUE_FLUSH, null);
         }
 
@@ -283,15 +286,20 @@ public class MainActivity extends AppCompatActivity {
         if (echoModel.getCompletedNumbers()!=null){
 
 
+
+
         }
         if (echoModel.getValidClaim()==true){
 
 
+            completednumbers = echoModel.getCompletedNumbers();
+
             Log.e("complerted ", String.valueOf(completednumbers));
+
             Authenticate2();
 
 
-            Log.e("fdfsd", echoModel.getCompletedNumbers().toString());
+            Log.e("fdfsd", String.valueOf(echoModel.getCompletedNumbers()));
         }
 
          if (echoModel.getGameCompleted()==true){
@@ -803,6 +811,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
 
+                pd.dismiss();
+                pd.cancel();
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
             }
@@ -810,6 +820,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
+                pd.dismiss();
+                pd.cancel();
 
                 final String mMessage = response.body().string();
 
@@ -849,8 +861,6 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 Log.e("firstlist", String.valueOf(firstlist));
                                 JSONObject json_data2 = jsonArray.getJSONObject(0).getJSONObject("game");
-
-
                                 noofplayers.setText( "No of Players:   "+json_data2.getString("noOfPlayers"));
 
 
@@ -1004,6 +1014,9 @@ public class MainActivity extends AppCompatActivity {
                 else runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
+                        pd.dismiss();
+                        pd.cancel();
 
 //                        Toast.makeText(MainActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
 
@@ -1190,7 +1203,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            if (completednumbers.contains("39")){
+            if (completednumbers.contains("42")){
                 myHolder.one.setText(current.t1);
                 myHolder.one.setBackground(getDrawable(R.drawable.ticketborder2));
 
@@ -1200,7 +1213,7 @@ public class MainActivity extends AppCompatActivity {
                 myHolder.one.setText(current.t1);
             }
 
-            if (completednumbers.contains("42")){
+            if (completednumbers.contains("36")){
                 myHolder.two.setText(current.t2);
                 myHolder.two.setBackground(getDrawable(R.drawable.ticketborder2));
 
@@ -1209,7 +1222,7 @@ public class MainActivity extends AppCompatActivity {
 
                 myHolder.two.setText(current.t2);
             }
-            if (completednumbers.contains("72")){
+            if (completednumbers.contains("44")){
                 myHolder.three.setText(current.t3);
                 myHolder.three.setBackground(getDrawable(R.drawable.ticketborder2));
 

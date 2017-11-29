@@ -40,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -230,13 +231,22 @@ public class Countdown extends AppCompatActivity {
 
                     }
 
-                    String Timer = String.format("%1$02d%4$s %2$02d%5$s %3$02d%6$s",
+                    String Timer = String.format("%1$02d%4$s%2$02d%5$s%3$02d%6$s",
                             hasDays ? days : hours,
                             hasDays ? hours : minutes,
                             hasDays ? minutes : seconds,
-                            hasDays ? "/" : "h",
+                            hasDays ? "d" : "h",
                             hasDays ? "h" : "m",
                             hasDays ? "m" : "s");
+
+                    Log.e("timeer", Timer);
+
+                    String string = Timer;
+
+                    System.out.println(string.substring(0, 3));
+                    System.out.println(string.substring(4, 6));
+                    System.out.println(string.substring(7, 9));
+                    System.out.println(string.substring(6, 8));
 
 
                     mTxtHeadline.setText(String.format("%1$02d%4$s %2$02d%5$s %3$02d%6$s",

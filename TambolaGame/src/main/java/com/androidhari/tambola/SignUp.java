@@ -97,7 +97,7 @@ public class SignUp extends Activity {
 
 
         pd = new ProgressDialog(SignUp.this);
-        pd.setMessage("Logging You Out");
+        pd.setMessage("Creating Your Account");
         pd.setCancelable(false);
         pd.show();
 
