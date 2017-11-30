@@ -225,14 +225,7 @@ public class Countdown extends AppCompatActivity {
 
                     if (seconds==0 && minutes==0 ){
                         mTxtHeadline.setText("times up  ");
-                        SharedPreferences.Editor e = sp.edit();
-                        e.putString("gno",gameid);
-                        e.putString("gstime",gamestarttime);
-
-                        e.commit();
-
-                        Intent intent = new Intent(Countdown.this,MainActivity.class);
-                        startActivity(intent);
+                       opengame();
 
                     }
 
@@ -306,6 +299,20 @@ public class Countdown extends AppCompatActivity {
 
 
            }
+
+    private void opengame() {
+
+        SharedPreferences.Editor e = sp.edit();
+        e.putString("gno",gameid);
+        e.putString("gstime",gamestarttime);
+
+        e.commit();
+
+        Intent intent = new Intent(Countdown.this,MainActivity.class);
+        startActivity(intent);
+        Countdown.this.finish();
+        finishAffinity();
+    }
 
 
     private void Authenticate() {

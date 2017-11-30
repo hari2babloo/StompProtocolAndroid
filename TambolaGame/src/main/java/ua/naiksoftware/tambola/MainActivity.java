@@ -2,6 +2,7 @@ package ua.naiksoftware.tambola;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +50,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.FlowableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -150,21 +154,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
+
+//        new Thread(new Runnable() {
+//            public void run() {
+//
+//
+//                connectStomp();
+//            }
+//        }).start();
+
+
+        final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+        executor.schedule(() -> connectStomp(), 5, TimeUnit.SECONDS);
+
+
+        new Thread(new Runnable() {
+            public void run() {
+                Authenticate();
+                textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                    @Override
+                    public void onInit(int status) {
+                        if(status != TextToSpeech.ERROR) {
+                            textToSpeech.setLanguage(Locale.UK);
+                        }
+                    }
+                });
+
+                System.out.println("Look at me, look at me...");
+            }
+        }).start();
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
         gameid=sp.getString("gno",null);
         gamestarttime=sp.getString("gstime",null);
 
-        connectStomp();
 
-        textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    textToSpeech.setLanguage(Locale.UK);
-                }
-            }
-        });
+
+
+
         number = (TextView)findViewById(R.id.Number);
         fastfive = (TextView)findViewById(R.id.fastfive);
         firstrow = (TextView)findViewById(R.id.firstrow);
@@ -174,12 +201,12 @@ public class MainActivity extends AppCompatActivity {
         noofplayers = (TextView)findViewById(R.id.noofplayers);
 
 
-        Authenticate(); //       mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
+ //       mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mAdapter = new SimpleAdapter(mDataSet);
         mAdapter.setHasStableIds(true);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 10));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
     }
 
 
@@ -1786,6 +1813,46 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+        builder1.setMessage("Do you want to Close the Game?");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+
+                        MainActivity.this.finish();
+
+                        textToSpeech.shutdown();
+                        finishAffinity();
+                        Intent intent = new Intent(MainActivity.this,HomeScreen.class);
+                        startActivity(intent);
+
+
+
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
 
     }
 

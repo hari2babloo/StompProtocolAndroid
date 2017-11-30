@@ -27,5 +27,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="tab_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 
 </resources>

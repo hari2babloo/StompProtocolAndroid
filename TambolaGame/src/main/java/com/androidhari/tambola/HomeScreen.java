@@ -306,6 +306,7 @@ public class HomeScreen extends AppCompatActivity {
                 e.commit();
 
 
+                HomeScreen.this.finish();
                 Intent intent = new Intent(HomeScreen.this,GameInfo.class);
                 startActivity(intent);
                 Toast.makeText(HomeScreen.this, mApps.get(getAdapterPosition()).getId(), Toast.LENGTH_SHORT).show();
@@ -563,5 +564,11 @@ Logout();
             }
         });
     }
+
+
+    @Override
+    public void onBackPressed() {
+
     }
+}
 

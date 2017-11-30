@@ -713,6 +713,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
                                         e.commit();
 
+                                        PurchaseTicket.this.finish();
                                         Intent intent = new Intent(PurchaseTicket.this,Countdown.class);
 
                                         startActivity(intent);

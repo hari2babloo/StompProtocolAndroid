@@ -7,6 +7,8 @@
     <color name="orange">#ff9800</color>
     <color name="black">#000000</color>
 
+    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextDisable">#66FFFFFF</color>
     <color name="mid_gray">#605F64</color>
     <color name="gray_text">#7F8285</color>
     <color name="rim_color_gray">#B0B0B0</color>

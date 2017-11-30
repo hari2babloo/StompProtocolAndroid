@@ -162,10 +162,8 @@ public class GameInfo extends AppCompatActivity {
                                             e.putString("gstime",gamestarttime);
 
                                             e.commit();
-
+                                            GameInfo.this.finish();
                                             Intent in = new Intent(GameInfo.this,PurchaseTicket.class);
-
-
                                             startActivity(in);
                                         }
                                     });
