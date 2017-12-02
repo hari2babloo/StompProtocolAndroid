@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -60,6 +62,9 @@ public class WalletPurchasehistory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.wallet_purchasehistory);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -127,7 +132,7 @@ public class WalletPurchasehistory extends AppCompatActivity {
                                     String longV = json_data.getString("startTime");
                                     long millisecond = Long.parseLong(longV);
                                     // or you already have long value of date, use this instead of milliseconds variable.
-                                    String starttime = DateFormat.format("dd/MM/yyyy hh:mm a", new Date(millisecond)).toString();
+                                    String starttime = DateFormat.format("dd/MM/yyyy hh:mm:ss a", new Date(millisecond)).toString();
  //                                   Log.e("startime",starttime);
                                     String gno = json_data.getString("id");
 
@@ -331,7 +336,7 @@ public class WalletPurchasehistory extends AppCompatActivity {
 
 
                     Date date = new Date() ;
-                    java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy hh:mm a") ;
+                    java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy hh:mm:ss a") ;
                     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+05:30"));
                     dateFormat.format(date);
                     System.out.println(dateFormat.format(date));

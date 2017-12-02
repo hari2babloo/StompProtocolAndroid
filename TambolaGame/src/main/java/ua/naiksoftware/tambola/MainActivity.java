@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -154,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
 //        new Thread(new Runnable() {
@@ -204,11 +208,11 @@ public class MainActivity extends AppCompatActivity {
 
 
  //       mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+      //  mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mAdapter = new SimpleAdapter(mDataSet);
         mAdapter.setHasStableIds(true);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
+     //   mRecyclerView.setAdapter(mAdapter);
+      //  mRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
     }
 
 
@@ -245,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
                     Log.d(TAG, "Received " + topicMessage.getPayload());
-                    addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel.class));
+//                    addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel.class));
 
 
 
@@ -297,6 +301,8 @@ public class MainActivity extends AppCompatActivity {
             Log.e("dsfsdfsdfs", String.valueOf(echoModel.getCompletedNumbers()));
 
             textToSpeech.speak(echoModel.getNumber().toString(), TextToSpeech.QUEUE_FLUSH, null);
+
+
         }
 
         if (echoModel.getMessage()!=null){
@@ -316,7 +322,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (echoModel.getValidClaim()==true){
-
 
             completednumbers = echoModel.getCompletedNumbers();
 
@@ -345,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
 
         //    mDataSet.add(echoModel.getNumber() + " - " + mTimeFormat.format(new Date()));
         mAdapter.notifyDataSetChanged();
-        mRecyclerView.smoothScrollToPosition(mDataSet.size() - 1);
+     //   mRecyclerView.smoothScrollToPosition(mDataSet.size() - 1);
     }
 
 
@@ -1608,9 +1613,11 @@ public class MainActivity extends AppCompatActivity {
                 super(itemView);
                 //  id= (TextView)itemView.findViewById(R.id.id);
                 claim = (Button)itemView.findViewById(R.id.claim);
-                checkBox =(CheckBox)findViewById(R.id.checkedTextView);
+                checkBox =(CheckBox)itemView.findViewById(R.id.checkedTextView);
+                checkBox.setVisibility(View.GONE);
 
-
+                id = (TextView)itemView.findViewById(R.id.id);
+                id.setVisibility(View.GONE);
                 one = (TextView) itemView.findViewById(R.id.t1);
                 two = (TextView) itemView.findViewById(R.id.t2);
 

@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -91,6 +92,9 @@ public class Countdown extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.countdown);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -153,13 +157,13 @@ public class Countdown extends AppCompatActivity {
 
                             //        JSONObject json = new JSONObject(mMessage);
 
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
                             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+05:30"));
 
                             long millisecond = Long.parseLong(longV);
                             // or you already have long value of date, use this instead of milliseconds variable.
-                            String endtime = DateFormat.format("dd/MM/yyyy hh:mm a", new Date(millisecond)).toString();
+                            String endtime = DateFormat.format("dd/MM/yyyy hh:mm:ss a", new Date(millisecond)).toString();
                             Date date1 = null;
                             Date date2 = null;
                             try {
@@ -224,10 +228,14 @@ public class Countdown extends AppCompatActivity {
                     boolean hasDays = days > 0;
 
 
-                    if (seconds==0){
+
+                    if (timeRemaining==0){
+
+
                         mTxtHeadline.setText("times up  ");
                        opengame();
 
+                        mCountDown.stop();
                     }
 
                     String Timer = String.format("%1$02d%4$s%2$02d%5$s%3$02d%6$s",
@@ -583,7 +591,7 @@ public class Countdown extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-//        mCountDown.stop();
+       mCountDown.stop();
 
     }
 
@@ -846,12 +854,14 @@ public class Countdown extends AppCompatActivity {
             case R.id.action_item_two:
 
                 Intent intent = new Intent(Countdown.this, Wallet.class);
+                mCountDown.stop();
                 startActivity(intent);
                 // Do something
                 return true;
             case R.id.action_item_one:
 
                 Intent intent2 = new Intent(Countdown.this, HomeScreen.class);
+                mCountDown.stop();
                 startActivity(intent2);
                 // Do something
                 return true;
@@ -918,6 +928,7 @@ public class Countdown extends AppCompatActivity {
                                 finish();
 
                                 Intent in = new Intent(Countdown.this,FirstPage.class);
+                                mCountDown.stop();
                                 startActivity(in);
 
                             } catch (JSONException e) {
@@ -943,5 +954,12 @@ public class Countdown extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        mCountDown.stop();
     }
 }

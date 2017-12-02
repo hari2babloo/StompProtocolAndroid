@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,14 +51,12 @@ public class GameInfo extends AppCompatActivity {
 
 
     Button buytickets;
-    TextView gname,gtime,tcost,pmoney,createdby,passcode;
+    TextView gname,gtime,tcost,pmoney;
     ListView plist;
     ProgressDialog pd;
 
 
     ArrayList<prizes> dataModels = new ArrayList<>();
-
-    ArrayList<prizes> list = new ArrayList<>();
 
     SharedPreferences sp;
     String pass,gid,gamestarttime;
@@ -64,6 +64,9 @@ public class GameInfo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.game_info);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -138,7 +141,7 @@ public class GameInfo extends AppCompatActivity {
                                 // or you already have long value of date, use this instead of milliseconds variable.
 
 
-                                gamestarttime = DateFormat.format("dd/MM/yyyy hh:mm a", new Date(millisecond)).toString();
+                                gamestarttime = DateFormat.format("dd/MM/yyyy hh:mm:ss a", new Date(millisecond)).toString();
 
 
 

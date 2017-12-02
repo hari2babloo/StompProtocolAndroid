@@ -264,9 +264,12 @@
                 <Button
                     android:id="@+id/claim"
                     android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="Claim" />
+                    android:background="@drawable/bbkg"
+                    android:text="Claim"
+                    android:textColor="@color/cardview_light_background" />
 
             </LinearLayout>
 
