@@ -59,7 +59,7 @@
             android:textColorLink="@android:color/background_light" />
 
         <Button
-            android:id="@+id/submit"
+            android:id="@+id/add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"

@@ -21,6 +21,7 @@ import com.androidhari.ViewPagerAdapter;
 import com.androidhari.tambola.Countdown;
 import com.androidhari.tambola.FirstPage;
 import com.androidhari.tambola.HomeScreen;
+import com.androidhari.tambola.PurchaseTicket;
 import com.androidhari.tambola.Wallet;
 
 import org.json.JSONException;
@@ -32,6 +33,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
@@ -127,7 +129,6 @@ public class MoneyTransactions extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -137,7 +138,7 @@ public class MoneyTransactions extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-         getMenuInflater().inflate(R.menu.homemenu, (Menu) item);
+        // getMenuInflater().inflate(R.menu.homemenu, (Menu) item);
         int id = item.getItemId();
 
 
@@ -176,7 +177,8 @@ public class MoneyTransactions extends AppCompatActivity {
         pd.setCancelable(false);
         pd.show();
         final OkHttpClient client = new OkHttpClient();
-        JSONObject postdata = new JSONObject();
+       // JSONObject postdata = new JSONObject();
+
 
         final Request request = new Request.Builder()
                 .url("http://game-dev.techmech.men:8080/api/user/logout")
@@ -244,5 +246,4 @@ public class MoneyTransactions extends AppCompatActivity {
             }
         });
     }
-
 }

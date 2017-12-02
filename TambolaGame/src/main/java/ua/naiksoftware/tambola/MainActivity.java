@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -82,38 +83,38 @@ public class MainActivity extends AppCompatActivity {
 
     Collection secondlist = new ArrayList();
     Collection firstlist = new ArrayList();
-    private boolean tvSelected1 = false;
-    private boolean tvSelected2 = false;
-    private boolean tvSelected3 = false;
-    private boolean tvSelected4 = false;
-    private boolean tvSelected5 = false;
-    private boolean tvSelected6 = false;
-    private boolean tvSelected7 = false;
-    private boolean tvSelected8 = false;
-    private boolean tvSelected9 = false;
-    private boolean tvSelected10 = false;
-    private boolean tvSelected11 = false;
-    private boolean tvSelected12 = false;
-    private boolean tvSelected13 = false;
-    private boolean tvSelected14 = false;
-    private boolean tvSelected15 = false;
-    private boolean tvSelected16 = false;
-    private boolean tvSelected17 = false;
-    private boolean tvSelected18 = false;
-    private boolean tvSelected19 = false;
-    private boolean tvSelected20 = false;
-    private boolean tvSelected21 = false;
-    private boolean tvSelected22 = false;
-    private boolean tvSelected23 = false;
-    private boolean tvSelected24 = false;
-    private boolean tvSelected25 = false;
-    private boolean tvSelected26 = false;
-    private boolean tvSelected27 = false;
+    private boolean tvSelected1 = true;
+    private boolean tvSelected2 = true;
+    private boolean tvSelected3 = true;
+    private boolean tvSelected4 = true;
+    private boolean tvSelected5 = true;
+    private boolean tvSelected6 = true;
+    private boolean tvSelected7 = true;
+    private boolean tvSelected8 = true;
+    private boolean tvSelected9 = true;
+    private boolean tvSelected10 = true;
+    private boolean tvSelected11 = true;
+    private boolean tvSelected12 = true;
+    private boolean tvSelected13 = true;
+    private boolean tvSelected14 = true;
+    private boolean tvSelected15 = true;
+    private boolean tvSelected16 = true;
+    private boolean tvSelected17 = true;
+    private boolean tvSelected18 = true;
+    private boolean tvSelected19 = true;
+    private boolean tvSelected20 = true;
+    private boolean tvSelected21 = true;
+    private boolean tvSelected22 = true;
+    private boolean tvSelected23 = true;
+    private boolean tvSelected24 = true;
+    private boolean tvSelected25 = true;
+    private boolean tvSelected26 = true;
+    private boolean tvSelected27 = true;
 
     private AdapterFish Adapter;
     private DataFish current;
 
-    List<Integer> completednumbers = new ArrayList<>();
+    List<String> completednumbers = new ArrayList<>();
     JSONArray postdata2 = new JSONArray();
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
@@ -165,13 +166,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-        executor.schedule(() -> connectStomp(), 5, TimeUnit.SECONDS);
+        executor.schedule(() -> connectStomp(), 2, TimeUnit.SECONDS);
 
 
         new Thread(new Runnable() {
             public void run() {
+
                 Authenticate();
-                textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                 textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     @Override
                     public void onInit(int status) {
                         if(status != TextToSpeech.ERROR) {
@@ -180,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                System.out.println("Look at me, look at me...");
+//                System.out.println("Look at me, look at me...");
             }
         }).start();
         sp=getSharedPreferences("login",MODE_PRIVATE);
@@ -244,9 +246,6 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(topicMessage -> {
                     Log.d(TAG, "Received " + topicMessage.getPayload());
                     addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel.class));
-                    String s = topicMessage.getPayload().toString();
-                    JSONObject json = new JSONObject(s);
-                    String message = json.getString("message");
 
 
 
@@ -293,8 +292,8 @@ public class MainActivity extends AppCompatActivity {
 
             number.setText(echoModel.getNumber().toString());
             number.setBackgroundColor(Color.parseColor("#FFFF8800"));
-
-            completednumbers = echoModel.getCompletedNumbers();
+    //        completednumbers = echoModel.getCompletedNumbers();
+//            completednumbers = echoModel.getCompletedNumbers();
             Log.e("dsfsdfsdfs", String.valueOf(echoModel.getCompletedNumbers()));
 
             textToSpeech.speak(echoModel.getNumber().toString(), TextToSpeech.QUEUE_FLUSH, null);
@@ -314,8 +313,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         }
+
         if (echoModel.getValidClaim()==true){
 
 
@@ -326,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
             Authenticate2();
 
 
-            Log.e("fdfsd", String.valueOf(echoModel.getCompletedNumbers()));
+  //          Log.e("fdfsd", String.valueOf(echoModel.getCompletedNumbers()));
         }
 
          if (echoModel.getGameCompleted()==true){
@@ -491,8 +490,8 @@ public class MainActivity extends AppCompatActivity {
                                             for ( int j = 0; j <row1.length();j++ ){
 
 
-
-                                                reftktrow1.add(row1.getString(j));
+//
+  //                                              reftktrow1.add(row1.getString(j));
 
 //                                                Log.w("Row 1 ", String.valueOf(reftktrow1));
 
@@ -596,6 +595,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void Authenticate() {
 
+        tktrow1.clear();
+        tktrow2.clear();
+        tktrow3.clear();
+        filterdata.clear();
         final OkHttpClient client = new OkHttpClient();
 
         final Request request = new Request.Builder()
@@ -675,32 +678,53 @@ public class MainActivity extends AppCompatActivity {
                                         fullhouse.setText("FULL_HOUISE: " + prizecost);
 
                                     }
+                                    else {
 
-                                    else
+                                        fullhouse.setVisibility(View.GONE);
+                                    }
+
+
                                     if (prizename.equalsIgnoreCase("FIRST_ROW")){
 
 
                                         firstrow.setText("FIRST ROW:  "+prizecost);
 
                                     }
-                                    else
+                                    else {
+
+                                        firstrow.setVisibility(View.GONE);
+                                    }
+
                                     if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
                                         middlerow.setText("MIDDLE_ROW:  "+prizecost);
 
                                     }
-                                    else
+                                    else{
+
+                                        middlerow.setVisibility(View.GONE);
+                                    }
+
+
                                     if (prizename.equalsIgnoreCase("FAST_FIVE")){
 
                                         fastfive.setText("MIDDLE_ROW:  "+prizecost);
 
 
                                     }
-                                    else
+                                    else{
+
+                                     fastfive.setVisibility(View.GONE);
+                                    }
+
+
                                     if (prizename.equalsIgnoreCase("LAST_ROW")) {
 
                                         lastrow.setText("MIDDLE_ROW:  "+prizecost);
 
 
+                                    }else {
+
+                                        lastrow.setVisibility(View.GONE);
                                     }
 
 
@@ -903,40 +927,48 @@ public class MainActivity extends AppCompatActivity {
 
                                     String prizeCompleted = fd.getString("prizeCompleted");
 
+                                    if (prizeCompleted.equalsIgnoreCase("true")){
 
-                                    if(prizename.equalsIgnoreCase("FULL_HOUISE"))
-                                    {
 
-                                        fullhouse.setText("FULL_HOUISE: " + prizecost);
+                                        if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+                                        {
+
+                                            fullhouse.setText("FULL_HOUISE: FINISHED" );
+
+                                        }
+
+                                        else
+                                        if (prizename.equalsIgnoreCase("FIRST_ROW")){
+
+
+                                            firstrow.setText("FIRST ROW:  FINISHED");
+
+                                        }
+                                        else
+                                        if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
+                                            middlerow.setText("MIDDLE_ROW:  FINISHED");
+
+                                        }
+                                        else
+                                        if (prizename.equalsIgnoreCase("FAST_FIVE")){
+
+                                            fastfive.setText("MIDDLE_ROW:  FINISHED");
+
+
+                                        }
+                                        else
+                                        if (prizename.equalsIgnoreCase("LAST_ROW")) {
+
+                                            lastrow.setText("MIDDLE_ROW:  FINISHED");
+
+
+                                        }
+
+
 
                                     }
 
-                                    else
-                                    if (prizename.equalsIgnoreCase("FIRST_ROW")){
 
-
-                                        firstrow.setText("FIRST ROW:  "+prizecost);
-
-                                    }
-                                    else
-                                    if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
-                                        middlerow.setText("MIDDLE_ROW:  "+prizecost);
-
-                                    }
-                                    else
-                                    if (prizename.equalsIgnoreCase("FAST_FIVE")){
-
-                                        fastfive.setText("MIDDLE_ROW:  "+prizecost);
-
-
-                                    }
-                                    else
-                                    if (prizename.equalsIgnoreCase("LAST_ROW")) {
-
-                                        lastrow.setText("MIDDLE_ROW:  "+prizecost);
-
-
-                                    }
 
 
                                 }
@@ -1142,7 +1174,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.e("position", String.valueOf(claimposition));
 
-                    Log.e("ticketid",current.id);
+                    Log.e("ticketid", String.valueOf(current.id));
 
 
                     final OkHttpClient client = new OkHttpClient();
@@ -1230,9 +1262,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            if (completednumbers.contains("42")){
+            if (completednumbers.contains(current.t1)){
+                //myHolder.one.setText("1");
                 myHolder.one.setText(current.t1);
                 myHolder.one.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            //    two.setBackground(getDrawable(R.drawable.ticketborder2));
 
             }
             else {
@@ -1240,7 +1275,8 @@ public class MainActivity extends AppCompatActivity {
                 myHolder.one.setText(current.t1);
             }
 
-            if (completednumbers.contains("36")){
+            if (completednumbers.contains(current.t2)){
+              //  myHolder.two.setText("1");
                 myHolder.two.setText(current.t2);
                 myHolder.two.setBackground(getDrawable(R.drawable.ticketborder2));
 
@@ -1249,8 +1285,13 @@ public class MainActivity extends AppCompatActivity {
 
                 myHolder.two.setText(current.t2);
             }
-            if (completednumbers.contains("44")){
+
+
+
+            if (completednumbers.contains(current.t3)){
+
                 myHolder.three.setText(current.t3);
+
                 myHolder.three.setBackground(getDrawable(R.drawable.ticketborder2));
 
             }
@@ -1259,33 +1300,261 @@ public class MainActivity extends AppCompatActivity {
                 myHolder.three.setText(current.t3);
             }
 
+            if (completednumbers.contains(current.t4)){
+                myHolder.four.setText(current.t4);
 
-            myHolder.two.setText( current.t2);
-            myHolder.three.setText(current.t3);
-            myHolder.four.setText(current.t4);
-            myHolder.five.setText(current.t5);
-            myHolder.six.setText(current.t6);
-            myHolder.seven.setText(current.t7);
-            myHolder.eight.setText(current.t8);
-            myHolder.nine.setText(current.t9);
-            myHolder.ten.setText(current.t10);
-            myHolder.eleven.setText( current.t11);
-            myHolder.twelve.setText(current.t12);
-            myHolder.thirteen.setText(current.t13);
-            myHolder.fourteen.setText(current.t14);
-            myHolder.fifteen.setText(current.t15);
-            myHolder.sixteen.setText(current.t16);
-            myHolder.seventeen.setText(current.t17);
-            myHolder.eighteen.setText(current.t18);
-            myHolder.nineteen.setText(current.t19);
-            myHolder.twenty.setText( current.t20);
-            myHolder.twentyone.setText(current.t21);
-            myHolder.twentytwo.setText(current.t22);
-            myHolder.twentythree.setText(current.t23);
-            myHolder.twentyfour.setText(current.t24);
-            myHolder.twentyfive.setText(current.t25);
-            myHolder.twentysix.setText(current.t26);
-            myHolder.twentyseven.setText(current.t27);
+                myHolder.four.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.four.setText(current.t4);
+            }
+
+            if (completednumbers.contains(current.t5)){
+
+                myHolder.five.setText(current.t5);
+
+                myHolder.five.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.five.setText(current.t5);
+            }
+
+            if (completednumbers.contains(current.t6)){
+
+                myHolder.six.setText(current.t6);
+                myHolder.six.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.six.setText(current.t6);
+            }
+            if (completednumbers.contains(current.t7)){
+
+                myHolder.seven.setText(current.t7);
+                myHolder.seven.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.seven.setText(current.t7);
+            }
+
+            if (completednumbers.contains(current.t8)){
+                myHolder.eight.setText(current.t8);
+
+                myHolder.eight.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.eight.setText(current.t8);
+            }
+            if (completednumbers.contains(current.t9)){
+                myHolder.nine.setText(current.t9);
+
+                myHolder.nine.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.nine.setText(current.t9);
+            }
+            if (completednumbers.contains(current.t10)){
+                myHolder.ten.setText(current.t10);
+                myHolder.ten.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.ten.setText(current.t10);
+            }
+            if (completednumbers.contains(current.t11)){
+
+                myHolder.eleven.setBackground(getDrawable(R.drawable.ticketborder2));
+                myHolder.eleven.setText(current.t11);
+            }
+            else {
+
+                myHolder.eleven.setText(current.t11);
+            }
+
+
+            if (completednumbers.contains(current.t12)){
+
+                myHolder.twelve.setText(current.t12);
+                myHolder.twelve.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.twelve.setText(current.t12);
+            }
+
+            if (completednumbers.contains(current.t13)){
+
+
+                myHolder.thirteen.setText(current.t13);
+                myHolder.thirteen.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.thirteen.setText(current.t13);
+            }
+            if (completednumbers.contains(current.t14)){
+                myHolder.fourteen.setText(current.t14);
+                myHolder.fourteen.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.fourteen.setText(current.t14);
+            }
+            if (completednumbers.contains(current.t15)){
+
+                myHolder.fifteen.setText(current.t15);
+                myHolder.fifteen.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.fifteen.setText(current.t15);
+            }
+
+            if (completednumbers.contains(current.t16)){
+                myHolder.sixteen.setText(current.t16);
+                myHolder.sixteen.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.sixteen.setText(current.t16);
+            }
+
+            if (completednumbers.contains(current.t17)){
+
+                myHolder.seventeen.setText(current.t17);
+                myHolder.seventeen.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.seventeen.setText(current.t17);
+            }
+
+            if (completednumbers.contains(current.t18)){
+
+                myHolder.eighteen.setText(current.t18);
+                myHolder.eighteen.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.eighteen.setText(current.t18);
+            }
+
+            if (completednumbers.contains(current.t19)){
+
+
+
+                myHolder.nineteen.setText(current.t19);
+
+                myHolder.nineteen.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.nineteen.setText(current.t19);
+            }
+
+            if (completednumbers.contains(current.t20)){
+
+                myHolder.twenty.setText(current.t20);
+                myHolder.twenty.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.twenty.setText(current.t20);
+            }
+
+            if (completednumbers.contains(current.t21)){
+                myHolder.twentyone.setText(current.t21);
+
+                myHolder.twentyone.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.twentyone.setText(current.t21);
+            }
+            if (completednumbers.contains(current.t22)){
+
+                myHolder.twentytwo.setText(current.t22);
+                myHolder.twentytwo.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.twentytwo.setText(current.t22);
+            }
+            if (completednumbers.contains(current.t23)){
+                myHolder.twentythree.setText(current.t23);
+                myHolder.twentythree.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.twentythree.setText(current.t23);
+            }
+
+            if (completednumbers.contains(current.t24)){
+
+                myHolder.twentyfour.setText(current.t24);
+                myHolder.twentyfour.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.twentyfour.setText(current.t24);
+            }
+
+            if (completednumbers.contains(current.t25)){
+
+                myHolder.twentyfive.setText(current.t25);
+                myHolder.twentyfive.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.twentyfive.setText(current.t25);
+            }
+
+            if (completednumbers.contains(current.t26)){
+
+                myHolder.twentysix.setText(current.t26);
+                myHolder.twentysix.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.twentysix.setText(current.t26);
+            }
+            if (completednumbers.contains(current.t27)){
+                myHolder.twentyseven.setText(current.t27);
+                myHolder.twentyseven.setBackground(getDrawable(R.drawable.ticketborder2));
+
+            }
+            else {
+
+                myHolder.twentyseven.setText(current.t27);
+            }
+
 
         }
 
@@ -1375,6 +1644,8 @@ public class MainActivity extends AppCompatActivity {
                         else {
 
                             two.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                            tvSelected2 = true;
                         }
 
                     }

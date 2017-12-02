@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidhari.ViewPager.MoneyTransactions;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,15 +52,12 @@ public class Wallet extends AppCompatActivity {
         pass=sp.getString("token",null);
         money = (TextView)findViewById(R.id.money);
         history = (Button)findViewById(R.id.hISTORY);
-
-
         addmoney =(Button)findViewById(R.id.addmoney);
-
         addmoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(Wallet.this, AddMoney.class);
+                Intent intent = new Intent(Wallet.this, MoneyTransactions.class);
                 startActivity(intent);
             }
         });

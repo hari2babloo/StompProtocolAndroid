@@ -34,21 +34,23 @@ public class BankTransfer extends AppCompatActivity {
 
     SharedPreferences sp;
     ProgressDialog pd;
-    String pass,id;
+    String pass, id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bank_transfer);
 
-
-        sp= getSharedPreferences("login",MODE_PRIVATE);
-        pass= sp.getString("token",null);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        ActionBar ab = getSupportActionBar();
-        // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
+        sp = getSharedPreferences("login", MODE_PRIVATE);
+        pass = sp.getString("token", null);
+
+
+//        ActionBar ab = getSupportActionBar();
+//        // Enable the Up button
+//        ab.setDisplayHomeAsUpEnabled(true);
     }
 
 

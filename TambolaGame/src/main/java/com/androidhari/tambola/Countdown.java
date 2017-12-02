@@ -156,7 +156,6 @@ public class Countdown extends AppCompatActivity {
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
 
                             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+05:30"));
-                            Calendar c = Calendar.getInstance();
 
                             long millisecond = Long.parseLong(longV);
                             // or you already have long value of date, use this instead of milliseconds variable.
@@ -166,6 +165,8 @@ public class Countdown extends AppCompatActivity {
                             try {
                                 date2 = simpleDateFormat.parse(gamestarttime);
                                 date1 = simpleDateFormat.parse(endtime);
+
+                                Log.e("dadsadas000", date2.toString() +    date1.toString());
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -223,7 +224,7 @@ public class Countdown extends AppCompatActivity {
                     boolean hasDays = days > 0;
 
 
-                    if (seconds==0 && minutes==0 ){
+                    if (seconds==0){
                         mTxtHeadline.setText("times up  ");
                        opengame();
 
@@ -275,10 +276,10 @@ public class Countdown extends AppCompatActivity {
 //                    timer1.setText(string.substring(3, 6));
 //                    timer2.setText(string.substring(6, 9));
 
-                    System.out.println(string.substring(0, 3));
-                    System.out.println(string.substring(3, 6));
-                    System.out.println(string.substring(6, 9));
-                    System.out.println(string.substring(6, 8));
+//                    System.out.println(string.substring(0, 3));
+//                    System.out.println(string.substring(3, 6));
+//                    System.out.println(string.substring(6, 9));
+//                    System.out.println(string.substring(6, 8));
 
 
                     mTxtHeadline.setText("Game is Going to Start in:");
@@ -351,9 +352,6 @@ public class Countdown extends AppCompatActivity {
 
                 final String mMessage = response.body().string();
 
-
-
-//
 //               Log.w("Response", mMessage);
 
                 if (response.isSuccessful()){
@@ -549,7 +547,7 @@ public class Countdown extends AppCompatActivity {
         elapsedSeconds = different / secondsInMilli;
 
         System.out.printf(
-                "%d days, %d hours, %d minutes, %d seconds%n",
+                "%d days, %d hours, %d minutes, %d seconds%n" + "Elapse",
                 elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
 
 
@@ -561,8 +559,10 @@ public class Countdown extends AppCompatActivity {
 
         Calendar start = Calendar.getInstance();
 
-
-
+//        start.add(Calendar.DAY_OF_MONTH, (int) elapsedDays);
+//        start.add(Calendar.HOUR, (int) elapsedHours);
+//        start.add(Calendar.MINUTE, (int) elapsedMinutes);
+//        start.add(Calendar.SECOND, (int) elapsedSeconds);
         start.add(Calendar.SECOND, -1);
 
         if (mCountDown != null) {

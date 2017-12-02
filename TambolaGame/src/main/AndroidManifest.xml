@@ -19,7 +19,15 @@
             android:screenOrientation="landscape" />
         <activity android:name="com.androidhari.tambola.FirstPage" />
         <activity android:name="com.androidhari.tambola.SignUp" />
-        <activity android:name="com.androidhari.tambola.Signin" />
+        <activity android:name="com.androidhari.tambola.Signin">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity android:name="com.androidhari.tambola.HomeScreen" />
         <activity android:name="com.androidhari.tambola.ForgotPass" />
         <activity android:name="com.androidhari.tambola.ResetPass" />
@@ -34,13 +42,9 @@
         <activity android:name="com.androidhari.tambola.TestautoSelect" />
         <activity android:name=".Main2Activity" />
         <activity android:name="com.androidhari.ViewPager.MoneyTransactions">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name="com.androidhari.Fragment.CashOut" />
+
         <activity android:name="com.androidhari.Fragment.BankTransfer" />
         <activity android:name="com.androidhari.Fragment.PaytmTransfer"></activity>
     </application>

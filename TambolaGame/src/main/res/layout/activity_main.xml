@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
 
     android:layout_gravity="center"
+    android:background="@color/black"
     android:fillViewport="true"
     tools:context="ua.naiksoftware.tambola.MainActivity">
 
@@ -16,21 +17,20 @@
         android:orientation="vertical">
 
 
-        <GridLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:columnCount="3"
+
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/Number"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="0.1"
                 android:background="@android:color/holo_orange_dark"
-                android:padding="5dp"
+                android:gravity="center"
                 android:text="00"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
@@ -39,10 +39,11 @@
 
             <LinearLayout
                 android:id="@+id/hari"
-                android:layout_width="200dp"
-                android:layout_height="90dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-                android:layout_marginLeft="100dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.5"
                 android:gravity="left"
                 android:orientation="vertical">
 
@@ -50,42 +51,48 @@
                     android:id="@+id/fastfive"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="@color/cardview_light_background" />
 
                 <TextView
                     android:id="@+id/firstrow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="@color/cardview_light_background" />
 
                 <TextView
                     android:id="@+id/middlerow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="@color/cardview_light_background" />
 
                 <TextView
                     android:id="@+id/lastrow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="@color/cardview_light_background" />
 
                 <TextView
                     android:id="@+id/fullhouse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="@color/cardview_light_background" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/noofplayers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.3"
                 android:text="TextView"
                 android:textColor="@color/center_text"
                 android:textSize="20sp" />
-        </GridLayout>
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fishPriceList"

@@ -38,7 +38,7 @@ public class EchoModel {
     private Object message;
     @SerializedName("completedNumbers")
     @Expose
-    private List<Integer> completedNumbers = null;
+    private List<String> completedNumbers = null;
 
     public Integer getNumber() {
         return number;
@@ -112,11 +112,11 @@ public class EchoModel {
         this.message = message;
     }
 
-    public List<Integer> getCompletedNumbers() {
+    public List<String> getCompletedNumbers() {
         return completedNumbers;
     }
 
-    public void setCompletedNumbers(List<Integer> completedNumbers) {
+    public void setCompletedNumbers(List<String> completedNumbers) {
         this.completedNumbers = completedNumbers;
     }
 

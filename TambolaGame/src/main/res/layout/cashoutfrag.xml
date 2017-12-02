@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginBottom="50dp"
         android:gravity="center"
         android:text="Current Balance is Rs.150"
         android:textColor="@color/orange"
@@ -23,29 +24,60 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:text="CashOut Using"
+        android:text="Enter Amount to Cash Out"
         android:textColor="@color/orange"
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <RadioButton
-        android:id="@+id/radioButton"
-        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Paytm"
-        android:textColor="@color/orange"
-        app:buttonTint="@color/orange" />
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="#FF9800"
+        android:drawableLeft="@drawable/mobile"
+        android:drawablePadding="10dp"
+        android:hint="50"
 
-    <RadioButton
-        android:id="@+id/radioButton2"
-        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        android:inputType="number"
+        android:maxLength="10"
+        android:singleLine="true"
+        android:textColor="@android:color/background_light"
+        android:textColorHighlight="@android:color/background_light"
+        android:textColorHint="@android:color/background_light"
+        android:textColorLink="@android:color/background_light" />
+
+    <RadioGroup
+        android:id="@+id/radiogrp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bank Account"
-        android:textColor="@color/orange"
-        app:buttonTint="@color/orange" />
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_weight="1"
+            android:text="Paytm"
+            android:textColor="@color/cardview_light_background"
+            app:buttonTint="@color/orange" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_weight="1"
+            android:text="Bank Account"
+            android:textColor="@color/cardview_light_background"
+            app:buttonTint="@color/orange" />
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,14 +91,14 @@
 
 
         <Button
-            android:id="@+id/submit"
+            android:id="@+id/next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
 
             android:background="@drawable/bbkg"
             android:gravity="center"
-            android:text="Add"
+            android:text="Next"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>
