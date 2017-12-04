@@ -12,24 +12,22 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="128dp"
+            android:layout_height="100dp"
 
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/Number"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_weight="0.1"
                 android:background="@android:color/holo_orange_dark"
                 android:gravity="center"
                 android:text="00"
@@ -43,10 +41,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="0.5"
-                android:gravity="left"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -54,35 +52,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textColor="@color/cardview_light_background" />
+                    android:textColor="@color/orange" />
 
                 <TextView
                     android:id="@+id/firstrow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textColor="@color/cardview_light_background" />
+                    android:textColor="@color/orange" />
 
                 <TextView
                     android:id="@+id/middlerow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textColor="@color/cardview_light_background" />
+                    android:textColor="@color/orange" />
 
                 <TextView
                     android:id="@+id/lastrow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textColor="@color/cardview_light_background" />
+                    android:textColor="@color/orange" />
 
                 <TextView
                     android:id="@+id/fullhouse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textColor="@color/cardview_light_background" />
+                    android:textColor="@color/orange" />
             </LinearLayout>
 
             <TextView
@@ -99,11 +97,10 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fishPriceList"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="0dp"
-            android:paddingTop="5dp" />
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp" />
 
     </LinearLayout>
 </ScrollView>

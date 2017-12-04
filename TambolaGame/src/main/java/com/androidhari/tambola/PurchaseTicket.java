@@ -416,7 +416,8 @@ public class PurchaseTicket extends AppCompatActivity {
 
             // Get current position of item in recyclerview to bind data and assign values from list
             final MyHolder myHolder = (MyHolder) holder;
-
+            holder.setIsRecyclable(false);
+//            setHasStableIds(false);
             final DataFish current = data.get(position);
 
 

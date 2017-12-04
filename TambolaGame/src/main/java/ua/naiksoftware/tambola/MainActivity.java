@@ -15,6 +15,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -159,7 +160,20 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+//        sp=getSharedPreferences("login",MODE_PRIVATE);
+//        pass=sp.getString("token",null);
+//        gameid=sp.getString("gno",null);
+//        gamestarttime=sp.getString("gstime",null);
 
+
+        number = (TextView)findViewById(R.id.Number);
+        fastfive = (TextView)findViewById(R.id.fastfive);
+        firstrow = (TextView)findViewById(R.id.firstrow);
+        middlerow = (TextView)findViewById(R.id.middlerow);
+        lastrow = (TextView)findViewById(R.id.lastrow);
+        fullhouse = (TextView)findViewById(R.id.fullhouse);
+        noofplayers = (TextView)findViewById(R.id.noofplayers);
+        Authenticate();
 //        new Thread(new Runnable() {
 //            public void run() {
 //
@@ -176,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             public void run() {
 
-                Authenticate();
+
                  textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     @Override
                     public void onInit(int status) {
@@ -189,22 +203,12 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println("Look at me, look at me...");
             }
         }).start();
-        sp=getSharedPreferences("login",MODE_PRIVATE);
-        pass=sp.getString("token",null);
-        gameid=sp.getString("gno",null);
-        gamestarttime=sp.getString("gstime",null);
 
 
 
 
 
-        number = (TextView)findViewById(R.id.Number);
-        fastfive = (TextView)findViewById(R.id.fastfive);
-        firstrow = (TextView)findViewById(R.id.firstrow);
-        middlerow = (TextView)findViewById(R.id.middlerow);
-        lastrow = (TextView)findViewById(R.id.lastrow);
-        fullhouse = (TextView)findViewById(R.id.fullhouse);
-        noofplayers = (TextView)findViewById(R.id.noofplayers);
+
 
 
  //       mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
@@ -249,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(topicMessage -> {
                     Log.d(TAG, "Received " + topicMessage.getPayload());
-//                    addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel.class));
+                    addItem(mGson.fromJson(topicMessage.getPayload(), EchoModel.class));
 
 
 
@@ -293,7 +297,6 @@ public class MainActivity extends AppCompatActivity {
 //            Toast.makeText(this, "ZeroIsMaxDateTimeField", Toast.LENGTH_SHORT).show();
         }
         else if (echoModel.getNumber()!=0){
-
             number.setText(echoModel.getNumber().toString());
             number.setBackgroundColor(Color.parseColor("#FFFF8800"));
     //        completednumbers = echoModel.getCompletedNumbers();
@@ -322,11 +325,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (echoModel.getValidClaim()==true){
-
             completednumbers = echoModel.getCompletedNumbers();
-
             Log.e("complerted ", String.valueOf(completednumbers));
-
             Authenticate2();
 
 
@@ -342,14 +342,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        mDataSet.clear();
-
-
-        mDataSet.add(echoModel.getNumber().toString());
-
-
-        //    mDataSet.add(echoModel.getNumber() + " - " + mTimeFormat.format(new Date()));
-        mAdapter.notifyDataSetChanged();
+//        mDataSet.clear();
+//
+//
+//        mDataSet.add(echoModel.getNumber().toString());
+//
+//
+//        //    mDataSet.add(echoModel.getNumber() + " - " + mTimeFormat.format(new Date()));
+//        mAdapter.notifyDataSetChanged();
      //   mRecyclerView.smoothScrollToPosition(mDataSet.size() - 1);
     }
 
@@ -672,47 +672,53 @@ public class MainActivity extends AppCompatActivity {
                                     JSONObject fd = sds.getJSONObject(i);
 
                                     String prizename= fd.getString("prizeName");
+
+
                                     String prizecost = fd.getString("prizeCost");
 
                                     String prizeCompleted = fd.getString("prizeCompleted");
 
+                                    Log.e("prizename",prizeCompleted +prizename+prizecost);
 
                                     if(prizename.equalsIgnoreCase("FULL_HOUISE"))
                                     {
 
-                                        fullhouse.setText("FULL_HOUISE: " + prizecost);
+                                        fullhouse.setText("FULL HOUSE: "+prizecost.toString());
 
                                     }
                                     else {
 
-                                        fullhouse.setVisibility(View.GONE);
+//                                        fullhouse.setVisibility(View.GONE);
+
                                     }
 
 
                                     if (prizename.equalsIgnoreCase("FIRST_ROW")){
 
 
-                                        firstrow.setText("FIRST ROW:  "+prizecost);
+//                                        firstrow.setText(prizecost.toString());
 
                                     }
                                     else {
+                                        firstrow.setText("hello");
 
-                                        firstrow.setVisibility(View.GONE);
+  //                                      firstrow.setVisibility(View.GONE);
                                     }
 
                                     if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
                                         middlerow.setText("MIDDLE_ROW:  "+prizecost);
 
+    //                                    middlerow.setText("hello");
                                     }
                                     else{
 
-                                        middlerow.setVisibility(View.GONE);
+//                                        middlerow.setVisibility(View.GONE);
                                     }
 
 
                                     if (prizename.equalsIgnoreCase("FAST_FIVE")){
 
-                                        fastfive.setText("MIDDLE_ROW:  "+prizecost);
+                                        fastfive.setText("FAST FIVE:  "+prizecost);
 
 
                                     }
@@ -724,7 +730,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     if (prizename.equalsIgnoreCase("LAST_ROW")) {
 
-                                        lastrow.setText("MIDDLE_ROW:  "+prizecost);
+                                        lastrow.setText("LASTROW:  "+prizecost);
 
 
                                     }else {
@@ -751,7 +757,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         tktrow1.add(row1.getString(j));
 
-                                        Log.w("Row 1 ", String.valueOf(tktrow1));
+   //                                     Log.w("Row 1 ", String.valueOf(tktrow1));
 
                                     }
 
@@ -761,7 +767,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         tktrow2.add(row2.getString(j));
 
-                                        Log.w("Row 2", String.valueOf(tktrow2));
+  //                                      Log.w("Row 2", String.valueOf(tktrow2));
 
                                     }
 
@@ -772,7 +778,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         tktrow2.add(row3.getString(j));
 
-                                        Log.w("Row 3", String.valueOf(tktrow3));
+//                                        Log.w("Row 3", String.valueOf(tktrow3));
 
                                     }
                                     data.id = s;
@@ -817,11 +823,14 @@ public class MainActivity extends AppCompatActivity {
 //                            Table();
                             mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
                             Adapter = new AdapterFish(MainActivity.this, filterdata);
+                            Adapter.setHasStableIds(true);
                             mRVFishPrice.setAdapter(Adapter);
-//                            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
 
-                            mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
-                            //      mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.HORIZONTAL,true));
+                            mRVFishPrice.setHasFixedSize(false);
+
+  //                          mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+  //                          mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
+                                 mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,true));
   ///                          Toast.makeText(MainActivity.this, "PASS", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -1139,6 +1148,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         List<DataFish> data = Collections.emptyList();
 
         int currentPos = 0;
@@ -1157,6 +1167,8 @@ public class MainActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.ticket, parent, false);
 
             final MyHolder holder = new MyHolder(view);
+
+
             return holder;
         }
 
@@ -1167,7 +1179,18 @@ public class MainActivity extends AppCompatActivity {
 
             // Get current position of item in recyclerview to bind data and assign values from list
             final MyHolder myHolder = (MyHolder) holder;
+
+
+
+            holder.setIsRecyclable(false);
+
+            holder.getAdapterPosition();
+
+        //    setHasStableIds(true);
              current = data.get(position);
+
+
+
             myHolder.claim.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
