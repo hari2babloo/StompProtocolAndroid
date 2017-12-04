@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.androidhari.db.TinyDB;
 import com.androidhari.tambola.Countdown;
 import com.androidhari.tambola.HomeScreen;
 import com.google.gson.Gson;
@@ -116,7 +117,8 @@ public class MainActivity extends AppCompatActivity {
     private AdapterFish Adapter;
     private DataFish current;
 
-    List<String> completednumbers = new ArrayList<>();
+    ArrayList<String> completednumbers = new ArrayList<>();
+    ArrayList<String> gamesaveid = new ArrayList<>();
     JSONArray postdata2 = new JSONArray();
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
     private StompClient mStompClient;
     private Disposable mRestPingDisposable;
     private RecyclerView mRVFishPrice;
+    TinyDB tinydb;
     private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private RecyclerView mRecyclerView;
     private Gson mGson = new GsonBuilder().create();
@@ -160,10 +163,44 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-//        sp=getSharedPreferences("login",MODE_PRIVATE);
-//        pass=sp.getString("token",null);
-//        gameid=sp.getString("gno",null);
-//        gamestarttime=sp.getString("gstime",null);
+
+        sp=getSharedPreferences("login",MODE_PRIVATE);
+        pass=sp.getString("token",null);
+        gameid=sp.getString("gno",null);
+        gamestarttime=sp.getString("gstime",null);
+//        pass = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmNAYWJjLmNvbSIsImF1ZGllbmNlIjoid2ViIiwiY3JlYXRlZCI6MTUxMjM4MTY1NTg5MCwiZXhwIjoxNTEyOTg2NDU1fQ.oErSUt_gbWBCQpipqaJ4NAJPLG4kvP5z0wTMY_Fm3IJDuNiS2SzGjqs7_WK8fspAPoy8PVrs-SdqNWo1a3SgCQ";
+//        gameid = "82";
+        tinydb = new TinyDB(this);
+
+        completednumbers = tinydb.getListString(gameid);
+
+        if(completednumbers != null) {
+            //has items here. The fact that has items does not mean that the items are != null.
+            //You have to check the nullity for every item
+
+            completednumbers.add("0");
+
+            tinydb.putListString(gameid,completednumbers);
+            Log.e("Completeed Numbers", String.valueOf(completednumbers));
+
+
+            Log.e(" Exists","Exists");
+        }
+        else {
+
+            completednumbers = tinydb.getListString(gameid);
+
+            Log.e("Completeed Numbers", String.valueOf(completednumbers));
+
+            Log.e(" Not Exists Exists","Exists");
+
+// either there is no instance of ArrayList in arrayList or the list is empty.
+        }
+
+
+
+
+
 
 
         number = (TextView)findViewById(R.id.Number);
@@ -175,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         noofplayers = (TextView)findViewById(R.id.noofplayers);
         Authenticate();
 //        new Thread(new Runnable() {
-//            public void run() {
+//            public v-oid run() {
 //
 //
 //                connectStomp();
@@ -325,9 +362,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (echoModel.getValidClaim()==true){
-            completednumbers = echoModel.getCompletedNumbers();
+            completednumbers = (ArrayList<String>) echoModel.getCompletedNumbers();
             Log.e("complerted ", String.valueOf(completednumbers));
-            Authenticate2();
+            Authenticate();
 
 
   //          Log.e("fdfsd", String.valueOf(echoModel.getCompletedNumbers()));
@@ -680,63 +717,54 @@ public class MainActivity extends AppCompatActivity {
 
                                     Log.e("prizename",prizeCompleted +prizename+prizecost);
 
-                                    if(prizename.equalsIgnoreCase("FULL_HOUISE"))
-                                    {
+                                    if (prizeCompleted.equalsIgnoreCase("TRUE")){
 
-                                        fullhouse.setText("FULL HOUSE: "+prizecost.toString());
+                                        if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+                                        {
+
+                                            fullhouse.setText("FULL HOUSE: "+prizecost.toString());
+
+                                        }
+                                        else
+
+                                        if (prizename.equalsIgnoreCase("FIRST_ROW")){
+
+
+                                            firstrow.setText( "FIRST_ROW" +prizecost.toString());
+
+                                        }
+
+
+
+                                        else
+
+
+
+                                        if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
+                                            middlerow.setText("MIDDLE_ROW:  "+prizecost);
+
+                                            //                                    middlerow.setText("hello");
+                                        }
+
+                                        else if (prizename.equalsIgnoreCase("FAST_FIVE")){
+
+                                            fastfive.setText("FAST FIVE:  "+prizecost);
+
+
+                                        }
+
+                                        else
+
+
+                                        if (prizename.equalsIgnoreCase("LAST_ROW")) {
+
+                                            lastrow.setText("LASTROW:  "+prizecost);
+
+
+                                        }
 
                                     }
-                                    else {
 
-//                                        fullhouse.setVisibility(View.GONE);
-
-                                    }
-
-
-                                    if (prizename.equalsIgnoreCase("FIRST_ROW")){
-
-
-//                                        firstrow.setText(prizecost.toString());
-
-                                    }
-                                    else {
-                                        firstrow.setText("hello");
-
-  //                                      firstrow.setVisibility(View.GONE);
-                                    }
-
-                                    if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
-                                        middlerow.setText("MIDDLE_ROW:  "+prizecost);
-
-    //                                    middlerow.setText("hello");
-                                    }
-                                    else{
-
-//                                        middlerow.setVisibility(View.GONE);
-                                    }
-
-
-                                    if (prizename.equalsIgnoreCase("FAST_FIVE")){
-
-                                        fastfive.setText("FAST FIVE:  "+prizecost);
-
-
-                                    }
-                                    else{
-
-                                     fastfive.setVisibility(View.GONE);
-                                    }
-
-
-                                    if (prizename.equalsIgnoreCase("LAST_ROW")) {
-
-                                        lastrow.setText("LASTROW:  "+prizecost);
-
-
-                                    }else {
-
-                                        lastrow.setVisibility(View.GONE);
-                                    }
 
 
                                 }
@@ -757,7 +785,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         tktrow1.add(row1.getString(j));
 
-   //                                     Log.w("Row 1 ", String.valueOf(tktrow1));
+      //                                 Log.w("Row 1 ", String.valueOf(tktrow1));
 
                                     }
 
@@ -778,7 +806,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         tktrow2.add(row3.getString(j));
 
-//                                        Log.w("Row 3", String.valueOf(tktrow3));
+    //                                    Log.w("Row 3", String.valueOf(tktrow3));
 
                                     }
                                     data.id = s;
@@ -823,7 +851,7 @@ public class MainActivity extends AppCompatActivity {
 //                            Table();
                             mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
                             Adapter = new AdapterFish(MainActivity.this, filterdata);
-                            Adapter.setHasStableIds(true);
+                            Adapter.setHasStableIds(false);
                             mRVFishPrice.setAdapter(Adapter);
 
                             mRVFishPrice.setHasFixedSize(false);
@@ -1004,7 +1032,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         tktrow1.add(row1.getString(j));
 
-                                        Log.w("Row 1 ", String.valueOf(tktrow1));
+//                                        Log.w("Row 1 ", String.valueOf(tktrow1));
 
                                     }
 
@@ -1014,7 +1042,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         tktrow2.add(row2.getString(j));
 
-                                        Log.w("Row 2", String.valueOf(tktrow2));
+   //                                     Log.w("Row 2", String.valueOf(tktrow2));
 
                                     }
 
@@ -1025,7 +1053,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         tktrow2.add(row3.getString(j));
 
-                                        Log.w("Row 3", String.valueOf(tktrow3));
+ //                                       Log.w("Row 3", String.valueOf(tktrow3));
 
                                     }
                                     data.id = s;
@@ -1181,28 +1209,108 @@ public class MainActivity extends AppCompatActivity {
             final MyHolder myHolder = (MyHolder) holder;
 
 
+        //    holder.setIsRecyclable(true);
 
-            holder.setIsRecyclable(false);
-
-            holder.getAdapterPosition();
+            holder.getLayoutPosition();
 
         //    setHasStableIds(true);
-             current = data.get(position);
 
 
+            current = data.get(position);
+
+            myHolder.one.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (tvSelected1) {
+
+
+                        myHolder.one.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected1 = false;
+                    }
+                    else {
+
+                        myHolder.one.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected1 = true;
+                    }
+
+                    if (completednumbers.contains(data.get(position).t1)){
+
+                        completednumbers.remove(data.get(position).t1);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t1);
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+                }
+            });
+
+            myHolder.two.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t2)){
+
+                        completednumbers.remove(data.get(position).t2);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t2);
+                    }
+
+
+                    if (tvSelected2) {
+
+
+                        myHolder.two.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected2 = false;
+                    }
+                    else {
+
+                        myHolder.two.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected2 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
 
             myHolder.claim.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
+//                    completednumbers.add("23");
+//                    completednumbers.add("28");
+//                    completednumbers.add("38");
+//                    completednumbers.add("24");
+//                    completednumbers.add("44");
+
+
+
+                    tinydb.putListString(gameid,completednumbers);
+
+                    Authenticate();
+
+                    data.get(position);
+
+
+                    claimid = ((MyHolder) holder).id.toString();
+
                     myHolder.getAdapterPosition();
 
                     claimposition = position;
-                    claimid = current.id;
+                    claimid = data.get(position).id;
+
 
                     Log.e("position", String.valueOf(claimposition));
 
-                    Log.e("ticketid", String.valueOf(current.id));
+                    Log.e("ticketid", String.valueOf(claimid));
 
 
                     final OkHttpClient client = new OkHttpClient();
@@ -1288,14 +1396,830 @@ public class MainActivity extends AppCompatActivity {
 //            myHolder.one.setText("Name: " + current.preferredName + "  " + current.surname);
        //     myHolder.checkBox.setVisibility(View.GONE);
 
+            myHolder. three.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    if (completednumbers.contains(data.get(position).t3)){
+
+                        completednumbers.remove(data.get(position).t3);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t3);
+                    }
+
+                    if (tvSelected3) {
+
+                        myHolder. three.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected3 = false;
+                    }
+                    else {
+
+                        myHolder.three.setBackground(getDrawable(R.drawable.ticketbrder));
+                        tvSelected3 = true;
+                    }
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+                }
+            });
+
+            myHolder.four.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t4)){
+
+                        completednumbers.remove(data.get(position).t4);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t4);
+                    }
+
+
+                    if (tvSelected4) {
+
+
+                        myHolder.four.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected4 = false;
+                    }
+                    else {
+
+                        myHolder.four.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected4 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.five.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t5)){
+
+                        completednumbers.remove(data.get(position).t5);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t5);
+                    }
+
+
+                    if (tvSelected5) {
+
+
+                        myHolder.five.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected5 = false;
+                    }
+                    else {
+
+                        myHolder.five.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected5 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.six.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t6)){
+
+                        completednumbers.remove(data.get(position).t6);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t6);
+                    }
+
+
+                    if (tvSelected6) {
+
+
+                        myHolder.six.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected6 = false;
+                    }
+                    else {
+
+                        myHolder.six.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected2 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.seven.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t7)){
+
+                        completednumbers.remove(data.get(position).t7);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t7);
+                    }
+
+
+                    if (tvSelected7) {
+
+
+                        myHolder.seven.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected7 = false;
+                    }
+                    else {
+
+                        myHolder.seven.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected7 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.eight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t8)){
+
+                        completednumbers.remove(data.get(position).t8);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t8);
+                    }
+
+
+                    if (tvSelected8) {
+
+
+                        myHolder.eight.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected8 = false;
+                    }
+                    else {
+
+                        myHolder.eight.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected8 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+            myHolder.nine.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t9)){
+
+                        completednumbers.remove(data.get(position).t9);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t9);
+                    }
+
+
+                    if (tvSelected9) {
+
+
+                        myHolder.nine.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected9 = false;
+                    }
+                    else {
+
+                        myHolder.nine.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected9 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.ten.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t10)){
+
+                        completednumbers.remove(data.get(position).t10);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t10);
+                    }
+
+
+                    if (tvSelected10) {
+
+
+                        myHolder.ten.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected10 = false;
+                    }
+                    else {
+
+                        myHolder.ten.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected10 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.eleven.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t11)){
+
+                        completednumbers.remove(data.get(position).t11);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t11);
+                    }
+
+
+                    if (tvSelected11) {
+
+
+                        myHolder.eleven.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected11 = false;
+                    }
+                    else {
+
+                        myHolder.eleven.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected11 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.twelve.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t12)){
+
+                        completednumbers.remove(data.get(position).t12);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t12);
+                    }
+
+
+                    if (tvSelected12) {
+
+
+                        myHolder.twelve.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected12 = false;
+                    }
+                    else {
+
+                        myHolder.twelve.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected12 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.thirteen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t13)){
+
+                        completednumbers.remove(data.get(position).t13);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t13);
+                    }
+
+
+                    if (tvSelected13) {
+
+
+                        myHolder.thirteen.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected13 = false;
+                    }
+                    else {
+
+                        myHolder.thirteen.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected13 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.fourteen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t14)){
+
+                        completednumbers.remove(data.get(position).t14);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t14);
+                    }
+
+
+                    if (tvSelected14) {
+
+
+                        myHolder.fourteen.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected14 = false;
+                    }
+                    else {
+
+                        myHolder.fourteen.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected14 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.fifteen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t15)){
+
+                        completednumbers.remove(data.get(position).t15);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t15);
+                    }
+
+
+                    if (tvSelected15) {
+
+
+                        myHolder.fifteen.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected15 = false;
+                    }
+                    else {
+
+                        myHolder.fifteen.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected15 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.sixteen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t16)){
+
+                        completednumbers.remove(data.get(position).t16);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t16);
+                    }
+
+
+                    if (tvSelected16) {
+
+
+                        myHolder.sixteen.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected16 = false;
+                    }
+                    else {
+
+                        myHolder.sixteen.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected16 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.seventeen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t17)){
+
+                        completednumbers.remove(data.get(position).t17);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t17);
+                    }
+
+
+                    if (tvSelected17) {
+
+
+                        myHolder.seventeen.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected17 = false;
+                    }
+                    else {
+
+                        myHolder.seventeen.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected17 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.eighteen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t18)){
+
+                        completednumbers.remove(data.get(position).t18);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t18);
+                    }
+
+
+                    if (tvSelected18) {
+
+
+                        myHolder.eighteen.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected18 = false;
+                    }
+                    else {
+
+                        myHolder.eighteen.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected18 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.nineteen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t19)){
+
+                        completednumbers.remove(data.get(position).t19);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t19);
+                    }
+
+
+                    if (tvSelected19) {
+
+
+                        myHolder.nineteen.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected19 = false;
+                    }
+                    else {
+
+                        myHolder.nineteen.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected19 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.twenty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t20)){
+
+                        completednumbers.remove(data.get(position).t20);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t20);
+                    }
+
+
+                    if (tvSelected20) {
+
+
+                        myHolder.twenty.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected20 = false;
+                    }
+                    else {
+
+                        myHolder.twenty.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected20 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.twentyone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t21)){
+
+                        completednumbers.remove(data.get(position).t21);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t21);
+                    }
+
+
+                    if (tvSelected21) {
+
+
+                        myHolder.twentyone.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected21 = false;
+                    }
+                    else {
+
+                        myHolder.twentyone.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected21 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.twentytwo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t22)){
+
+                        completednumbers.remove(data.get(position).t22);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t22);
+                    }
+
+
+                    if (tvSelected22) {
+
+
+                        myHolder.twentytwo.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected22 = false;
+                    }
+                    else {
+
+                        myHolder.twentytwo.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected22 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.twentythree.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t23)){
+
+                        completednumbers.remove(data.get(position).t23);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t23);
+                    }
+
+
+                    if (tvSelected23) {
+
+
+                        myHolder.twentythree.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected23 = false;
+                    }
+                    else {
+
+                        myHolder.twentythree.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected23 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+
+            myHolder.twentyfour.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t24)){
+
+                        completednumbers.remove(data.get(position).t24);
+                    }
+                    else {
+                        completednumbers.add(data.get(position).t24);
+                    }
+
+
+                    if (tvSelected24) {
+
+
+                        myHolder.twentyfour.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected24 = false;
+                    }
+                    else {
+
+                        myHolder.twentyfour.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected24 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+
+            myHolder.twentyfive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t25)){
+
+                        completednumbers.remove(data.get(position).t25);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t25);
+                    }
+
+
+                    if (tvSelected25) {
+
+
+                        myHolder.twentyfive.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected25 = false;
+                    }
+                    else {
+
+                        myHolder.twentyfive.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected25 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.twentysix.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t26)){
+
+                        completednumbers.remove(data.get(position).t26);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t26);
+                    }
+
+
+                    if (tvSelected26) {
+
+
+                        myHolder.twentysix.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected26 = false;
+                    }
+                    else {
+
+                        myHolder.twentysix.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected26 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
+
+            myHolder.twentyseven.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (completednumbers.contains(data.get(position).t27)){
+
+                        completednumbers.remove(data.get(position).t27);
+                    }
+                    else {
+
+                        completednumbers.add(data.get(position).t27);
+                    }
+
+
+                    if (tvSelected27) {
+
+
+                        myHolder.twentyseven.setBackground(getDrawable(R.drawable.ticketborder2));
+                        tvSelected27 = false;
+                    }
+                    else {
+
+                        myHolder.twentyseven.setBackground(getDrawable(R.drawable.ticketbrder));
+
+                        tvSelected27 = true;
+                    }
+
+                    Log.d("fdsf0", String.valueOf(completednumbers));
+
+                }
+            });
 
             if (completednumbers.contains(current.t1)){
-                //myHolder.one.setText("1");
-                myHolder.one.setText(current.t1);
-                myHolder.one.setBackground(getDrawable(R.drawable.ticketborder2));
 
-            //    two.setBackground(getDrawable(R.drawable.ticketborder2));
+                myHolder.one.setText(current.t1);
+
+                myHolder.one.setBackground(getDrawable(R.drawable.ticketborder2));
 
             }
             else {
@@ -1303,9 +2227,11 @@ public class MainActivity extends AppCompatActivity {
                 myHolder.one.setText(current.t1);
             }
 
+
             if (completednumbers.contains(current.t2)){
-              //  myHolder.two.setText("1");
+
                 myHolder.two.setText(current.t2);
+
                 myHolder.two.setBackground(getDrawable(R.drawable.ticketborder2));
 
             }
@@ -1313,8 +2239,6 @@ public class MainActivity extends AppCompatActivity {
 
                 myHolder.two.setText(current.t2);
             }
-
-
 
             if (completednumbers.contains(current.t3)){
 
@@ -1643,472 +2567,64 @@ public class MainActivity extends AppCompatActivity {
                 id.setVisibility(View.GONE);
                 one = (TextView) itemView.findViewById(R.id.t1);
                 two = (TextView) itemView.findViewById(R.id.t2);
-
-                one.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (tvSelected1) {
-
-                            one.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected1 = false;
-                        }
-                        else {
-
-                            one.setBackground(getDrawable(R.drawable.ticketbrder));
-
-                            tvSelected1 = true;
-                        }
-                    }
-                });
-
-
-                two.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected2) {
-
-                            two.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected2 = false;
-                        }
-                        else {
-
-                            two.setBackground(getDrawable(R.drawable.ticketbrder));
-
-                            tvSelected2 = true;
-                        }
-
-                    }
-                });
-
                 three = (TextView) itemView.findViewById(R.id.t3);
-                three.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                        if (tvSelected3) {
-
-                            three.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected3 = false;
-                        }
-                        else {
-
-                            three.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected3 = true;
-                        }
-
-                    }
-                });
                 four = (TextView) itemView.findViewById(R.id.t4);
-                four.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected4) {
 
-                            four.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected4 = false;
-                        }
-                        else {
-
-                            four.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected4 = true;
-                        }
-                    }
-                });
                 five = (TextView) itemView.findViewById(R.id.t5);
 
-                five.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected5) {
 
-                            five.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected5 = false;
-                        }
-                        else {
-
-
-                            five.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected5 = true;
-                        }
-                    }
-                });
                 six = (TextView) itemView.findViewById(R.id.t6);
 
-                six.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected6) {
-
-                            six.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected6 = false;
-                        }
-                        else {
-
-                            six.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected6 = true;
-                        }
-                    }
-                });
                 seven = (TextView) itemView.findViewById(R.id.t7);
 
-                seven.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected7) {
 
-                            seven.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected7 = false;
-                        }
-                        else {
-
-                            seven.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected7 = true;
-                        }
-                    }
-                });
                 eight = (TextView) itemView.findViewById(R.id.t8);
-                eight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected8) {
 
-                            eight.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected8 = false;
-                        }
-                        else {
-
-
-                            eight.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected8 = true;
-                        }
-                    }
-                });
                 nine = (TextView) itemView.findViewById(R.id.t9);
 
-                nine.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected9) {
 
-                            nine.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected9 = false;
-                        }
-                        else {
-
-
-                            nine.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected9 = true;
-                        }
-                    }
-                });
                 ten = (TextView)itemView.findViewById(R.id.t10);
 
-                ten.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected10) {
 
-                            ten.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected10 = false;
-                        }
-                        else {
-
-
-                            ten.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected10 = true;
-                        }
-                    }
-                });
                 eleven= (TextView)itemView.findViewById(R.id.t11);
 
-                eleven.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected11) {
 
-                            eleven.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected11 = false;
-                        }
-                        else {
-
-
-                            eleven.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected11 = true;
-                        }
-                    }
-                });
                 twelve= (TextView)itemView.findViewById(R.id.t12);
 
-                twelve.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected12) {
-
-                            twelve.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected12 = false;
-                        }
-                        else {
-
-
-                            twelve.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected12 = true;
-                        }
-                    }
-                });
                 thirteen =  (TextView)itemView.findViewById(R.id.t13);
-                thirteen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected13) {
 
-                            thirteen.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected13 = false;
-                        }
-                        else {
-
-                            thirteen.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected13 = true;
-                        }
-                    }
-                });
                 fourteen= (TextView)itemView.findViewById(R.id.t14);
 
-                fourteen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected14) {
 
-                            fourteen.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected14 = false;
-                        }
-                        else {
-
-                            fourteen.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected14 = true;
-                        }
-                    }
-                });
                 fifteen= (TextView)itemView.findViewById(R.id.t15);
-                fifteen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected15) {
 
-                            fifteen.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected15 = false;
-                        }
-                        else {
-
-                            fifteen.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected15 = true;
-                        }
-                    }
-                });
                 sixteen= (TextView)itemView.findViewById(R.id.t16);
 
-                sixteen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v)
-                    { if (tvSelected16) {
-
-                        sixteen.setBackground(getDrawable(R.drawable.ticketborder2));
-                        tvSelected16 = false;
-                    }
-                    else {
-
-                        sixteen.setBackground(getDrawable(R.drawable.ticketbrder));
-                        tvSelected16 = true;
-                    }
-
-
-                    }
-                });
                 seventeen= (TextView)itemView.findViewById(R.id.t17);
-                seventeen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected17) {
 
-                            seventeen.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected17 = false;
-                        }
-                        else {
-
-                            seventeen.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected17 = true;
-                        }
-                    }
-                });
                 eighteen= (TextView)itemView.findViewById(R.id.t18);
 
-                eighteen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected18) {
-
-                            eighteen.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected18 = false;
-                        }
-                        else {
-
-                            eighteen.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected18 = true;
-                        }
-                    }
-                });
                 nineteen= (TextView)itemView.findViewById(R.id.t19);
 
-                nineteen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected19) {
 
-                            nineteen.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected19 = false;
-                        }
-                        else {
-
-                            nineteen.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected19 = true;
-                        }
-                    }
-                });
                 twenty = (TextView)itemView.findViewById(R.id.t20);
 
-                twenty.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected20) {
 
-                            twenty.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected20 = false;
-                        }
-                        else {
-
-                            twenty.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected20 = true;
-                        }
-                    }
-                });
                 twentyone= (TextView)itemView.findViewById(R.id.t21);
-                twentyone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected21) {
 
-                            twentyone.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected21 = false;
-                        }
-                        else {
-
-                            twentyone.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected21 = true;
-                        }
-                    }
-                });
                 twentytwo= (TextView)itemView.findViewById(R.id.t22);
 
-                twentytwo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected22) {
-
-                            twentytwo.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected22 = false;
-                        }
-                        else {
-
-                            twentytwo.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected22 = true;
-                        }
-                    }
-                });
                 twentythree= (TextView)itemView.findViewById(R.id.t23);
 
-                twentythree.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected23) {
 
-                            twentythree.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected23 = false;
-                        }
-                        else {
-
-
-                            twentythree.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected23 = true;
-                        }
-                    }
-                });
                 twentyfour= (TextView)itemView.findViewById(R.id.t24);
-                twentyfour.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected24) {
 
-                            twentyfour.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected24 = false;
-                        }
-                        else {
-
-                            twentyfour.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected24 = true;
-                        }
-                    }
-                });
                 twentyfive= (TextView)itemView.findViewById(R.id.t25);
-                twentyfive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected25) {
 
-                            twentyfive.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected25 = false;
-                        }
-                        else {
-
-
-                            twentyfive.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected25 = true;
-                        }
-                    }
-                });
                 twentysix= (TextView)itemView.findViewById(R.id.t26);
-                twentysix.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected26) {
 
-                            twentysix.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected26 = false;
-                        }
-                        else {
-
-                            twentysix.setBackground(getDrawable(R.drawable.ticketbrder));
-                            tvSelected26 = true;
-                        }
-                    }
-                });
                 twentyseven= (TextView)itemView.findViewById(R.id.t27);
-
-                twentyseven.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (tvSelected27) {
-
-                            twentyseven.setBackground(getDrawable(R.drawable.ticketborder2));
-                            tvSelected27 = false;
-                        }
-                        else {
-
-                            twentyseven.setBackground(getDrawable(R.drawable.ticketbrder));
-
-                            tvSelected27 = true;
-                        }
-                    }
-                });
 
             }
 
@@ -2123,7 +2639,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
-        builder1.setMessage("Do you want to Close the Game?");
+        builder1.setMessage("Do you want to Save the Game?");
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
@@ -2132,6 +2648,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
 
+
+                        tinydb.putListString(gameid,completednumbers);
                         MainActivity.this.finish();
 
                         textToSpeech.shutdown();
