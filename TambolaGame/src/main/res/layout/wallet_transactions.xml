@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@color/black"
     android:orientation="vertical">
 
@@ -16,10 +15,31 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+    <TextView
+        android:id="@+id/money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:gravity="center"
+        android:text="Rs.500"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/addmoney"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bbkg"
+        android:text="Add Money"
+        android:textColor="@color/cardview_light_background" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="5dp">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout"
@@ -33,17 +53,17 @@
             <android.support.design.widget.TabItem
                 android:id="@+id/tab1"
                 style="@style/tab_item"
-                android:text="Add" />
+                android:text="Purchases" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab2"
                 style="@style/tab_item"
-                android:text="Send" />
+                android:text="History" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab3"
                 style="@style/tab_item"
-                android:text="Cash Out" />
+                android:text="Create" />
 
         </android.support.design.widget.TabLayout>
 

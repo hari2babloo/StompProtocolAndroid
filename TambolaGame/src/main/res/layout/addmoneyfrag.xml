@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,6 +17,11 @@
         android:text="Add a Minimum Amount of Rs.100 to your Wallet"
         android:textColor="@color/orange"
         android:textSize="20sp" />
+
+    <ListView
+        android:id="@+id/prizelist"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

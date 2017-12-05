@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.androidhari.db.TinyDB;
 import com.androidhari.tambola.Countdown;
 import com.androidhari.tambola.HomeScreen;
+import com.androidhari.tambola.PurchaseTicket;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.todddavies.components.progressbar.Main;
@@ -330,12 +331,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (echoModel.getNumber()==0){
-            number.setBackgroundColor(Color.RED);
+
+            number.setBackground(getDrawable(R.drawable.circle3));
+//            number.setBackgroundColor(Color.RED);
 //            Toast.makeText(this, "ZeroIsMaxDateTimeField", Toast.LENGTH_SHORT).show();
         }
         else if (echoModel.getNumber()!=0){
             number.setText(echoModel.getNumber().toString());
-            number.setBackgroundColor(Color.parseColor("#FFFF8800"));
+           number.setBackground(getDrawable(R.drawable.circle2));
     //        completednumbers = echoModel.getCompletedNumbers();
 //            completednumbers = echoModel.getCompletedNumbers();
             Log.e("dsfsdfsdfs", String.valueOf(echoModel.getCompletedNumbers()));
@@ -362,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (echoModel.getValidClaim()==true){
-            completednumbers = (ArrayList<String>) echoModel.getCompletedNumbers();
+          //  completednumbers = (ArrayList<String>) echoModel.getCompletedNumbers();
             Log.e("complerted ", String.valueOf(completednumbers));
             Authenticate();
 
@@ -670,7 +673,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()){
 
-                    runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
 
@@ -717,7 +720,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     Log.e("prizename",prizeCompleted +prizename+prizecost);
 
-                                    if (prizeCompleted.equalsIgnoreCase("TRUE")){
+
 
                                         if(prizename.equalsIgnoreCase("FULL_HOUISE"))
                                         {
@@ -726,15 +729,12 @@ public class MainActivity extends AppCompatActivity {
 
                                         }
                                         else
-
                                         if (prizename.equalsIgnoreCase("FIRST_ROW")){
 
 
                                             firstrow.setText( "FIRST_ROW" +prizecost.toString());
 
                                         }
-
-
 
                                         else
 
@@ -763,11 +763,65 @@ public class MainActivity extends AppCompatActivity {
 
                                         }
 
+                                    if (prizeCompleted.equalsIgnoreCase("TRUE")){
+
+                                        if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+                                        {
+
+                                            fullhouse.setText("FULL HOUSE: FINISHED");
+                                            fullhouse.setTextColor(Color.RED);
+
+                                        }
+                                        else
+
+                                        if (prizename.equalsIgnoreCase("FIRST_ROW")){
+
+
+                                            firstrow.setText( "FIRST_ROW: FINISHED");
+                                            firstrow.setTextColor(Color.RED);
+
+                                        }
+
+
+
+                                        else
+
+
+
+                                        if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
+                                            middlerow.setText("MIDDLE_ROW: FINISHED ");
+                                            middlerow.setTextColor(Color.RED);
+
+                                            //                                    middlerow.setText("hello");
+                                        }
+
+                                        else if (prizename.equalsIgnoreCase("FAST_FIVE")){
+
+                                            fastfive.setText("FAST FIVE: FINISHED ");
+                                            fastfive.setTextColor(Color.RED);
+
+
+                                        }
+
+                                        else
+
+
+                                        if (prizename.equalsIgnoreCase("LAST_ROW")) {
+
+                                            lastrow.setText("LASTROW: FINISHED ");
+                                            lastrow.setTextColor(Color.RED);
+
+
+                                        }
+
+
+                                    }
+
                                     }
 
 
 
-                                }
+//                                }
 
 
                                 for (int i = 0; i < jsonArray.length(); i++){
@@ -1210,13 +1264,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         //    holder.setIsRecyclable(true);
+            final DataFish current = data.get(position);
 
             holder.getLayoutPosition();
 
         //    setHasStableIds(true);
 
 
-            current = data.get(position);
+
 
             myHolder.one.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1285,6 +1340,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+                    number.setBackground(getDrawable(R.drawable.circle2));
+
+
 //                    completednumbers.add("23");
 //                    completednumbers.add("28");
 //                    completednumbers.add("38");
@@ -1295,14 +1353,14 @@ public class MainActivity extends AppCompatActivity {
 
                     tinydb.putListString(gameid,completednumbers);
 
-                    Authenticate();
-
-                    data.get(position);
 
 
-                    claimid = ((MyHolder) holder).id.toString();
+//                    data.get(position);
 
-                    myHolder.getAdapterPosition();
+//
+  //                  claimid = ((MyHolder) holder).id.toString();
+
+    //                myHolder.getAdapterPosition();
 
                     claimposition = position;
                     claimid = data.get(position).id;
@@ -1317,7 +1375,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject postdata = new JSONObject();
                     try {
                         postdata.put("gameId",gameid);
-                        postdata.put("ticketId", current.id);
+                        postdata.put("ticketId", claimid);
                     } catch(JSONException e){
                         // TODO Auto-generated catch block
                         e.printStackTrace();

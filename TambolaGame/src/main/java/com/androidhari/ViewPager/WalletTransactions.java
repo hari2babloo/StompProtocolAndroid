@@ -12,6 +12,45 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.androidhari.Fragment.AddMoneyFrag;
+import com.androidhari.Fragment.CashoutFrag;
+import com.androidhari.Fragment.SendMoneyFrag;
+import com.androidhari.Fragment2.Createfrag;
+import com.androidhari.Fragment2.HistoryFrag;
+import com.androidhari.Fragment2.PurchaseGameFrag;
+import com.androidhari.ViewPagerAdapter;
+import com.androidhari.tambola.FirstPage;
+import com.androidhari.tambola.HomeScreen;
+import com.androidhari.tambola.Wallet;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import ua.naiksoftware.tambola.R;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.androidhari.Fragment.AddMoneyFrag;
@@ -37,7 +76,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
-public class MoneyTransactions extends AppCompatActivity {
+public class WalletTransactions extends AppCompatActivity {
 
     //This is our tablayout
     private TabLayout tabLayout;
@@ -49,21 +88,35 @@ public class MoneyTransactions extends AppCompatActivity {
     ProgressDialog pd;
     SharedPreferences sp;
     String pass,gameid;
+    Button addmoney;
+    TextView money;
 
 
     //Fragments
 
-    SendMoneyFrag SendMoneyFrag;
-    AddMoneyFrag AddMoneyFrag;
-    CashoutFrag CashoutFrag;
+   PurchaseGameFrag purchaseGameFrag;
+    HistoryFrag historyFrag;
+Createfrag createfrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.moneytransactions);
+        setContentView(R.layout.wallet_transactions);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+
+        money = (TextView)findViewById(R.id.money);
+        addmoney =(Button)findViewById(R.id.addmoney);
+        addmoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(WalletTransactions.this, MoneyTransactions.class);
+                startActivity(intent);
+            }
+        });
+
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
         gameid=sp.getString("gno",null);
@@ -72,7 +125,9 @@ public class MoneyTransactions extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
 
-        //Initializing the <></>ablayout
+        GetBalance();
+
+        //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -115,17 +170,88 @@ public class MoneyTransactions extends AppCompatActivity {
 
     }
 
+    private void GetBalance() {
+
+        pd = new ProgressDialog(WalletTransactions.this);
+        pd.setMessage("Getting Your Wallet Balance");
+        pd.setCancelable(false);
+        pd.show();
+
+
+        final OkHttpClient client = new OkHttpClient();
+        JSONObject postdata = new JSONObject();
+
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/wallet")
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+                pd.dismiss();
+                pd.cancel();
+
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String mMessage = response.body().string();
+                Log.w("Response", mMessage);
+                pd.cancel();
+                pd.dismiss();
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+                                String s = json.getJSONObject("data").getString("money");
+                                Log.e("MOney",s);
+
+                                money.setText("Rs  "+  s);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+//                            Toast.makeText(SigninForm.this, "Success", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pd.cancel();
+                            pd.dismiss();
+                            Toast.makeText(WalletTransactions.this, "Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+        });
+
+    }
 
 
     private void setupViewPager(ViewPager viewPager)
     {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        AddMoneyFrag=new AddMoneyFrag();
-        SendMoneyFrag=new SendMoneyFrag();
-        CashoutFrag=new CashoutFrag();
-        adapter.addFragment(AddMoneyFrag,"Add");
-        adapter.addFragment(SendMoneyFrag,"Send");
-        adapter.addFragment(CashoutFrag,"Cash Out");
+        historyFrag=new HistoryFrag();
+        purchaseGameFrag=new PurchaseGameFrag();
+        createfrag=new Createfrag();
+        adapter.addFragment(purchaseGameFrag,"Add");
+        adapter.addFragment(historyFrag,"Purchases");
+        adapter.addFragment(createfrag,"Cash Out");
         viewPager.setAdapter(adapter);
     }
 
@@ -146,13 +272,13 @@ public class MoneyTransactions extends AppCompatActivity {
 
             case R.id.action_item_two:
 
-                Intent intent = new Intent(MoneyTransactions.this, Wallet.class);
+                Intent intent = new Intent(WalletTransactions.this, Wallet.class);
                 startActivity(intent);
                 // Do something
                 return true;
             case R.id.action_item_one:
 
-                Intent intent2 = new Intent(MoneyTransactions.this, HomeScreen.class);
+                Intent intent2 = new Intent(WalletTransactions.this, HomeScreen.class);
                 startActivity(intent2);
                 // Do something
                 return true;
@@ -172,12 +298,12 @@ public class MoneyTransactions extends AppCompatActivity {
 
     private void Logout() {
 
-        pd = new ProgressDialog(MoneyTransactions.this);
+        pd = new ProgressDialog(WalletTransactions.this);
         pd.setMessage("Logging You Out");
         pd.setCancelable(false);
         pd.show();
         final OkHttpClient client = new OkHttpClient();
-       // JSONObject postdata = new JSONObject();
+        // JSONObject postdata = new JSONObject();
 
 
         final Request request = new Request.Builder()
@@ -211,7 +337,7 @@ public class MoneyTransactions extends AppCompatActivity {
                                 String s = json.getString("message");
 
 
-                                Toast.makeText(MoneyTransactions.this, s, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(WalletTransactions.this, s, Toast.LENGTH_SHORT).show();
 
                                 sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp.edit();
@@ -219,7 +345,7 @@ public class MoneyTransactions extends AppCompatActivity {
                                 editor.commit();
                                 finish();
 
-                                Intent in = new Intent(MoneyTransactions.this,FirstPage.class);
+                                Intent in = new Intent(WalletTransactions.this,FirstPage.class);
                                 startActivity(in);
 
                             } catch (JSONException e) {
@@ -238,7 +364,7 @@ public class MoneyTransactions extends AppCompatActivity {
                         public void run() {
                             pd.cancel();
                             pd.dismiss();
-                            Toast.makeText(MoneyTransactions.this, "Fail", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WalletTransactions.this, "Fail", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

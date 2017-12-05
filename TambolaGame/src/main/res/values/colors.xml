@@ -12,7 +12,8 @@
     <color name="mid_gray">#605F64</color>
     <color name="gray_text">#7F8285</color>
     <color name="rim_color_gray">#B0B0B0</color>
-    <color name="center_text">#d31145</color>
+    <color name="center_tex">#d31145</color>
     <color name="round_progress_blue">#2173B9</color>
     <color name="jade">#00a86b</color>
+    <color name="red">#d31145</color>
 </resources>

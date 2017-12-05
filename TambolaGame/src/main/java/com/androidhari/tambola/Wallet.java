@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidhari.ViewPager.MoneyTransactions;
+import com.androidhari.ViewPager.WalletTransactions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,7 +70,7 @@ public class Wallet extends AppCompatActivity {
         history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Wallet.this, TransactionHistory.class);
+                Intent intent = new Intent(Wallet.this, WalletTransactions.class);
                 startActivity(intent);
             }
         });

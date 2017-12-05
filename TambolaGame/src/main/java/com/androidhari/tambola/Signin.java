@@ -115,15 +115,15 @@ public class Signin extends Activity {
 
 
 
-        String pass = sp.getString("token",null);
-        if (pass!=null && !pass.isEmpty()){
-
-            Toast.makeText(this, "Welcome Back Gamer", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this,HomeScreen.class));
-
-        }
-
-        else {
+//        String pass = sp.getString("token",null);
+//        if (pass!=null && !pass.isEmpty()){
+//
+//            Toast.makeText(this, "Welcome Back Gamer", Toast.LENGTH_SHORT).show();
+//            startActivity(new Intent(this,HomeScreen.class));
+//
+//        }
+//
+//        else {
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +141,7 @@ public class Signin extends Activity {
            Toast.makeText(this, "Signin", Toast.LENGTH_SHORT).show();
         }
 
-    }
+//    }
 
     private void Authenticate() {
 

@@ -431,7 +431,8 @@ public class PurchaseTicket extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
 
-                    postdata2.put(current.id);
+//                    claimid = data.get(position).id;
+                    postdata2.put(data.get(position).id);
 //                    filterdata.remove(current);
 //                    notifyItemRemoved(position);
 //                    notifyItemRangeChanged(position,filterdata.size());
