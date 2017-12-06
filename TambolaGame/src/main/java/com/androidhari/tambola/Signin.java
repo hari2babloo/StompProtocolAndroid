@@ -75,7 +75,7 @@ public class Signin extends Activity {
 
        // String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
       //  awesomeValidation.addValidation(Signin.this,R.id.pass,regexPassword, R.string.errpass);
-        awesomeValidation.addValidation(Signin.this,R.id.username,android.util.Patterns.EMAIL_ADDRESS,R.string.errfname);
+        //awesomeValidation.addValidation(Signin.this,R.id.username,android.util.Patterns.EMAIL_ADDRESS,R.string.errfname);
 
         forgotpass.setTypeface(face);
         signup.setTypeface(face);
@@ -115,33 +115,33 @@ public class Signin extends Activity {
 
 
 
-//        String pass = sp.getString("token",null);
-//        if (pass!=null && !pass.isEmpty()){
-//
-//            Toast.makeText(this, "Welcome Back Gamer", Toast.LENGTH_SHORT).show();
-//            startActivity(new Intent(this,HomeScreen.class));
-//
-//        }
-//
-//        else {
+        String pass = sp.getString("token",null);
+        if (pass!=null && !pass.isEmpty()){
+
+            Toast.makeText(this, "Welcome Back Gamer", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,HomeScreen.class));
+
+        }
+
+        else {
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                if (awesomeValidation.validate()){
+          //      if (awesomeValidation.validate()){
                     Authenticate();
-                }
+            //    }
 
 
             }
         });
 
-           Toast.makeText(this, "Signin", Toast.LENGTH_SHORT).show();
+    //       Toast.makeText(this, "Signin", Toast.LENGTH_SHORT).show();
         }
 
-//    }
+   }
 
     private void Authenticate() {
 
@@ -234,15 +234,33 @@ public class Signin extends Activity {
                         @Override
                         public void run() {
 
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+
+                                String s = json.getString("message");
+                                Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("reafa",mMessage);
                             pd.cancel();
                             pd.dismiss();
 
-                            Toast.makeText(Signin.this, "User already logged in other system, please logout", Toast.LENGTH_SHORT).show();
+
                         }
                     });
                 }
 
             }
         });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
     }
 }

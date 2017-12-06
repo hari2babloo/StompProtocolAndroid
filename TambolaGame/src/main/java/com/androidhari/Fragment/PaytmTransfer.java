@@ -1,3 +1,4 @@
+
 package com.androidhari.Fragment;
 
 import android.app.ProgressDialog;
@@ -10,11 +11,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.androidhari.ViewPager.MoneyTransactions;
+import com.androidhari.ViewPager.WalletTransactions;
 import com.androidhari.tambola.FirstPage;
 import com.androidhari.tambola.HomeScreen;
+import com.androidhari.tambola.Signin;
 import com.androidhari.tambola.Wallet;
 
 import org.json.JSONException;
@@ -24,8 +31,10 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
@@ -34,6 +43,12 @@ public class PaytmTransfer extends AppCompatActivity {
     ProgressDialog pd;
     SharedPreferences sp;
     String pass,gameid;
+    RadioGroup radioGroup;
+    Button transfer;
+    EditText mobileno;
+
+    public static final MediaType MEDIA_TYPE =
+            MediaType.parse("application/json");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +61,125 @@ public class PaytmTransfer extends AppCompatActivity {
         pass=sp.getString("token",null);
         gameid=sp.getString("gno",null);
 
+        radioGroup = (RadioGroup)findViewById(R.id.radiogrp);
+        radioGroup.clearCheck();
+        mobileno = (EditText)findViewById(R.id.mobileno);
+        transfer = (Button)findViewById(R.id.transfer);
+        transfer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Transfer();
+            }
+        });
+
+
+
+    }
+
+    private void Transfer() {
+
+        pd = new ProgressDialog(PaytmTransfer.this);
+        pd.setMessage("Signing In");
+        pd.setCancelable(false);
+        pd.show();
+
+
+        final OkHttpClient client = new OkHttpClient();
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("phoneNumber", "");
+            postdata.put("cashOutType", "PAYTM");
+            postdata.put("isRegisteredNumber", "true");
+            postdata.put("amount", "50");
+
+
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                postdata.toString());
+
+
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/wallet/cashout")
+                .post(body)
+                .addHeader("Content-Type", "application/json")
+
+                .build();
+
+
+        Log.e("dasdasd", body.toString());
+
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                pd.cancel();
+                pd.cancel();
+
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+
+//                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String mMessage = response.body().string();
+                pd.cancel();
+                pd.dismiss();
+
+                Log.w("Response", mMessage);
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+                                Log.w("Response", String.valueOf(json));
+                                //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+//                            Toast.makeText(Signin.this, "Success", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("reafa",mMessage);
+                            pd.cancel();
+                            pd.dismiss();
+
+
+                        }
+                    });
+                }
+
+            }
+        });
     }
 
     @Override
@@ -65,7 +199,7 @@ public class PaytmTransfer extends AppCompatActivity {
 
             case R.id.action_item_two:
 
-                Intent intent = new Intent(PaytmTransfer.this, Wallet.class);
+                Intent intent = new Intent(PaytmTransfer.this, WalletTransactions.class);
                 startActivity(intent);
                 // Do something
                 return true;

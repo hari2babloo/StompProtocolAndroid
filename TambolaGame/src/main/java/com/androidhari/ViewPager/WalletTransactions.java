@@ -67,6 +67,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.DoubleSummaryStatistics;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -103,6 +104,9 @@ Createfrag createfrag;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet_transactions);
 
+        sp=getSharedPreferences("login",MODE_PRIVATE);
+        pass=sp.getString("token",null);
+        gameid=sp.getString("gno",null);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
@@ -117,9 +121,6 @@ Createfrag createfrag;
             }
         });
 
-        sp=getSharedPreferences("login",MODE_PRIVATE);
-        pass=sp.getString("token",null);
-        gameid=sp.getString("gno",null);
         //Initializing viewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
@@ -213,9 +214,12 @@ Createfrag createfrag;
                             try {
                                 JSONObject json = new JSONObject(mMessage);
                                 String s = json.getJSONObject("data").getString("money");
+                                Double value = Double.parseDouble(s);
+                                double roundOff = (double) Math.round(value * 100) / 100;
+
                                 Log.e("MOney",s);
 
-                                money.setText("Rs  "+  s);
+                                money.setText("Rs.  "+  roundOff);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -272,7 +276,7 @@ Createfrag createfrag;
 
             case R.id.action_item_two:
 
-                Intent intent = new Intent(WalletTransactions.this, Wallet.class);
+                Intent intent = new Intent(WalletTransactions.this, WalletTransactions.class);
                 startActivity(intent);
                 // Do something
                 return true;

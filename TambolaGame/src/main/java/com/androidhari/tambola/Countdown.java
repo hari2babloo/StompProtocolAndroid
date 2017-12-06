@@ -34,6 +34,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidhari.ViewPager.WalletTransactions;
 import com.bcgdv.asia.lib.ticktock.TickTockView;
 
 import org.json.JSONArray;
@@ -149,7 +150,7 @@ public class Countdown extends AppCompatActivity {
                 pd.cancel();
                 pd.dismiss();
 
-                ///    Log.w("Response", mMessage);
+                    Log.w("time", longV);
                 if (response.isSuccessful()){
                     runOnUiThread(new Runnable() {
                         @Override
@@ -853,7 +854,7 @@ public class Countdown extends AppCompatActivity {
 
             case R.id.action_item_two:
 
-                Intent intent = new Intent(Countdown.this, Wallet.class);
+                Intent intent = new Intent(Countdown.this, WalletTransactions.class);
                 mCountDown.stop();
                 startActivity(intent);
                 // Do something

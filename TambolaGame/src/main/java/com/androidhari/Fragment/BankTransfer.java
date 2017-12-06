@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.androidhari.ViewPager.WalletTransactions;
 import com.androidhari.tambola.FirstPage;
 import com.androidhari.tambola.HomeScreen;
 import com.androidhari.tambola.Wallet;
@@ -83,7 +84,7 @@ public class BankTransfer extends AppCompatActivity {
                 return true;
             case R.id.action_item_two:
 
-                Intent intent2 = new Intent(BankTransfer.this, Wallet.class);
+                Intent intent2 = new Intent(BankTransfer.this, WalletTransactions.class);
                 startActivity(intent2);
                 // Do something
                 return true;

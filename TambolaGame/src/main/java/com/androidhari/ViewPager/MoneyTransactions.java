@@ -146,7 +146,7 @@ public class MoneyTransactions extends AppCompatActivity {
 
             case R.id.action_item_two:
 
-                Intent intent = new Intent(MoneyTransactions.this, Wallet.class);
+                Intent intent = new Intent(MoneyTransactions.this, WalletTransactions.class);
                 startActivity(intent);
                 // Do something
                 return true;

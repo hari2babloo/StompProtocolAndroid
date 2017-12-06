@@ -19,7 +19,7 @@
         android:id="@+id/money"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_margin="15dp"
         android:gravity="center"
         android:text="Rs.500"
         android:textColor="@color/cardview_light_background"
@@ -28,13 +28,24 @@
     <Button
         android:id="@+id/addmoney"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginRight="75dp"
         android:background="@drawable/bbkg"
+        android:gravity="center"
         android:text="Add Money"
-        android:textColor="@color/cardview_light_background" />
+        android:textAlignment="center"
+        android:textColor="@color/cardview_light_background"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white" />
 
     <RelativeLayout
         android:layout_width="match_parent"

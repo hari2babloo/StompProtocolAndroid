@@ -1,6 +1,7 @@
 package com.androidhari.Fragment;
 
 
+import android.accessibilityservice.GestureDescription;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidhari.ViewPager.WalletTransactions;
 import com.androidhari.tambola.Countdown;
 import com.androidhari.tambola.HomeScreen;
 import com.androidhari.tambola.Signin;
@@ -53,6 +55,7 @@ import ua.naiksoftware.tambola.MainActivity;
 import ua.naiksoftware.tambola.R;
 
 import static android.content.Context.MODE_PRIVATE;
+import static ua.naiksoftware.tambola.R.id.status;
 
 
 /**
@@ -66,11 +69,12 @@ public class AddMoneyFrag extends Fragment {
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
 
-    String pass;
+    String pass,mvalue,status;
     View view;
     ProgressDialog pd;
     SharedPreferences sp;
-    Button add;
+    Button add,redeem;
+    TextView vouchervaluetxt;
     EditText money,voucher;
     ArrayList<prizes> dataModels = new ArrayList<>();
     ListView plist;
@@ -87,8 +91,6 @@ public class AddMoneyFrag extends Fragment {
 
         sp= this.getActivity().getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
-
-
         setHasOptionsMenu(true);
     }
 
@@ -100,11 +102,26 @@ public class AddMoneyFrag extends Fragment {
         view = inflater.inflate(R.layout.addmoneyfrag, container, false);
         money = (EditText) view.findViewById(R.id.addmoney);
         voucher = (EditText) view.findViewById(R.id.voucher);
+        vouchervaluetxt = (TextView)view.findViewById(R.id.vouchervalue);
+        vouchervaluetxt.setVisibility(View.GONE);
+
         plist = (ListView) view.findViewById(R.id.prizelist);
 
-       getrecyclerdata();
+    
 
         add = (Button)view.findViewById(R.id.add);
+
+        add.setVisibility(View.GONE);
+        redeem  = (Button)view.findViewById(R.id.redeem);
+
+        redeem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                redeemvoucher();
+
+            }
+        });
 
 
         add.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +134,141 @@ public class AddMoneyFrag extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
+
+    private void redeemvoucher() {
+        pd = new ProgressDialog(getContext());
+        pd.setMessage("Validating your Voucher");
+        pd.setCancelable(false);
+        pd.show();
+
+
+        final OkHttpClient client = new OkHttpClient();
+        JSONObject postdata = new JSONObject();
+        try {
+          //  postdata.put("money", money.getText().toString());
+            postdata.put("voucherCode", voucher.getText().toString());
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                postdata.toString());
+
+
+        final Request request = new Request.Builder()
+                .url("http://52.172.191.222/vms/index.php/voucher/wsVoucherInfo")
+                .post(body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+
+                .build();
+
+
+        Log.e("dasdasd", body.toString());
+
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                pd.cancel();
+                pd.cancel();
+
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+
+//                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String mMessage = response.body().string();
+                pd.cancel();
+                pd.dismiss();
+
+                Log.w("Response", mMessage);
+                if (response.isSuccessful()){
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            try {
+
+                                JSONArray jarray = new JSONArray(mMessage);
+
+                                JSONObject json = jarray.getJSONObject(0);
+
+                                String voucherstatus = json.getString("voucherValidityStatus");
+
+                                status = json.getString("status");
+
+                                mvalue = json.getString("voucherValue");
+                                Log.d("worth",mvalue);
+
+                                if (voucherstatus.equalsIgnoreCase("0")){
+
+
+
+
+
+
+                                }
+                                else if (voucherstatus.equalsIgnoreCase("1")){
+
+                                    redeem.setVisibility(View.GONE);
+
+                                    vouchervaluetxt.setVisibility(View.VISIBLE);
+                                    vouchervaluetxt.setText("Your Voucher Value is worth Rs:" +json.getString("voucherValue"));
+
+                                    add.setVisibility(View.VISIBLE);
+
+
+
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+//                            Intent in = new Intent(getContext(), Wallet.class);
+//
+//                            startActivity(in);
+                           Toast.makeText(getContext(), status, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+                else {
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+                                String s = json.getString("message");
+                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                }
+            }
+
+
+        });
+    }
+
+
 
 
     public class prizes{
@@ -159,124 +311,6 @@ public class AddMoneyFrag extends Fragment {
 
     }
 
-    private void getrecyclerdata() {
-
-
-        pd = new ProgressDialog(getContext());
-        pd.setMessage("Getting Purchase");
-        pd.setCancelable(false);
-        pd.show();
-
-
-        final OkHttpClient client = new OkHttpClient();
-
-
-        final Request request = new Request.Builder()
-                .url("http://game-dev.techmech.men:8080/api/game/user/games")
-                .get()
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization",pass)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                pd.cancel();
-                pd.cancel();
-
-                String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
-
-//                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
-
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                final String mMessage = response.body().string();
-                pd.cancel();
-                pd.dismiss();
-
-                Log.w("Response", mMessage);
-                if (response.isSuccessful()){
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                           Log.d("data",mMessage);
-
-                            try {
-                                JSONObject json = new JSONObject(mMessage);
-//                        JSONObject json2 = json.getJSONObject("data");
-                                JSONArray jsonArray = json.getJSONArray("data");
-
-
-                                //                       Log.e("data", String.valueOf(jsonArray));
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject json_data = jsonArray.getJSONObject(i).getJSONObject("game");
-//                                    JSONObject json_data2 = jsonArray.getJSONObject(i);
-                                    String status = json_data.getString("status");
-//                                    Log.e("status",status);
-                                    String getname = json_data.getString("name");
-
-
-                                    String longV = json_data.getString("startTime");
-                                    long millisecond = Long.parseLong(longV);
-                                    // or you already have long value of date, use this instead of milliseconds variable.
-                                    String starttime = DateFormat.format("dd/MM/yyyy hh:mm:ss a", new Date(millisecond)).toString();
-                                    //                                   Log.e("startime",starttime);
-                                    String gno = json_data.getString("id");
-
-                                    //                                  Log.e("fdsfsdf",getname+starttime+gno);
-                                    dataModels.add(new prizes(gno,getname,starttime,status));
-                                }
-                                CustomAdapter adapter= new CustomAdapter(dataModels,getContext());
-
-                                plist.setAdapter(adapter);
-
-                                Log.e("datamodels", String.valueOf(dataModels));
-                                //                              ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
-
-                                //                              String s = json.getJSONObject("data").getString("name");
-                                //                             Toast.makeText(WalletPurchasehistory.this, s, Toast.LENGTH_SHORT).show();
-
-
-                            }
-                            catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-                }
-
-                else {
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                            try {
-                                JSONObject json = new JSONObject(mMessage);
-
-                                String s = json.getString("message");
-                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-                }
-            }
-
-
-        });
-    }
-
-
     public class CustomAdapter extends ArrayAdapter<prizes> implements View.OnClickListener {
 
         private ArrayList<prizes> dataSet;
@@ -310,8 +344,7 @@ public class AddMoneyFrag extends Fragment {
 //                    Snackbar.make(v, "Release date " +dataModel.getGname(), Snackbar.LENGTH_LONG)
 //                            .setAction("No action", null).show();
 //                    break;
-                case R.id.status:
-                    Toast.makeText(mContext, "Hllo", Toast.LENGTH_SHORT).show();
+
 
             }
         }
@@ -430,7 +463,7 @@ public class AddMoneyFrag extends Fragment {
         final OkHttpClient client = new OkHttpClient();
         JSONObject postdata = new JSONObject();
         try {
-            postdata.put("money", money.getText().toString());
+            postdata.put("money", mvalue);
             postdata.put("voucherCode", voucher.getText().toString());
         } catch(JSONException e){
             // TODO Auto-generated catch block
@@ -480,7 +513,7 @@ public class AddMoneyFrag extends Fragment {
                         @Override
                         public void run() {
 
-                            Intent in = new Intent(getContext(), Wallet.class);
+                            Intent in = new Intent(getContext(), WalletTransactions.class);
 
                             startActivity(in);
                             Toast.makeText(getContext(), "Money Added Successfully", Toast.LENGTH_SHORT).show();

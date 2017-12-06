@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidhari.ViewPager.WalletTransactions;
 import com.github.rubensousa.gravitysnaphelper.GravityPagerSnapHelper;
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 
@@ -468,7 +469,7 @@ public class HomeScreen extends AppCompatActivity {
                 return true;
             case R.id.action_item_two:
 
-                Intent intent2 = new Intent(HomeScreen.this, Wallet.class);
+                Intent intent2 = new Intent(HomeScreen.this, WalletTransactions.class);
                 startActivity(intent2);
                 // Do something
                 return true;

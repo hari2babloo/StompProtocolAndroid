@@ -29,6 +29,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidhari.ViewPager.WalletTransactions;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -756,7 +758,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
             case R.id.action_item_two:
 
-                Intent intent = new Intent(PurchaseTicket.this, Wallet.class);
+                Intent intent = new Intent(PurchaseTicket.this, WalletTransactions.class);
                 startActivity(intent);
                 // Do something
                 return true;

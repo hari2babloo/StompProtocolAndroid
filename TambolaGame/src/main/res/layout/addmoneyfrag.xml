@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
     android:background="@color/black"
     android:gravity="center"
     android:orientation="vertical">
@@ -14,40 +13,18 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="Add a Minimum Amount of Rs.100 to your Wallet"
         android:textColor="@color/orange"
-        android:textSize="20sp" />
-
-    <ListView
-        android:id="@+id/prizelist"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp" />
+        android:textSize="15sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="25dp"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
 
-
-        <EditText
-            android:id="@+id/addmoney"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:backgroundTint="#FF9800"
-            android:drawableLeft="@drawable/user"
-            android:drawablePadding="10dp"
-            android:hint="Add Money"
-            android:singleLine="true"
-            android:textColor="@android:color/background_light"
-            android:textColorHighlight="@android:color/background_light"
-            android:textColorHint="@android:color/background_light"
-            android:textColorLink="@android:color/background_light" />
 
         <EditText
             android:id="@+id/voucher"
@@ -65,14 +42,57 @@
             android:textColorLink="@android:color/background_light" />
 
         <Button
-            android:id="@+id/add"
+            android:id="@+id/redeem"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="30dp"
 
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/bbkg"
             android:gravity="center"
-            android:text="Add"
+            android:text="Redeem"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/vouchervalue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="00"
+            android:textColor="@color/orange"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/addmoney"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#FF9800"
+            android:drawableLeft="@drawable/user"
+            android:drawablePadding="10dp"
+            android:hint="Add Money"
+            android:singleLine="true"
+            android:textColor="@android:color/background_light"
+            android:textColorHighlight="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            android:textColorLink="@android:color/background_light"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="30dp"
+
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bbkg"
+            android:gravity="center"
+            android:text="add Money"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>

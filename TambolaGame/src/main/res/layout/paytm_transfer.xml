@@ -36,29 +36,37 @@
             android:gravity="center"
             android:text="Cash Out"
             android:textColor="@color/orange"
-            android:textSize="40sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
-        <RadioButton
-            android:id="@+id/radioButton"
-            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        <RadioGroup
+            android:id="@+id/radiogrp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Send Money to your Registered Mobile Number"
-            android:textColor="@color/cardview_light_background"
-            app:buttonTint="@color/orange" />
+            android:layout_height="match_parent">
 
-        <RadioButton
-            android:id="@+id/radioButton2"
-            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enter Paytm Mobile Number"
-            android:textColor="@color/cardview_light_background"
-            app:buttonTint="@color/orange" />
+            <RadioButton
+                android:id="@+id/radioButton"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Send Money to your Registered Mobile Number"
+                android:textColor="@color/cardview_light_background"
+                app:buttonTint="@color/orange" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Enter Paytm Mobile Number"
+                android:textColor="@color/cardview_light_background"
+                app:buttonTint="@color/orange" />
+        </RadioGroup>
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/mobileno"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -78,7 +86,7 @@
             android:textColorLink="@android:color/background_light" />
 
         <Button
-            android:id="@+id/submit"
+            android:id="@+id/transfer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
