@@ -1278,15 +1278,11 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     if (tvSelected1) {
-
-
                         myHolder.one.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected1 = false;
                     }
                     else {
-
                         myHolder.one.setBackground(getDrawable(R.drawable.ticketbrder));
-
                         tvSelected1 = true;
                     }
 
@@ -1298,7 +1294,6 @@ public class MainActivity extends AppCompatActivity {
 
                         completednumbers.add(data.get(position).t1);
                     }
-
                     Log.d("fdsf0", String.valueOf(completednumbers));
                 }
             });

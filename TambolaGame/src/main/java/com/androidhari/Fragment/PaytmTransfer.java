@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidhari.ViewPager.MoneyTransactions;
@@ -42,10 +45,12 @@ public class PaytmTransfer extends AppCompatActivity {
 
     ProgressDialog pd;
     SharedPreferences sp;
-    String pass,gameid;
+    String pass,gameid,phoneno,isregisterednum,amt;
     RadioGroup radioGroup;
+    RadioButton checkedRadioButton;
     Button transfer;
     EditText mobileno;
+    TextView amtt;
 
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
@@ -60,11 +65,57 @@ public class PaytmTransfer extends AppCompatActivity {
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
         gameid=sp.getString("gno",null);
+        amt=sp.getString("amt",null);
+        Log.e("amount",amt);
 
         radioGroup = (RadioGroup)findViewById(R.id.radiogrp);
+        amtt =(TextView)findViewById(R.id.amtt);
+
+        amtt.setText("You are Transferring Amount of Rs"+amt);
+
+         checkedRadioButton = (RadioButton)radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
         radioGroup.clearCheck();
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+                boolean isChecked = checkedRadioButton.isChecked();
+
+                // If the radiobutton that has changed in check state is now checked...
+                if (isChecked)
+                {
+                    // Changes the textview's text to "Checked: example radiobutton text"
+                  //  tv.setText("Checked:" + checkedRadioButton.getText());
+
+                    if (checkedRadioButton.getText().toString().equalsIgnoreCase("Send Money to your Registered Mobile Number")){
+
+                        phoneno = null;
+                        isregisterednum="true";
+                        mobileno.setVisibility(View.GONE);
+
+                    } else if (checkedRadioButton.getText().toString().equalsIgnoreCase("Enter Paytm Mobile Number")){
+
+                        phoneno = mobileno.getText().toString();
+                        isregisterednum="false";
+                        mobileno.setVisibility(View.VISIBLE);
+
+
+
+                    }
+
+
+                }
+
+
+
+            }
+        });
+
         mobileno = (EditText)findViewById(R.id.mobileno);
         transfer = (Button)findViewById(R.id.transfer);
+
+
         transfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +130,7 @@ public class PaytmTransfer extends AppCompatActivity {
     private void Transfer() {
 
         pd = new ProgressDialog(PaytmTransfer.this);
-        pd.setMessage("Signing In");
+        pd.setMessage("Transferring your Money");
         pd.setCancelable(false);
         pd.show();
 
@@ -87,10 +138,10 @@ public class PaytmTransfer extends AppCompatActivity {
         final OkHttpClient client = new OkHttpClient();
         JSONObject postdata = new JSONObject();
         try {
-            postdata.put("phoneNumber", "");
+            postdata.put("phoneNumber", phoneno);
             postdata.put("cashOutType", "PAYTM");
-            postdata.put("isRegisteredNumber", "true");
-            postdata.put("amount", "50");
+            postdata.put("isRegisteredNumber", isregisterednum);
+            postdata.put("amount", amt);
 
 
         } catch(JSONException e){
@@ -101,11 +152,13 @@ public class PaytmTransfer extends AppCompatActivity {
         RequestBody body = RequestBody.create(MEDIA_TYPE,
                 postdata.toString());
 
+        Log.e("postvalue", String.valueOf(body));
 
         final Request request = new Request.Builder()
                 .url("http://game-dev.techmech.men:8080/api/wallet/cashout")
                 .post(body)
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
 
                 .build();
 
@@ -142,6 +195,7 @@ public class PaytmTransfer extends AppCompatActivity {
                             try {
                                 JSONObject json = new JSONObject(mMessage);
                                 Log.w("Response", String.valueOf(json));
+                                Toast.makeText(PaytmTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
                                 //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -164,7 +218,7 @@ public class PaytmTransfer extends AppCompatActivity {
                                 JSONObject json = new JSONObject(mMessage);
 
 
-
+                                Toast.makeText(PaytmTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
