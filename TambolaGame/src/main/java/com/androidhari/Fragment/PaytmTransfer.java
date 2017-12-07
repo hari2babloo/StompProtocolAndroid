@@ -71,7 +71,7 @@ public class PaytmTransfer extends AppCompatActivity {
         radioGroup = (RadioGroup)findViewById(R.id.radiogrp);
         amtt =(TextView)findViewById(R.id.amtt);
 
-        amtt.setText("You are Transferring Amount of Rs"+amt);
+        amtt.setText("You are Transferring Amount of Rs : "+amt);
 
          checkedRadioButton = (RadioButton)radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
         radioGroup.clearCheck();
@@ -196,6 +196,9 @@ public class PaytmTransfer extends AppCompatActivity {
                                 JSONObject json = new JSONObject(mMessage);
                                 Log.w("Response", String.valueOf(json));
                                 Toast.makeText(PaytmTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(PaytmTransfer.this,WalletTransactions.class);
+                                startActivity(intent);
                                 //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -235,7 +238,6 @@ public class PaytmTransfer extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -245,21 +247,27 @@ public class PaytmTransfer extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        getMenuInflater().inflate(R.menu.homemenu, (Menu) item);
+        // getMenuInflater().inflate(R.menu.homemenu, (Menu) item);
         int id = item.getItemId();
 
 
         switch (item.getItemId()) {
+//            case R.id.logout:
+//
+//                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+//                // User chose the "Favorite" action, mark the current item
+//                // as a favorite...
+//                return true;
 
-            case R.id.action_item_two:
+            case R.id.action_item_one:
 
-                Intent intent = new Intent(PaytmTransfer.this, WalletTransactions.class);
+                Intent intent = new Intent(PaytmTransfer.this, HomeScreen.class);
                 startActivity(intent);
                 // Do something
                 return true;
-            case R.id.action_item_one:
+            case R.id.action_item_two:
 
-                Intent intent2 = new Intent(PaytmTransfer.this, HomeScreen.class);
+                Intent intent2 = new Intent(PaytmTransfer.this, WalletTransactions.class);
                 startActivity(intent2);
                 // Do something
                 return true;
@@ -269,14 +277,20 @@ public class PaytmTransfer extends AppCompatActivity {
                 // Do something
                 return true;
 
+
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
+
+
         }
 
-    }
+        // If we got here, the user's action was not recognized.
+        // Invoke the superclass to handle it.
 
+
+    }
     private void Logout() {
 
         pd = new ProgressDialog(PaytmTransfer.this);
@@ -285,6 +299,7 @@ public class PaytmTransfer extends AppCompatActivity {
         pd.show();
         final OkHttpClient client = new OkHttpClient();
         JSONObject postdata = new JSONObject();
+
 
         final Request request = new Request.Builder()
                 .url("http://game-dev.techmech.men:8080/api/user/logout")

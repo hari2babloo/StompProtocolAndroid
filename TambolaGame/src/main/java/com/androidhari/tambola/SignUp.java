@@ -39,6 +39,7 @@ public class SignUp extends Activity {
     AwesomeValidation awesomeValidation;
     Button submit;
     ProgressDialog pd;
+    TextView loginlink;
 
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
@@ -52,6 +53,7 @@ public class SignUp extends Activity {
 
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+
 
         submit = (Button)findViewById(R.id.submit);
 
@@ -71,7 +73,7 @@ public class SignUp extends Activity {
 
 
 
-        login = (TextView)findViewById(R.id.loginlink);
+        login = (TextView)findViewById(R.id.loginlink2);
         fname=(TextView)findViewById(R.id.fname);
         lname=(TextView)findViewById(R.id.lname);
         email=(TextView)findViewById(R.id.email);
@@ -88,8 +90,8 @@ public class SignUp extends Activity {
             public void onClick(View view) {
 
 
-//                Intent in = new Intent(getApplicationContext(),SigninForm.class);
-//                startActivity(in);
+                Intent in = new Intent(getApplicationContext(),Signin.class);
+                startActivity(in);
             }
         });
 

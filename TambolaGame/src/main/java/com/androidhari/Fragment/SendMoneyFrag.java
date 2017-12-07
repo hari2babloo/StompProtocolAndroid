@@ -2,6 +2,7 @@ package com.androidhari.Fragment;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -146,6 +147,8 @@ public class SendMoneyFrag extends Fragment {
                                Log.e("Result", s);
 
                                 Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                                Intent in = new Intent(getContext(),WalletTransactions.class);
+                                startActivity(in);
 //
 //                                balance.setText("  Your Wallet Balance Rs.  "+  roundOff);
 

@@ -513,10 +513,16 @@ public class AddMoneyFrag extends Fragment {
                         @Override
                         public void run() {
 
-                            Intent in = new Intent(getContext(), WalletTransactions.class);
-
-                            startActivity(in);
-                            Toast.makeText(getContext(), "Money Added Successfully", Toast.LENGTH_SHORT).show();
+                            JSONObject json = null;
+                            try {
+                                json = new JSONObject(mMessage);
+                                String s = json.getString("message");
+                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                                Intent in = new Intent(getContext(), WalletTransactions.class);
+                                startActivity(in);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
 

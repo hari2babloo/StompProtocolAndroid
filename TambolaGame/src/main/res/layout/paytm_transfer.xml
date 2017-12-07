@@ -28,21 +28,10 @@
 
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="50dp"
-            android:gravity="center"
-            android:text="Cash Out"
-            android:textColor="@color/orange"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/amtt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
             android:text="TextView"
             android:textAlignment="center"
             android:textColor="@color/cardview_light_background" />

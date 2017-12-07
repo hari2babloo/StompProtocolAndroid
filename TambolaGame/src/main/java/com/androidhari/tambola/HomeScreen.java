@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,8 +39,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -50,6 +55,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
+import static android.support.design.R.attr.thickness;
 import static android.support.design.R.attr.windowActionBar;
 import static android.view.View.GONE;
 
@@ -64,7 +70,7 @@ public class HomeScreen extends AppCompatActivity {
             MediaType.parse("application/json");
     SharedPreferences sp;
     ProgressDialog pd;
-    String pass,id;
+    String pass,id,title;
     //List<App> apps = getApps();
 
     List<App> apps = new ArrayList<>();
@@ -79,6 +85,9 @@ public class HomeScreen extends AppCompatActivity {
         setContentView(R.layout.home_screen);
 
 
+     //   this.setTitle("Hello Hari");
+
+
         sp= getSharedPreferences("login",MODE_PRIVATE);
         pass= sp.getString("token",null);
 
@@ -89,6 +98,7 @@ public class HomeScreen extends AppCompatActivity {
 //        // Enable the Up button
 //        ab.setDisplayHomeAsUpEnabled(true);
 
+        getuserdetails();
         getdata();
 
 
@@ -114,6 +124,90 @@ public class HomeScreen extends AppCompatActivity {
 
     }
 
+    private void getuserdetails() {
+
+
+//        pd = new ProgressDialog(HomeScreen.this);
+//        pd.setMessage("Getting User Details");
+//        pd.setCancelable(false);
+//        pd.show();
+
+
+
+        final OkHttpClient client = new OkHttpClient();
+
+
+
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/user")
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+                .build();
+
+
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+//                pd.cancel();
+//                pd.cancel();
+
+                String mMessage = e.getMessage().toString();
+                //               Log.w("failure Response", mMessage);
+
+//                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String mMessage = response.body().string();
+//                pd.cancel();
+//                pd.dismiss();
+
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            try {
+                                JSONObject json = new JSONObject(mMessage).getJSONObject("data");
+                                String name = json.getString("first_name");
+                                //title = name;
+                                HomeScreen.this.setTitle( "Welcome, "+name);
+
+                                Log.e("name",name);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+//                            Toast.makeText(Signin.this, "Success", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+//                            pd.cancel();
+//                            pd.dismiss();
+
+                            Toast.makeText(HomeScreen.this, "Cancel", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+        });
+    }
+
     private void setupAdapter() {
 
 
@@ -123,7 +217,7 @@ public class HomeScreen extends AppCompatActivity {
 
             snapAdapter.addSnap(new Snap(Gravity.START, "Bumper Games", apps1));
             snapAdapter.addSnap(new Snap(Gravity.CENTER_HORIZONTAL, "Upcoming Games   ", apps));
-            snapAdapter.addSnap(new Snap(Gravity.END, "Private Games", apps2));
+        //    snapAdapter.addSnap(new Snap(Gravity.END, "Private Games", apps2));
 //            snapAdapter.addSnap(new Snap(Gravity.CENTER, "Top Games", apps));
             mRecyclerView.setAdapter(snapAdapter);
 

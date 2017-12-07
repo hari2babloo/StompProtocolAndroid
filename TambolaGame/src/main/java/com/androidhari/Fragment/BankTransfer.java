@@ -184,6 +184,9 @@ public class BankTransfer extends AppCompatActivity {
                                 JSONObject json = new JSONObject(mMessage);
                                 Log.w("Response", String.valueOf(json));
                                 Toast.makeText(BankTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(BankTransfer.this,WalletTransactions.class);
+                                startActivity(intent);
                                 //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();

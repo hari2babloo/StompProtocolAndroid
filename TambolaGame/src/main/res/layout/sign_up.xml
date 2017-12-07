@@ -141,13 +141,13 @@
                 android:textColor="#FFFFFF" />
 
             <TextView
-                android:id="@+id/loginlink"
+                android:id="@+id/loginlink2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text="Already Have Account?? Login"
-                android:textColorHighlight="#FF9800"
                 android:textColor="@android:color/background_light"
+                android:textColorHighlight="#FF9800"
                 android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
