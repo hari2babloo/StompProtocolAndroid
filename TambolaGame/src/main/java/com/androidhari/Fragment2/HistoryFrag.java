@@ -3,6 +3,7 @@ package com.androidhari.Fragment2;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidhari.Fragment.AddMoneyFrag;
+import com.androidhari.tambola.GameInfo;
+import com.androidhari.tambola.Signin;
 import com.androidhari.tambola.TransactionHistory;
 
 import org.json.JSONArray;
@@ -81,7 +84,7 @@ public class HistoryFrag extends Fragment {
 
 
         pd = new ProgressDialog(getContext());
-        pd.setMessage("Getting Purchase");
+        pd.setMessage("Getting Purchases");
         pd.setCancelable(false);
         pd.show();
 
@@ -171,14 +174,23 @@ public class HistoryFrag extends Fragment {
                         @Override
                         public void run() {
 
-                            pd.dismiss();
-                            pd.cancel();
-
                             try {
-                                JSONObject json = new JSONObject(mMessage);
 
-                                String s = json.getString("message");
-                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(),Signin.class);
+                                    startActivity(intent);
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -286,17 +298,38 @@ public class HistoryFrag extends Fragment {
 
 
             try {
-                double value = Double.parseDouble(dataModel.transactionAmount);
-                if (value < 0) {
+
+                if (dataModel.transactionType.equalsIgnoreCase("DEBIT")){
                     viewHolder.transactionAmount.setText("Rs: " + dataModel.transactionAmount);
-                    viewHolder.transactionAmount.setTextColor(Color.RED);
-                    //  System.out.println(value + " is negative");
-                } else {
-                    viewHolder.transactionAmount.setText("Rs: +" + dataModel.transactionAmount);
-                    viewHolder.transactionAmount.setTextColor(Color.GREEN);
-                    //   System.out.println(value + " is possitive");
+                    viewHolder.transactionType.setText(dataModel.transactionType);
+                    viewHolder.transactionType.setTextColor(Color.RED);
+
 
                 }
+
+                else {
+
+                    if (dataModel.transactionType.equalsIgnoreCase("CREDIT")){
+                        viewHolder.transactionAmount.setText("Rs: " + dataModel.transactionAmount);
+                        viewHolder.transactionType.setText(dataModel.transactionType);
+                        viewHolder.transactionType.setTextColor(Color.GREEN);
+
+
+                    }
+                }
+
+
+//                double value = Double.parseDouble(dataModel.transactionAmount);
+//                if (value < 0) {
+//                    viewHolder.transactionAmount.setText("Rs: " + dataModel.transactionAmount);
+//                    viewHolder.transactionAmount.setTextColor(Color.RED);
+//                    //  System.out.println(value + " is negative");
+//                } else {
+//                    viewHolder.transactionAmount.setText("Rs: +" + dataModel.transactionAmount);
+//                    viewHolder.transactionAmount.setTextColor(Color.GREEN);
+//                    //   System.out.println(value + " is possitive");
+//
+//                }
             } catch (NumberFormatException e) {
                 System.out.println("String " + "is not a number");
             }

@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidhari.ViewPager.WalletTransactions;
+import com.androidhari.tambola.HomeScreen;
+import com.androidhari.tambola.Signin;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,6 +68,7 @@ public class SendMoneyFrag extends Fragment {
         balance = (TextView)view.findViewById(R.id.balance);
         sp= this.getActivity().getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
+
         mobile = (EditText)view.findViewById(R.id.mobile);
         amount = (EditText)view.findViewById(R.id.amount);
         send =(Button)view.findViewById(R.id.send);
@@ -165,17 +168,19 @@ public class SendMoneyFrag extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
                             try {
                                 JSONObject json = new JSONObject(mMessage);
-                                String s = json.getString("message");
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
 
-                                Log.e("Result", s);
+                                if (status.equalsIgnoreCase("401")){
 
-                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-//
-//                                balance.setText("  Your Wallet Balance Rs.  "+  roundOff);
+
+                                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(),Signin.class);
+                                    startActivity(intent);
+                                }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -252,9 +257,23 @@ public class SendMoneyFrag extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(),Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

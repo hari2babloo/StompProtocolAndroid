@@ -129,6 +129,21 @@
                 android:textColorHint="@android:color/background_light"
                 android:textColorLink="@android:color/background_light" />
 
+            <EditText
+                android:id="@+id/refcode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:backgroundTint="#FF9800"
+                android:drawableLeft="@drawable/password"
+                android:drawablePadding="10dp"
+                android:hint="Referral Code(Optional)"
+                android:singleLine="true"
+                android:textColor="@android:color/background_light"
+                android:textColorHighlight="@android:color/background_light"
+                android:textColorHint="@android:color/background_light"
+                android:textColorLink="@android:color/background_light" />
+
             <Button
                 android:id="@+id/submit"
                 android:layout_width="match_parent"

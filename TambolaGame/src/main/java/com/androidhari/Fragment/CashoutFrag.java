@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.androidhari.tambola.HomeScreen;
+import com.androidhari.tambola.Signin;
 import com.androidhari.tambola.Wallet;
 
 import org.json.JSONException;
@@ -80,6 +82,7 @@ public class CashoutFrag extends Fragment {
         view = inflater.inflate(R.layout.cashoutfrag, container, false);
         sp=getContext().getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
+
         gameid=sp.getString("gno",null);
 
         radioGroup = (RadioGroup) view.findViewById(R.id.radiogrp);
@@ -278,9 +281,23 @@ else
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(),Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

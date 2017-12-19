@@ -91,6 +91,7 @@ public class AddMoneyFrag extends Fragment {
 
         sp= this.getActivity().getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
+
         setHasOptionsMenu(true);
     }
 
@@ -249,12 +250,20 @@ public class AddMoneyFrag extends Fragment {
                         @Override
                         public void run() {
 
-
                             try {
                                 JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
 
-                                String s = json.getString("message");
-                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(),Signin.class);
+                                    startActivity(intent);
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

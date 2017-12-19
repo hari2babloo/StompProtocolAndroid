@@ -48,7 +48,6 @@ public class Signin extends Activity {
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +91,7 @@ public class Signin extends Activity {
             public void onClick(View view) {
 
 
-                Intent intent = new Intent(Signin.this,ForgotPass.class);
+                Intent intent = new Intent(Signin.this,ResetPass.class);
                 startActivity(intent);
             }
         });
@@ -233,19 +232,26 @@ public class Signin extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
                             try {
+
+                                pd.cancel();
+                                pd.dismiss();
                                 JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
 
 
-                                String s = json.getString("message");
-                                Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Signin.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Signin.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            Log.d("reafa",mMessage);
-                            pd.cancel();
-                            pd.dismiss();
 
 
                         }

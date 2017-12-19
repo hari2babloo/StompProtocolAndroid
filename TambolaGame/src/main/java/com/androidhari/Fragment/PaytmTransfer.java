@@ -216,19 +216,23 @@ public class PaytmTransfer extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
                             try {
                                 JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
 
 
-                                Toast.makeText(PaytmTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PaytmTransfer.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(PaytmTransfer.this,Signin.class);
+                                    startActivity(intent);
+                                }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            Log.d("reafa",mMessage);
-                            pd.cancel();
-                            pd.dismiss();
 
 
                         }

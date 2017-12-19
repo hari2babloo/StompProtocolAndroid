@@ -6,19 +6,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
+
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,19 +23,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.androidhari.db.TinyDB;
-import com.androidhari.tambola.Countdown;
+
 import com.androidhari.tambola.HomeScreen;
-import com.androidhari.tambola.PurchaseTicket;
+
+import com.androidhari.tambola.Signin;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.todddavies.components.progressbar.Main;
+
 
 import org.java_websocket.WebSocket;
 
@@ -52,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     int claimposition;
     ProgressDialog pd;
 
-    Collection secondlist = new ArrayList();
+
     Collection firstlist = new ArrayList();
     private boolean tvSelected1 = true;
     private boolean tvSelected2 = true;
@@ -119,27 +116,27 @@ public class MainActivity extends AppCompatActivity {
     private DataFish current;
 
     ArrayList<String> completednumbers = new ArrayList<>();
-    ArrayList<String> gamesaveid = new ArrayList<>();
-    JSONArray postdata2 = new JSONArray();
+//    ArrayList<String> gamesaveid = new ArrayList<>();
+//    JSONArray postdata2 = new JSONArray();
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
     ArrayList<String> tktrow2 = new ArrayList<String>();
     ArrayList<String> tktrow3 = new ArrayList<String>();
-    ArrayList<String> reftktrow1 = new ArrayList<String>();
-    ArrayList<String> reftktrow2 = new ArrayList<String>();
-    ArrayList<String> reftktrow3 = new ArrayList<String>();
-    ArrayList<JSONObject> listdata = new ArrayList<>();
+//    ArrayList<String> reftktrow1 = new ArrayList<String>();
+//    ArrayList<String> reftktrow2 = new ArrayList<String>();
+//    ArrayList<String> reftktrow3 = new ArrayList<String>();
+//    ArrayList<JSONObject> listdata = new ArrayList<>();
 
     TextView number,fastfive,firstrow,middlerow,lastrow,fullhouse,noofplayers;
 
-    Button startgame;
+
 
     SharedPreferences sp;
     String pass,gameid,gamestarttime;
-    ArrayList<String> tktids = new ArrayList<>();
+//    ArrayList<String> tktids = new ArrayList<>();
 
     List<DataFish> filterdata=new ArrayList<>();
-    List<DataFish> refresheddata=new ArrayList<>();
+  //  List<DataFish> refresheddata=new ArrayList<>();
 
     //   private RecyclerView mRVFishPrice;
     private static final String TAG = "MainActivity";
@@ -150,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
     private Disposable mRestPingDisposable;
     private RecyclerView mRVFishPrice;
     TinyDB tinydb;
-    private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-    private RecyclerView mRecyclerView;
+  //  private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+   // private RecyclerView mRecyclerView;
     private Gson mGson = new GsonBuilder().create();
 
 
@@ -180,19 +177,14 @@ public class MainActivity extends AppCompatActivity {
             //You have to check the nullity for every item
 
             completednumbers.add("0");
-
             tinydb.putListString(gameid,completednumbers);
             Log.e("Completeed Numbers", String.valueOf(completednumbers));
-
-
             Log.e(" Exists","Exists");
         }
         else {
 
             completednumbers = tinydb.getListString(gameid);
-
             Log.e("Completeed Numbers", String.valueOf(completednumbers));
-
             Log.e(" Not Exists Exists","Exists");
 
 // either there is no instance of ArrayList in arrayList or the list is empty.
@@ -302,32 +294,31 @@ public class MainActivity extends AppCompatActivity {
         mStompClient.connect();
     }
 
-    public void sendEchoViaStomp(View v) {
-        mStompClient.send("/topic/hello-msg-mapping", "Echo STOMP " + mTimeFormat.format(new Date()))
-                .compose(applySchedulers())
-                .subscribe(aVoid -> {
-                    Log.d(TAG, "STOMP echo send successfully");
-                }, throwable -> {
-                    Log.e(TAG, "Error send STOMP echo", throwable);
-  //
-                    //                  toast(throwable.getMessage());
-                });
-    }
+//    public void sendEchoViaStomp(View v) {
+//        mStompClient.send("/topic/hello-msg-mapping", "Echo STOMP " + mTimeFormat.format(new Date()))
+//                .compose(applySchedulers())
+//                .subscribe(aVoid -> {
+//                    Log.d(TAG, "STOMP echo send successfully");
+//                }, throwable -> {
+//                    Log.e(TAG, "Error send STOMP echo", throwable);
+//  //
+//                    //                  toast(throwable.getMessage());
+//                });
+//    }
 
-    public void sendEchoViaRest(View v) {
-        mRestPingDisposable = RestClient.getInstance().getExampleRepository()
-                .sendRestEcho("Echo REST " + mTimeFormat.format(new Date()))
-                .compose(applySchedulers())
-                .subscribe(aVoid -> {
-                    Log.d(TAG, "REST echo send successfully");
-                }, throwable -> {
-                    Log.e(TAG, "Error send REST echo", throwable);
-  //                  toast(throwable.getMessage());
-                });
-    }
+//    public void sendEchoViaRest(View v) {
+//        mRestPingDisposable = RestClient.getInstance().getExampleRepository()
+//                .sendRestEcho("Echo REST " + mTimeFormat.format(new Date()))
+//                .compose(applySchedulers())
+//                .subscribe(aVoid -> {
+//                    Log.d(TAG, "REST echo send successfully");
+//                }, throwable -> {
+//                    Log.e(TAG, "Error send REST echo", throwable);
+//  //                  toast(throwable.getMessage());
+//                });
+//    }
 
     private void addItem(EchoModel echoModel) {
-
 
 
         if (echoModel.getNumber()==0){
@@ -352,17 +343,19 @@ public class MainActivity extends AppCompatActivity {
 
             Toast.makeText(this, echoModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
         }
+        else
         if (echoModel.getMessageList()!=null){
 
             Toast.makeText(this, echoModel.getMessageList().toString(), Toast.LENGTH_SHORT).show();
         }
 
 
-        if (echoModel.getCompletedNumbers()!=null){
+//        if (echoModel.getCompletedNumbers()!=null){
+//
+//
+//
+//        }
 
-
-
-        }
 
         if (echoModel.getValidClaim()==true){
           //  completednumbers = (ArrayList<String>) echoModel.getCompletedNumbers();
@@ -414,228 +407,228 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void refreshticket() {
-
-
-            final OkHttpClient client = new OkHttpClient();
-            final Request request = new Request.Builder()
-                    .url("http://game-dev.techmech.men:8080/api/game/user/tickets/"+gameid)
-                    .get()
-                    .addHeader("Content-Type", "application/json")
-                    .addHeader("Authorization",pass)
-                    .build();
-
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-
-                    String mMessage = e.getMessage().toString();
-                    Log.w("failure Response", mMessage);
-
-
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-
-                    final String mMessage3 = response.body().string();
-
-
- //                   Log.w("Response", mMessage);
-                    if (response.isSuccessful()){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                String mm2 = mMessage3;
-                                mm2=mMessage3.replace("null","' '");
-                                JSONObject json3 = null;
-                                try {
-                                    json3 = new JSONObject(mm2);
-                                    JSONArray jsonArray3 = json3.getJSONArray("data");
-                                    for (int m = 0; m < jsonArray3.length(); m++) {
-
-                                        JSONObject fd2 = jsonArray3.getJSONObject(m);
-
-                                        String s = fd2.getString("id");
-                                        secondlist.add(s);
-
-                                    }
-
-
-
-                                    Log.e("FirstList", String.valueOf(firstlist));
-                                    Log.e("Secondlist", String.valueOf(secondlist));
-
-
-
-                                    JSONObject json_data4 = jsonArray3.getJSONObject(0).getJSONObject("game");
-
-                                    JSONArray sds2 = json_data4.getJSONArray("prizes");
-
-                                    for (int i = 0; i < sds2.length(); i++) {
-
-                                        JSONObject fd = sds2.getJSONObject(i);
-
-                                        String prizename = fd.getString("prizeName");
-                                        String prizecost = fd.getString("prizeCost");
-                                        String prizeCompleted = fd.getString("prizeCompleted");
-
-                                        if (prizeCompleted.equalsIgnoreCase("TRUE")){
-
-
-
-                                            if(prizename.equalsIgnoreCase("FULL_HOUISE"))
-                                            {
-
-                                                fullhouse.setText("FULL_HOUISE: FINISHED "  );
-
-                                            }
-
-                                            else
-                                            if (prizename.equalsIgnoreCase("FIRST_ROW")){
-
-
-                                                firstrow.setText("FIRST ROW: FINISHED  ");
-
-                                            }
-                                            else
-                                            if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
-                                                middlerow.setText("MIDDLE_ROW: FINISHED ");
-
-                                            }
-                                            else
-                                            if (prizename.equalsIgnoreCase("FAST_FIVE")){
-
-                                                fastfive.setText("FAST FIVE: FINISHED  ");
-
-
-                                            }
-                                            else
-                                            if (prizename.equalsIgnoreCase("LAST_ROW")) {
-
-                                                lastrow.setText("LAST ROW: FINISHED ");
-
-
-                                            }
-
-
-
-                                        }
-
-                                        for (int n = 0; n < sds2.length(); n++){
-                                            JSONObject json_data = sds2.getJSONObject(i).getJSONObject("ticket");
-                                            DataFish data = new DataFish();
-                                            String ticket = json_data.getString("ticket");
-                                            JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
-                                            JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
-                                            JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
-                                            String s = json_data.getString("id");
-
-                                            for ( int j = 0; j <row1.length();j++ ){
-
-
+//    private void refreshticket() {
 //
-  //                                              reftktrow1.add(row1.getString(j));
-
-//                                                Log.w("Row 1 ", String.valueOf(reftktrow1));
-
-                                            }
-
-                                            for ( int j = 0; j <row2.length();j++ ){
-
-
-
-  //                                              reftktrow2.add(row2.getString(j));
-
-                                                Log.w("Row 2", String.valueOf(reftktrow2));
-
-                                            }
-
-
-                                            for ( int j = 0; j <row3.length();j++ ){
-
-
-
-                                                reftktrow3.add(row3.getString(j));
-
- //                                               Log.w("Row 3", String.valueOf(reftktrow3));
-
-                                            }
-                                            data.id = s;
-                                            data.t1 = row1.getString(0);
-                                            data.t2 = row1.getString(1);
-                                            data.t3 = row1.getString(2);
-                                            data.t4 = row1.getString(3);
-                                            data.t5 = row1.getString(4);
-                                            data.t6 = row1.getString(5);
-                                            data.t7 = row1.getString(6);
-                                            data.t8 = row1.getString(7);
-                                            data.t9 = row1.getString(8);
-                                            data.t10 = row2.getString(0);
-                                            data.t11 = row2.getString(1);
-                                            data.t12 = row2.getString(2);
-                                            data.t13 = row2.getString(3);
-                                            data.t14 = row2.getString(4);
-                                            data.t15 = row2.getString(5);
-                                            data.t16 = row2.getString(6);
-                                            data.t17 = row2.getString(7);
-                                            data.t18 = row2.getString(8);
-                                            data.t19 = row3.getString(0);
-                                            data.t20 = row3.getString(1);
-                                            data.t21 = row3.getString(2);
-                                            data.t22 = row3.getString(3);
-                                            data.t23 = row3.getString(4);
-                                            data.t24 = row3.getString(5);
-                                            data.t25 = row3.getString(6);
-                                            data.t26 = row3.getString(7);
-                                            data.t27 = row3.getString(8);
-
-
-                                            refresheddata.add(data);
-//                                    Log.w("Response", data.t1);
-
-                                        }
-
-                                    }
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                              //  mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
-                                Adapter = new AdapterFish(MainActivity.this, refresheddata);
-
-
-
-                                mRVFishPrice.setAdapter(Adapter);
-//                            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
-
-                                mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
-                                mRVFishPrice.setHasFixedSize(true);
-
-
-                            }
-                        });
-
-                    }
-
-                    else {
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                            }
-                        });
-                    }
-
-                }
-            });
-
-
-    }
+//
+//            final OkHttpClient client = new OkHttpClient();
+//            final Request request = new Request.Builder()
+//                    .url("http://game-dev.techmech.men:8080/api/game/user/tickets/"+gameid)
+//                    .get()
+//                    .addHeader("Content-Type", "application/json")
+//                    .addHeader("Authorization",pass)
+//                    .build();
+//
+//            client.newCall(request).enqueue(new Callback() {
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//
+//                    String mMessage = e.getMessage().toString();
+//                    Log.w("failure Response", mMessage);
+//
+//
+//                }
+//
+//                @Override
+//                public void onResponse(Call call, Response response) throws IOException {
+//
+//                    final String mMessage3 = response.body().string();
+//
+//
+// //                   Log.w("Response", mMessage);
+//                    if (response.isSuccessful()){
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                                String mm2 = mMessage3;
+//                                mm2=mMessage3.replace("null","' '");
+//                                JSONObject json3 = null;
+//                                try {
+//                                    json3 = new JSONObject(mm2);
+//                                    JSONArray jsonArray3 = json3.getJSONArray("data");
+//                                    for (int m = 0; m < jsonArray3.length(); m++) {
+//
+//                                        JSONObject fd2 = jsonArray3.getJSONObject(m);
+//
+//                                        String s = fd2.getString("id");
+//                                        secondlist.add(s);
+//
+//                                    }
+//
+//
+//
+//                                    Log.e("FirstList", String.valueOf(firstlist));
+//                                    Log.e("Secondlist", String.valueOf(secondlist));
+//
+//
+//
+//                                    JSONObject json_data4 = jsonArray3.getJSONObject(0).getJSONObject("game");
+//
+//                                    JSONArray sds2 = json_data4.getJSONArray("prizes");
+//
+//                                    for (int i = 0; i < sds2.length(); i++) {
+//
+//                                        JSONObject fd = sds2.getJSONObject(i);
+//
+//                                        String prizename = fd.getString("prizeName");
+//                                        String prizecost = fd.getString("prizeCost");
+//                                        String prizeCompleted = fd.getString("prizeCompleted");
+//
+//                                        if (prizeCompleted.equalsIgnoreCase("TRUE")){
+//
+//
+//
+//                                            if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+//                                            {
+//
+//                                                fullhouse.setText("FULL_HOUISE: FINISHED "  );
+//
+//                                            }
+//
+//                                            else
+//                                            if (prizename.equalsIgnoreCase("FIRST_ROW")){
+//
+//
+//                                                firstrow.setText("FIRST ROW: FINISHED  ");
+//
+//                                            }
+//                                            else
+//                                            if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
+//                                                middlerow.setText("MIDDLE_ROW: FINISHED ");
+//
+//                                            }
+//                                            else
+//                                            if (prizename.equalsIgnoreCase("FAST_FIVE")){
+//
+//                                                fastfive.setText("FAST FIVE: FINISHED  ");
+//
+//
+//                                            }
+//                                            else
+//                                            if (prizename.equalsIgnoreCase("LAST_ROW")) {
+//
+//                                                lastrow.setText("LAST ROW: FINISHED ");
+//
+//
+//                                            }
+//
+//
+//
+//                                        }
+//
+//                                        for (int n = 0; n < sds2.length(); n++){
+//                                            JSONObject json_data = sds2.getJSONObject(i).getJSONObject("ticket");
+//                                            DataFish data = new DataFish();
+//                                            String ticket = json_data.getString("ticket");
+//                                            JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
+//                                            JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
+//                                            JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
+//                                            String s = json_data.getString("id");
+//
+//                                            for ( int j = 0; j <row1.length();j++ ){
+//
+//
+////
+//  //                                              reftktrow1.add(row1.getString(j));
+//
+////                                                Log.w("Row 1 ", String.valueOf(reftktrow1));
+//
+//                                            }
+//
+//                                            for ( int j = 0; j <row2.length();j++ ){
+//
+//
+//
+//  //                                              reftktrow2.add(row2.getString(j));
+//
+//                                                Log.w("Row 2", String.valueOf(reftktrow2));
+//
+//                                            }
+//
+//
+//                                            for ( int j = 0; j <row3.length();j++ ){
+//
+//
+//
+//                                                reftktrow3.add(row3.getString(j));
+//
+// //                                               Log.w("Row 3", String.valueOf(reftktrow3));
+//
+//                                            }
+//                                            data.id = s;
+//                                            data.t1 = row1.getString(0);
+//                                            data.t2 = row1.getString(1);
+//                                            data.t3 = row1.getString(2);
+//                                            data.t4 = row1.getString(3);
+//                                            data.t5 = row1.getString(4);
+//                                            data.t6 = row1.getString(5);
+//                                            data.t7 = row1.getString(6);
+//                                            data.t8 = row1.getString(7);
+//                                            data.t9 = row1.getString(8);
+//                                            data.t10 = row2.getString(0);
+//                                            data.t11 = row2.getString(1);
+//                                            data.t12 = row2.getString(2);
+//                                            data.t13 = row2.getString(3);
+//                                            data.t14 = row2.getString(4);
+//                                            data.t15 = row2.getString(5);
+//                                            data.t16 = row2.getString(6);
+//                                            data.t17 = row2.getString(7);
+//                                            data.t18 = row2.getString(8);
+//                                            data.t19 = row3.getString(0);
+//                                            data.t20 = row3.getString(1);
+//                                            data.t21 = row3.getString(2);
+//                                            data.t22 = row3.getString(3);
+//                                            data.t23 = row3.getString(4);
+//                                            data.t24 = row3.getString(5);
+//                                            data.t25 = row3.getString(6);
+//                                            data.t26 = row3.getString(7);
+//                                            data.t27 = row3.getString(8);
+//
+//
+//                                            refresheddata.add(data);
+////                                    Log.w("Response", data.t1);
+//
+//                                        }
+//
+//                                    }
+//
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//
+//                              //  mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
+//                                Adapter = new AdapterFish(MainActivity.this, refresheddata);
+//
+//
+//
+//                                mRVFishPrice.setAdapter(Adapter);
+////                            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+//
+//                                mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
+//                                mRVFishPrice.setHasFixedSize(true);
+//
+//
+//                            }
+//                        });
+//
+//                    }
+//
+//                    else {
+//
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                            }
+//                        });
+//                    }
+//
+//                }
+//            });
+//
+//
+//    }
 
 
     private void Authenticate() {
@@ -926,252 +919,24 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-//                        Toast.makeText(MainActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
 
-                    }
-                });
+                        try {
+                            JSONObject json = new JSONObject(mMessage);
+                            String status = json.getString("status");
+                            String message = json.getString("message");
+                            //title = name;
 
+                            if (status.equalsIgnoreCase("401")){
 
-            }
 
-
-        });
-    }
-
-    private void Authenticate2() {
-
-
-        pd = new ProgressDialog(MainActivity.this);
-        pd.setMessage("Please Wait While we are Validating..");
-        pd.setCancelable(false);
-        pd.show();
-        final OkHttpClient client = new OkHttpClient();
-
-        final Request request = new Request.Builder()
-                .url("http://game-dev.techmech.men:8080/api/game/user/tickets/"+gameid)
-                .get()
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization",pass)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-                pd.dismiss();
-                pd.cancel();
-                String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-                pd.dismiss();
-                pd.cancel();
-
-                final String mMessage = response.body().string();
-
-
-                tktrow1.clear();
-                tktrow2.clear();
-                tktrow3.clear();
-                filterdata.clear();
-
-//                Log.w("Response", mMessage);
-
-                if (response.isSuccessful()){
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            try {
-
-                                String mm = mMessage;
-                                mm=mMessage.replace("null","' '");
-                                JSONObject json = new JSONObject(mm);
-
-                                JSONArray jsonArray = json.getJSONArray("data");
-
-
-                                for (int i = 0; i < jsonArray.length(); i++) {
-
-                                    JSONObject fd = jsonArray.getJSONObject(i);
-
-                                    String s = fd.getString("id");
-
-
-                                    firstlist.add(s);
-
-
-                                }
-                                Log.e("firstlist", String.valueOf(firstlist));
-                                JSONObject json_data2 = jsonArray.getJSONObject(0).getJSONObject("game");
-                                noofplayers.setText( "No of Players:   "+json_data2.getString("noOfPlayers"));
-
-
-                                JSONArray sds = json_data2.getJSONArray("prizes");
-                                LinearLayout linearLayout = new LinearLayout(MainActivity.this);
-                                linearLayout.setOrientation(LinearLayout.VERTICAL);
-                                for (int i = 0; i < sds.length(); i++) {
-
-                                    JSONObject fd = sds.getJSONObject(i);
-
-                                    String prizename= fd.getString("prizeName");
-                                    String prizecost = fd.getString("prizeCost");
-
-                                    String prizeCompleted = fd.getString("prizeCompleted");
-
-                                    if (prizeCompleted.equalsIgnoreCase("true")){
-
-
-                                        if(prizename.equalsIgnoreCase("FULL_HOUISE"))
-                                        {
-
-                                            fullhouse.setText("FULL_HOUISE: FINISHED" );
-
-                                        }
-
-                                        else
-                                        if (prizename.equalsIgnoreCase("FIRST_ROW")){
-
-
-                                            firstrow.setText("FIRST ROW:  FINISHED");
-
-                                        }
-                                        else
-                                        if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
-                                            middlerow.setText("MIDDLE_ROW:  FINISHED");
-
-                                        }
-                                        else
-                                        if (prizename.equalsIgnoreCase("FAST_FIVE")){
-
-                                            fastfive.setText("MIDDLE_ROW:  FINISHED");
-
-
-                                        }
-                                        else
-                                        if (prizename.equalsIgnoreCase("LAST_ROW")) {
-
-                                            lastrow.setText("MIDDLE_ROW:  FINISHED");
-
-
-                                        }
-
-
-
-                                    }
-
-
-
-
-                                }
-
-
-                                for (int i = 0; i < jsonArray.length(); i++){
-                                    JSONObject json_data = jsonArray.getJSONObject(i).getJSONObject("ticket");
-                                    DataFish data = new DataFish();
-                                    String ticket = json_data.getString("ticket");
-                                    JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
-                                    JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
-                                    JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
-
-                                    String s = json_data.getString("id");
-
-                                    for ( int j = 0; j <row1.length();j++ ){
-
-
-
-                                        tktrow1.add(row1.getString(j));
-
-//                                        Log.w("Row 1 ", String.valueOf(tktrow1));
-
-                                    }
-
-                                    for ( int j = 0; j <row2.length();j++ ){
-
-
-
-                                        tktrow2.add(row2.getString(j));
-
-   //                                     Log.w("Row 2", String.valueOf(tktrow2));
-
-                                    }
-
-
-                                    for ( int j = 0; j <row3.length();j++ ){
-
-
-
-                                        tktrow2.add(row3.getString(j));
-
- //                                       Log.w("Row 3", String.valueOf(tktrow3));
-
-                                    }
-                                    data.id = s;
-                                    data.t1 = row1.getString(0);
-                                    data.t2 = row1.getString(1);
-                                    data.t3 = row1.getString(2);
-                                    data.t4 = row1.getString(3);
-                                    data.t5 = row1.getString(4);
-                                    data.t6 = row1.getString(5);
-                                    data.t7 = row1.getString(6);
-                                    data.t8 = row1.getString(7);
-                                    data.t9 = row1.getString(8);
-                                    data.t10 = row2.getString(0);
-                                    data.t11 = row2.getString(1);
-                                    data.t12 = row2.getString(2);
-                                    data.t13 = row2.getString(3);
-                                    data.t14 = row2.getString(4);
-                                    data.t15 = row2.getString(5);
-                                    data.t16 = row2.getString(6);
-                                    data.t17 = row2.getString(7);
-                                    data.t18 = row2.getString(8);
-                                    data.t19 = row3.getString(0);
-                                    data.t20 = row3.getString(1);
-                                    data.t21 = row3.getString(2);
-                                    data.t22 = row3.getString(3);
-                                    data.t23 = row3.getString(4);
-                                    data.t24 = row3.getString(5);
-                                    data.t25 = row3.getString(6);
-                                    data.t26 = row3.getString(7);
-                                    data.t27 = row3.getString(8);
-
-
-                                    filterdata.add(data);
-//                                    Log.w("Response", data.t1);
-
-                                }
-
-                                Log.e("Data", String.valueOf(row1));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MainActivity.this,Signin.class);
+                                startActivity(intent);
                             }
-//                            Table();
-//                            mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
-                            Adapter = new AdapterFish(MainActivity.this, filterdata);
-                            mRVFishPrice.setAdapter(Adapter);
-//                            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
 
-                            mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
-                            //      mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.HORIZONTAL,true));
-                            ///                          Toast.makeText(MainActivity.this, "PASS", Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    });
-
-
-//                    mAdapter.notifyDataSetChanged();
-
-                }
-
-                else runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        pd.dismiss();
-                        pd.cancel();
 
 //                        Toast.makeText(MainActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
 
@@ -1184,6 +949,253 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
+//    private void Authenticate2() {
+//
+//
+//        pd = new ProgressDialog(MainActivity.this);
+//        pd.setMessage("Please Wait While we are Validating..");
+//        pd.setCancelable(false);
+//        pd.show();
+//        final OkHttpClient client = new OkHttpClient();
+//
+//        final Request request = new Request.Builder()
+//                .url("http://game-dev.techmech.men:8080/api/game/user/tickets/"+gameid)
+//                .get()
+//                .addHeader("Content-Type", "application/json")
+//                .addHeader("Authorization",pass)
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//
+//                pd.dismiss();
+//                pd.cancel();
+//                String mMessage = e.getMessage().toString();
+//                Log.w("failure Response", mMessage);
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//
+//                pd.dismiss();
+//                pd.cancel();
+//
+//                final String mMessage = response.body().string();
+//
+//
+//                tktrow1.clear();
+//                tktrow2.clear();
+//                tktrow3.clear();
+//                filterdata.clear();
+//
+////                Log.w("Response", mMessage);
+//
+//                if (response.isSuccessful()){
+//
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            try {
+//
+//                                String mm = mMessage;
+//                                mm=mMessage.replace("null","' '");
+//                                JSONObject json = new JSONObject(mm);
+//
+//                                JSONArray jsonArray = json.getJSONArray("data");
+//
+//
+//                                for (int i = 0; i < jsonArray.length(); i++) {
+//
+//                                    JSONObject fd = jsonArray.getJSONObject(i);
+//
+//                                    String s = fd.getString("id");
+//
+//
+//                                    firstlist.add(s);
+//
+//
+//                                }
+//                                Log.e("firstlist", String.valueOf(firstlist));
+//                                JSONObject json_data2 = jsonArray.getJSONObject(0).getJSONObject("game");
+//                                noofplayers.setText( "No of Players:   "+json_data2.getString("noOfPlayers"));
+//
+//
+//                                JSONArray sds = json_data2.getJSONArray("prizes");
+//                                LinearLayout linearLayout = new LinearLayout(MainActivity.this);
+//                                linearLayout.setOrientation(LinearLayout.VERTICAL);
+//                                for (int i = 0; i < sds.length(); i++) {
+//
+//                                    JSONObject fd = sds.getJSONObject(i);
+//
+//                                    String prizename= fd.getString("prizeName");
+//                                    String prizecost = fd.getString("prizeCost");
+//
+//                                    String prizeCompleted = fd.getString("prizeCompleted");
+//
+//                                    if (prizeCompleted.equalsIgnoreCase("true")){
+//
+//
+//                                        if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+//                                        {
+//
+//                                            fullhouse.setText("FULL_HOUISE: FINISHED" );
+//
+//                                        }
+//
+//                                        else
+//                                        if (prizename.equalsIgnoreCase("FIRST_ROW")){
+//
+//
+//                                            firstrow.setText("FIRST ROW:  FINISHED");
+//
+//                                        }
+//                                        else
+//                                        if (prizename.equalsIgnoreCase("MIDDLE_ROW")) {
+//                                            middlerow.setText("MIDDLE_ROW:  FINISHED");
+//
+//                                        }
+//                                        else
+//                                        if (prizename.equalsIgnoreCase("FAST_FIVE")){
+//
+//                                            fastfive.setText("MIDDLE_ROW:  FINISHED");
+//
+//
+//                                        }
+//                                        else
+//                                        if (prizename.equalsIgnoreCase("LAST_ROW")) {
+//
+//                                            lastrow.setText("MIDDLE_ROW:  FINISHED");
+//
+//
+//                                        }
+//
+//
+//
+//                                    }
+//
+//
+//
+//
+//                                }
+//
+//
+//                                for (int i = 0; i < jsonArray.length(); i++){
+//                                    JSONObject json_data = jsonArray.getJSONObject(i).getJSONObject("ticket");
+//                                    DataFish data = new DataFish();
+//                                    String ticket = json_data.getString("ticket");
+//                                    JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
+//                                    JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
+//                                    JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
+//
+//                                    String s = json_data.getString("id");
+//
+//                                    for ( int j = 0; j <row1.length();j++ ){
+//
+//
+//
+//                                        tktrow1.add(row1.getString(j));
+//
+////                                        Log.w("Row 1 ", String.valueOf(tktrow1));
+//
+//                                    }
+//
+//                                    for ( int j = 0; j <row2.length();j++ ){
+//
+//
+//
+//                                        tktrow2.add(row2.getString(j));
+//
+//   //                                     Log.w("Row 2", String.valueOf(tktrow2));
+//
+//                                    }
+//
+//
+//                                    for ( int j = 0; j <row3.length();j++ ){
+//
+//
+//
+//                                        tktrow2.add(row3.getString(j));
+//
+// //                                       Log.w("Row 3", String.valueOf(tktrow3));
+//
+//                                    }
+//                                    data.id = s;
+//                                    data.t1 = row1.getString(0);
+//                                    data.t2 = row1.getString(1);
+//                                    data.t3 = row1.getString(2);
+//                                    data.t4 = row1.getString(3);
+//                                    data.t5 = row1.getString(4);
+//                                    data.t6 = row1.getString(5);
+//                                    data.t7 = row1.getString(6);
+//                                    data.t8 = row1.getString(7);
+//                                    data.t9 = row1.getString(8);
+//                                    data.t10 = row2.getString(0);
+//                                    data.t11 = row2.getString(1);
+//                                    data.t12 = row2.getString(2);
+//                                    data.t13 = row2.getString(3);
+//                                    data.t14 = row2.getString(4);
+//                                    data.t15 = row2.getString(5);
+//                                    data.t16 = row2.getString(6);
+//                                    data.t17 = row2.getString(7);
+//                                    data.t18 = row2.getString(8);
+//                                    data.t19 = row3.getString(0);
+//                                    data.t20 = row3.getString(1);
+//                                    data.t21 = row3.getString(2);
+//                                    data.t22 = row3.getString(3);
+//                                    data.t23 = row3.getString(4);
+//                                    data.t24 = row3.getString(5);
+//                                    data.t25 = row3.getString(6);
+//                                    data.t26 = row3.getString(7);
+//                                    data.t27 = row3.getString(8);
+//
+//
+//                                    filterdata.add(data);
+////                                    Log.w("Response", data.t1);
+//
+//                                }
+//
+//                                Log.e("Data", String.valueOf(row1));
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+////                            Table();
+////                            mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
+//                            Adapter = new AdapterFish(MainActivity.this, filterdata);
+//                            mRVFishPrice.setAdapter(Adapter);
+////                            mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+//
+//                            mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
+//                            //      mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.HORIZONTAL,true));
+//                            ///                          Toast.makeText(MainActivity.this, "PASS", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//
+//
+////                    mAdapter.notifyDataSetChanged();
+//
+//                }
+//
+//                else runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        pd.dismiss();
+//                        pd.cancel();
+//
+////                        Toast.makeText(MainActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                });
+//
+//
+//            }
+//
+//
+//        });
+//    }
 
     public class DataFish {
 

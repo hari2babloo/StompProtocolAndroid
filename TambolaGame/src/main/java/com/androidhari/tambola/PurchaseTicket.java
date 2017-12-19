@@ -90,6 +90,7 @@ public class PurchaseTicket extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
          pass=sp.getString("token",null);
+
          gid = sp.getString("id",null);
         gamestarttime = sp.getString("gstime",null);
 
@@ -300,8 +301,23 @@ public class PurchaseTicket extends AppCompatActivity {
                 else runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        try {
+                            JSONObject json = new JSONObject(mMessage);
+                            String status = json.getString("status");
+                            String message = json.getString("message");
+                            //title = name;
 
-                        Toast.makeText(PurchaseTicket.this, "FAIL", Toast.LENGTH_SHORT).show();
+                            if (status.equalsIgnoreCase("401")){
+
+
+                                Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(PurchaseTicket.this,Signin.class);
+                                startActivity(intent);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });
@@ -692,9 +708,26 @@ public class PurchaseTicket extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            pd.dismiss();
-                            pd.cancel();
-                            Toast.makeText(PurchaseTicket.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(PurchaseTicket.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
@@ -849,9 +882,26 @@ public class PurchaseTicket extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(PurchaseTicket.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(PurchaseTicket.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

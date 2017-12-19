@@ -74,6 +74,7 @@ public class GameInfo extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
+
         gid=sp.getString("id",null);
         buytickets = (Button)findViewById(R.id.buyticket);
         buytickets.setEnabled(false);
@@ -223,9 +224,26 @@ public class GameInfo extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            pd.dismiss();
-                            pd.cancel();
-                            Toast.makeText(GameInfo.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(GameInfo.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(GameInfo.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
@@ -441,9 +459,26 @@ public class GameInfo extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(GameInfo.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(GameInfo.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(GameInfo.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

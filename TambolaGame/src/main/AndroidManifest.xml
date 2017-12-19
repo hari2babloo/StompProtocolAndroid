@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +18,7 @@
         tools:replace="android:theme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity android:name="com.androidhari.tambola.FirstPage" />
         <activity android:name="com.androidhari.tambola.SignUp" />
         <activity android:name="com.androidhari.tambola.Signin">
@@ -25,24 +27,47 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name="com.androidhari.tambola.HomeScreen" />
+        <activity android:name="com.androidhari.tambola.HomeScreen">
+
+        </activity>
         <activity android:name="com.androidhari.tambola.ForgotPass" />
         <activity android:name="com.androidhari.tambola.ResetPass" />
         <activity android:name="com.androidhari.tambola.Wallet" />
-        <activity android:name="com.androidhari.tambola.GameInfo" />
+        <activity android:name="com.androidhari.tambola.GameInfo">
+
+        </activity>
         <activity android:name="com.androidhari.tambola.WalletPurchasehistory" />
-        <activity android:name="com.androidhari.tambola.PurchaseTicket" />
+        <activity android:name="com.androidhari.tambola.PurchaseTicket">
+
+
+        </activity>
         <activity android:name="com.androidhari.tambola.Countdown" />
         <activity android:name="com.androidhari.tambola.AddMoney" />
         <activity android:name="com.androidhari.tambola.TransactionHistory" />
         <activity android:name="com.androidhari.tambola.Countdown2" />
         <activity android:name="com.androidhari.tambola.TestautoSelect" />
         <activity android:name=".Main2Activity" />
-        <activity android:name="com.androidhari.ViewPager.MoneyTransactions"></activity>
+        <activity android:name="com.androidhari.ViewPager.MoneyTransactions">
+
+
+
+        </activity>
         <activity android:name="com.androidhari.Fragment.BankTransfer" />
         <activity android:name="com.androidhari.Fragment.PaytmTransfer" />
-        <activity android:name="com.androidhari.ViewPager.WalletTransactions"></activity>
+        <activity android:name="com.androidhari.ViewPager.WalletTransactions">
+
+        </activity>
+        <activity android:name="com.androidhari.tambola.OTP"></activity>
+
+        <receiver android:name="com.androidhari.tambola.OtpReader">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name="com.androidhari.tambola.ChangePassword"></activity>
     </application>
 
 </manifest>

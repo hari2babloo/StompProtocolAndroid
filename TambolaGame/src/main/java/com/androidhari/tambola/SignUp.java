@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidhari.db.TinyDB;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
@@ -35,11 +36,12 @@ import ua.naiksoftware.tambola.R;
 
 public class SignUp extends Activity {
 
-    TextView login,fname,lname,email,phno,pass,cnfpass;
+    TextView login,fname,lname,email,phno,pass,cnfpass,refcode;
     AwesomeValidation awesomeValidation;
     Button submit;
     ProgressDialog pd;
     TextView loginlink;
+    TinyDB tinydb = new TinyDB(this);
 
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
@@ -65,13 +67,10 @@ public class SignUp extends Activity {
 
                     Signup();
 //
-
                 }
 
             }
         });
-
-
 
         login = (TextView)findViewById(R.id.loginlink2);
         fname=(TextView)findViewById(R.id.fname);
@@ -80,6 +79,7 @@ public class SignUp extends Activity {
         phno=(TextView)findViewById(R.id.phno);
         pass=(TextView)findViewById(R.id.pass);
         cnfpass=(TextView)findViewById(R.id.cnfpass);
+        refcode = (TextView)findViewById(R.id.refcode);
 
         addValidationToViews();
 
@@ -124,6 +124,7 @@ public class SignUp extends Activity {
             postdata.put("first_name", fname.getText().toString());
             postdata.put("last_name", lname.getText().toString());
             postdata.put("phone_no", phno.getText().toString());
+            postdata.put("referalCode",refcode.getText().toString());
             postdata.put("role",postdata2);
 
 
@@ -171,15 +172,15 @@ pd.dismiss();
 
                             try {
                                 JSONObject json = new JSONObject(mMessage);
-                                Intent intent = new Intent(SignUp.this,Signin.class);
+                                tinydb.putString("otptype", "signup");
+                                Intent intent = new Intent(SignUp.this,OTP.class);
                                 startActivity(intent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
 
-                            Toast.makeText(SignUp.this, "Account Succesfully Created", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(SignUp.this, "Now Please Login", Toast.LENGTH_SHORT).show();
+
                         }
                     });
 
@@ -191,9 +192,18 @@ pd.dismiss();
                         @Override
                         public void run() {
 
-                            pd.dismiss();
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+
+                                String s = json.getString("message");
+                                Toast.makeText(SignUp.this, s, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d("reafa",mMessage);
                             pd.cancel();
-                            Toast.makeText(SignUp.this, "Email Already Exists", Toast.LENGTH_SHORT).show();
+                            pd.dismiss();
                         }
                     });
                 }
@@ -204,12 +214,12 @@ pd.dismiss();
 
     private void addValidationToViews() {
 
-        String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
+      //  String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
         awesomeValidation.addValidation(SignUp.this,R.id.fname, "[a-zA-Z\\s]+",R.string.errfname);
         awesomeValidation.addValidation(SignUp.this,R.id.lname,"[a-zA-Z\\s]+",R.string.errlname);
         awesomeValidation.addValidation(SignUp.this,R.id.email, Patterns.EMAIL_ADDRESS,R.string.erremail);
         awesomeValidation.addValidation(SignUp.this,R.id.phno, RegexTemplate.TELEPHONE, R.string.errphne);
-        awesomeValidation.addValidation(SignUp.this,R.id.pass,regexPassword, R.string.errpass);
+        //awesomeValidation.addValidation(SignUp.this,R.id.pass,regexPassword, R.string.errpass);
         awesomeValidation.addValidation(SignUp.this,R.id.cnfpass,R.id.pass,R.string.errcnfpass);
     }
 }

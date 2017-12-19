@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.androidhari.ViewPager.WalletTransactions;
 import com.androidhari.tambola.FirstPage;
 import com.androidhari.tambola.HomeScreen;
+import com.androidhari.tambola.Signin;
 import com.androidhari.tambola.Wallet;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
@@ -345,9 +346,23 @@ public class BankTransfer extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(BankTransfer.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(BankTransfer.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(BankTransfer.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

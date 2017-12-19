@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidhari.tambola.Countdown;
+import com.androidhari.tambola.GameInfo;
+import com.androidhari.tambola.Signin;
 import com.androidhari.tambola.Wallet;
 
 import org.json.JSONArray;
@@ -239,12 +241,23 @@ public class PurchaseGameFrag extends Fragment {
                         @Override
                         public void run() {
 
-
                             try {
-                                JSONObject json = new JSONObject(mMessage);
 
-                                String s = json.getString("message");
-                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(),Signin.class);
+                                    startActivity(intent);
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -25,7 +25,9 @@ import com.androidhari.Fragment2.HistoryFrag;
 import com.androidhari.Fragment2.PurchaseGameFrag;
 import com.androidhari.ViewPagerAdapter;
 import com.androidhari.tambola.FirstPage;
+import com.androidhari.tambola.GameInfo;
 import com.androidhari.tambola.HomeScreen;
+import com.androidhari.tambola.Signin;
 import com.androidhari.tambola.Wallet;
 
 import org.json.JSONException;
@@ -106,6 +108,7 @@ Createfrag createfrag;
 
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
+
         gameid=sp.getString("gno",null);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -234,9 +237,26 @@ Createfrag createfrag;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(WalletTransactions.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(WalletTransactions.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(WalletTransactions.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
@@ -366,9 +386,26 @@ Createfrag createfrag;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(WalletTransactions.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(WalletTransactions.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(WalletTransactions.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

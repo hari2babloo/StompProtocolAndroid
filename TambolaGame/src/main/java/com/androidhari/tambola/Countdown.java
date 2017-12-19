@@ -69,7 +69,6 @@ import ua.naiksoftware.tambola.R;
 
 public class Countdown extends AppCompatActivity {
 
-    Button stargame;
     SharedPreferences sp;
     private AdapterFish Adapter;
     ProgressDialog pd;
@@ -191,10 +190,26 @@ public class Countdown extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            pd.cancel();
-                            pd.dismiss();
+                            try {
 
-                            Toast.makeText(Countdown.this, "Cancel", Toast.LENGTH_SHORT).show();
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(longV);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(Countdown.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Countdown.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
@@ -515,10 +530,26 @@ public class Countdown extends AppCompatActivity {
                 else runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        pd.dismiss();
-                        pd.cancel();
+                        try {
 
-                        Toast.makeText(Countdown.this, "FAIL", Toast.LENGTH_SHORT).show();
+                            pd.cancel();
+                            pd.dismiss();
+                            JSONObject json = new JSONObject(mMessage);
+                            String status = json.getString("status");
+                            String message = json.getString("message");
+                            //title = name;
+
+                            if (status.equalsIgnoreCase("401")){
+
+
+                                Toast.makeText(Countdown.this, message, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Countdown.this,Signin.class);
+                                startActivity(intent);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });
@@ -946,9 +977,26 @@ public class Countdown extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(Countdown.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(Countdown.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Countdown.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

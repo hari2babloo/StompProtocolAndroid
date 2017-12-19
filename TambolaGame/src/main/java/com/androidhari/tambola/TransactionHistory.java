@@ -165,9 +165,26 @@ public class TransactionHistory extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            pd.dismiss();
-                            pd.cancel();
-                            Toast.makeText(TransactionHistory.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(TransactionHistory.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(TransactionHistory.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
@@ -404,9 +421,26 @@ public class TransactionHistory extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(TransactionHistory.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(TransactionHistory.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(TransactionHistory.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

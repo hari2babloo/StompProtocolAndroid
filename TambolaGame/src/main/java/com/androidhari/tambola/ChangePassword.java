@@ -2,18 +2,12 @@ package com.androidhari.tambola;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidhari.db.TinyDB;
@@ -34,61 +28,58 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
-public class ResetPass extends AppCompatActivity {
+public class ChangePassword extends AppCompatActivity {
 
-    private static final MediaType MEDIA_TYPE =   MediaType.parse("application/json");;
-    Button submit;
-    TextView resettext;
-    ProgressDialog pd;
-    EditText email;
-    SharedPreferences sp;
+
     AwesomeValidation awesomeValidation;
+    EditText confirmpass,newpass;
+    Button submit;
+    String otp;
+    private static final MediaType MEDIA_TYPE =   MediaType.parse("application/json");
+
     TinyDB tinydb;
+    ProgressDialog pd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.reset_pass);
+        setContentView(R.layout.change_password);
 
-        resettext = (TextView)findViewById(R.id.resettext);
-        email = (EditText)findViewById(R.id.email);
+        tinydb   = new TinyDB(this);
+        otp = tinydb.getString("otp");
+
+        tinydb = new TinyDB(this);
+        confirmpass = (EditText)findViewById(R.id.confirmpass);
+        newpass = (EditText)findViewById(R.id.newpass);
+        submit = (Button)findViewById(R.id.submit);
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-
-tinydb  = new TinyDB(this);
         addValidationToViews();
-
-        Typeface face = Typeface.createFromAsset(getAssets(),
-                "fonts/segoeuil.ttf");
-        resettext.setTypeface(face);
-
-        submit = (Button)findViewById(R.id.resetpass);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View v) {
                 if (awesomeValidation.validate()){
 
-                    Resetpassword();
+                    changepass();
 //
                 }
+
             }
         });
+
+
+
+
     }
 
     private void addValidationToViews() {
 
-
-        awesomeValidation.addValidation(ResetPass.this,R.id.email, Patterns.EMAIL_ADDRESS,R.string.erremail);
+        awesomeValidation.addValidation(ChangePassword.this,R.id.confirmpass,R.id.newpass,R.string.errcnfpass);
     }
 
-    private void Resetpassword() {
+    private void changepass() {
 
-
-        pd = new ProgressDialog(ResetPass.this);
-        pd.setMessage("Validating your Email Address");
+        pd = new ProgressDialog(ChangePassword.this);
+        pd.setMessage("Resetting your password");
         pd.setCancelable(false);
         pd.show();
 
@@ -96,7 +87,8 @@ tinydb  = new TinyDB(this);
         final OkHttpClient client = new OkHttpClient();
         JSONObject postdata = new JSONObject();
         try {
-            postdata.put("email", email.getText().toString());
+            postdata.put("password", newpass.getText().toString());
+            postdata.put("token", otp);
         } catch(JSONException e){
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -107,7 +99,7 @@ tinydb  = new TinyDB(this);
 
 
         final Request request = new Request.Builder()
-                .url("http://game-dev.techmech.men:8080/api/resetpassword/mobile")
+                .url("http://game-dev.techmech.men:8080/api/resetpassword/update")
                 .post(body)
                 .addHeader("Content-Type", "application/json")
 
@@ -148,13 +140,7 @@ tinydb  = new TinyDB(this);
 //                                String s = json.getJSON   Object("data").getString("token");
                                 String msg = json.getString("message");
                                 String status = json.getString("message");
-                                Toast.makeText(ResetPass.this, msg, Toast.LENGTH_LONG).show();
-//                                if (status.equalsIgnoreCase("SUCCESS")){
-//
-//                                    tinydb.putString("otptype", "reset");
-//                                    Intent in = new Intent(ResetPass.this,OTP.class);
-//                                    startActivity(in);
-//                                }
+                                Toast.makeText(ChangePassword.this, msg, Toast.LENGTH_LONG).show();
 
                                 //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
 
@@ -162,8 +148,8 @@ tinydb  = new TinyDB(this);
 //                                e.putString("token",s);
 //
 //                                e.commit();
-                                tinydb.putString("otptype", "reset");
-                                Intent in = new Intent(ResetPass.this,OTP.class);
+
+                                Intent in = new Intent(ChangePassword.this,Signin.class);
                                 startActivity(in);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -188,10 +174,10 @@ tinydb  = new TinyDB(this);
                                 JSONObject json = new JSONObject(mMessage);
                                 String status = json.getString("status");
                                 String message = json.getString("message");
-                                Toast.makeText(ResetPass.this, message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ChangePassword.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
-                                    Toast.makeText(ResetPass.this, message, Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(ResetPass.this,Signin.class);
+                                    Toast.makeText(ChangePassword.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ChangePassword.this,Signin.class);
                                     startActivity(intent);
                                 }
 

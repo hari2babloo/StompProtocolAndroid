@@ -91,28 +91,14 @@ public class HomeScreen extends AppCompatActivity {
         sp= getSharedPreferences("login",MODE_PRIVATE);
         pass= sp.getString("token",null);
 
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-//        ActionBar ab = getSupportActionBar();
-//        // Enable the Up button
-//        ab.setDisplayHomeAsUpEnabled(true);
 
         getuserdetails();
         getdata();
 
-
-//        if(pass != null && !pass.isEmpty()){
-//            Toast.makeText(HomeScreen.this, pass, Toast.LENGTH_SHORT).show();
-//
-//            //finish current activity
-//        }
-
-//        logout = (Button)findViewById(R.id.logout);
         mRecyclerView= (RecyclerView) findViewById(R.id.horizontal_recycler_view);
-        //      Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbar.inflateMenu(R.menu.main);
-//        toolbar.setOnMenuItemClickListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
 
@@ -139,7 +125,7 @@ public class HomeScreen extends AppCompatActivity {
 
 
         final Request request = new Request.Builder()
-                .url("http://game-dev.techmech.men:8080/api/user")
+                    .url("http://game-dev.techmech.men:8080/api/user")
                 .get()
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Authorization",pass)
@@ -195,11 +181,23 @@ public class HomeScreen extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
 
-//                            pd.cancel();
-//                            pd.dismiss();
+                                if (status.equalsIgnoreCase("401")){
 
-                            Toast.makeText(HomeScreen.this, "Cancel", Toast.LENGTH_SHORT).show();
+
+                                    Toast.makeText(HomeScreen.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(HomeScreen.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
@@ -322,9 +320,23 @@ public class HomeScreen extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(HomeScreen.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(HomeScreen.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(HomeScreen.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
@@ -654,9 +666,26 @@ Logout();
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            pd.cancel();
-                            pd.dismiss();
-                            Toast.makeText(HomeScreen.this, "Fail", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+
+                                    Toast.makeText(HomeScreen.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(HomeScreen.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
