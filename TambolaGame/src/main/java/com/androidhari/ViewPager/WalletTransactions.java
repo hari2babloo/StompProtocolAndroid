@@ -99,7 +99,7 @@ public class WalletTransactions extends AppCompatActivity {
 
    PurchaseGameFrag purchaseGameFrag;
     HistoryFrag historyFrag;
-Createfrag createfrag;
+//Createfrag createfrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +126,7 @@ Createfrag createfrag;
 
         //Initializing viewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(2);
         setupViewPager(viewPager);
 
         GetBalance();
@@ -245,11 +245,14 @@ Createfrag createfrag;
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-
+                                Toast.makeText(WalletTransactions.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
 
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
-                                    Toast.makeText(WalletTransactions.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(WalletTransactions.this,Signin.class);
                                     startActivity(intent);
                                 }
@@ -272,10 +275,10 @@ Createfrag createfrag;
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         historyFrag=new HistoryFrag();
         purchaseGameFrag=new PurchaseGameFrag();
-        createfrag=new Createfrag();
+      //  createfrag=new Createfrag();
         adapter.addFragment(purchaseGameFrag,"Add");
         adapter.addFragment(historyFrag,"Purchases");
-        adapter.addFragment(createfrag,"Cash Out");
+      //  adapter.addFragment(createfrag,"Cash Out");
         viewPager.setAdapter(adapter);
     }
 
@@ -397,6 +400,10 @@ Createfrag createfrag;
 
                                 if (status.equalsIgnoreCase("401")){
 
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
                                     Toast.makeText(WalletTransactions.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(WalletTransactions.this,Signin.class);

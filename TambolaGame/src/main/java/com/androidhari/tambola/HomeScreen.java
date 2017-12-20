@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -76,6 +77,8 @@ public class HomeScreen extends AppCompatActivity {
     List<App> apps = new ArrayList<>();
     List<App> apps1 = new ArrayList<>();
     List<App> apps2 = new ArrayList<>();
+
+    Toolbar myToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,8 +95,9 @@ public class HomeScreen extends AppCompatActivity {
         pass= sp.getString("token",null);
 
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
 
         getuserdetails();
         getdata();
@@ -165,6 +169,10 @@ public class HomeScreen extends AppCompatActivity {
                                 //title = name;
                                 HomeScreen.this.setTitle( "Welcome, "+name);
 
+
+
+                                myToolbar.setSubtitleTextColor(Color.WHITE);
+
                                 Log.e("name",name);
 
                             } catch (JSONException e) {
@@ -186,11 +194,17 @@ public class HomeScreen extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-
+                                Toast.makeText(HomeScreen.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
 
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
-                                    Toast.makeText(HomeScreen.this, message, Toast.LENGTH_SHORT).show();
+
+
+
                                     Intent intent = new Intent(HomeScreen.this,Signin.class);
                                     startActivity(intent);
                                 }
@@ -325,11 +339,18 @@ public class HomeScreen extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
+                                Toast.makeText(HomeScreen.this, message, Toast.LENGTH_SHORT).show();
 
                                 if (status.equalsIgnoreCase("401")){
 
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
-                                    Toast.makeText(HomeScreen.this, message, Toast.LENGTH_SHORT).show();
+
+
+
                                     Intent intent = new Intent(HomeScreen.this,Signin.class);
                                     startActivity(intent);
                                 }
@@ -674,11 +695,17 @@ Logout();
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-
+                                Toast.makeText(HomeScreen.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
 
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
-                                    Toast.makeText(HomeScreen.this, message, Toast.LENGTH_SHORT).show();
+
+
+
                                     Intent intent = new Intent(HomeScreen.this,Signin.class);
                                     startActivity(intent);
                                 }

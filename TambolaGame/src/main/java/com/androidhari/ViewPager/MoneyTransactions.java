@@ -243,11 +243,17 @@ public class MoneyTransactions extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-
+                                Toast.makeText(MoneyTransactions.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
 
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
-                                    Toast.makeText(MoneyTransactions.this, message, Toast.LENGTH_SHORT).show();
+
+
+
                                     Intent intent = new Intent(MoneyTransactions.this,Signin.class);
                                     startActivity(intent);
                                 }

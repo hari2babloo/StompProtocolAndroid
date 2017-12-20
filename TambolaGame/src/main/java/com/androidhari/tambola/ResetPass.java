@@ -1,6 +1,7 @@
 package com.androidhari.tambola;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -190,6 +191,12 @@ tinydb  = new TinyDB(this);
                                 String message = json.getString("message");
                                 Toast.makeText(ResetPass.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
+
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
                                     Toast.makeText(ResetPass.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(ResetPass.this,Signin.class);
                                     startActivity(intent);

@@ -355,6 +355,11 @@ public class BankTransfer extends AppCompatActivity {
                                 if (status.equalsIgnoreCase("401")){
 
 
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
+
                                     Toast.makeText(BankTransfer.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(BankTransfer.this,Signin.class);
                                     startActivity(intent);

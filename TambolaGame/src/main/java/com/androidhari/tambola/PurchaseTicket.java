@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,12 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidhari.ViewPager.WalletTransactions;
+import com.androidhari.db.TinyDB;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -62,17 +65,24 @@ public class PurchaseTicket extends AppCompatActivity {
     String  pass;
     String gid,gamestarttime;
 
+
+
     ProgressDialog pd;
 
     private AdapterFish mAdapter;
     JSONArray postdata2 = new JSONArray();
+
+    ArrayList<String> checkbox2 = new ArrayList<String>();
+    List al = new ArrayList();
+
+
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
     ArrayList<String> tktrow2 = new ArrayList<String>();
     ArrayList<String> tktrow3 = new ArrayList<String>();
     ArrayList<JSONObject> listdata = new ArrayList<>();
     Button checkout;
-
+    String mMessage;
     ArrayList<String> tktids = new ArrayList<>();
 
     List<DataFish> filterdata=new ArrayList<>();
@@ -99,16 +109,43 @@ public class PurchaseTicket extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (postdata2.length()==0){
 
-                    CrossAlert();
- //                   Toast.makeText(PurchaseTicket.this, "Emppty", Toast.LENGTH_SHORT).show();
-                    //Checkout();
+                if (al.size()==0){
+
+                    Toast.makeText(PurchaseTicket.this, "PLease Select Tickets", Toast.LENGTH_SHORT).show();
                 }
-                if (postdata2.length()!=0){
+                else if (al.size()<2){
+
+                    Toast.makeText(PurchaseTicket.this, "Select Minimum Two Tickets", Toast.LENGTH_SHORT).show();
+                }
+                else if(al.size()>=2){
+
+
                     Checkout();
- //                   Toast.makeText(PurchaseTicket.this, "Not Empty", Toast.LENGTH_SHORT).show();
+//                    TinyDB tinydb = new TinyDB(PurchaseTicket.this);
+//
+//
+//                    Intent inte = new Intent(PurchaseTicket.this,Cart.class);
+//                    Bundle args = new Bundle();
+//                    inte.putStringArrayListExtra("ids", (ArrayList<String>) al);
+//                    inte.putExtra("tkts",mMessage);
+//
+//                   // args.putSerializable("ARRAYLIST",(Serializable)object);
+//    //                inte.putExtra("BUNDLE",al);
+//
+//                    startActivity(inte);
                 }
+
+//                if (postdata2.length()==0){
+//
+//                    CrossAlert();
+// //                   Toast.makeText(PurchaseTicket.this, "Emppty", Toast.LENGTH_SHORT).show();
+//                    //Checkout();
+//                }
+//                if (postdata2.length()!=0){
+//                    Checkout();
+// //                   Toast.makeText(PurchaseTicket.this, "Not Empty", Toast.LENGTH_SHORT).show();
+//                }
 
             }
         });
@@ -170,7 +207,7 @@ public class PurchaseTicket extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
 
 
-                final String mMessage = response.body().string();
+                mMessage = response.body().string();
 
 
                 pd.dismiss();
@@ -309,6 +346,12 @@ public class PurchaseTicket extends AppCompatActivity {
 
                             if (status.equalsIgnoreCase("401")){
 
+                                sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.clear();
+                                editor.commit();
+
+
 
                                 Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(PurchaseTicket.this,Signin.class);
@@ -400,7 +443,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
     public class AdapterFish extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
+            SparseBooleanArray selectedItems = new SparseBooleanArray();
 
 
         List<DataFish> data = Collections.emptyList();
@@ -415,6 +458,10 @@ public class PurchaseTicket extends AppCompatActivity {
             inflater = LayoutInflater.from(context);
             this.data = data;
         }
+
+
+
+
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -432,22 +479,74 @@ public class PurchaseTicket extends AppCompatActivity {
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
 
+          //  holder.myBackground.setSelected(selectedItems.get(position, false));
+
             // Get current position of item in recyclerview to bind data and assign values from list
             final MyHolder myHolder = (MyHolder) holder;
             holder.setIsRecyclable(false);
 //            setHasStableIds(false);
             final DataFish current = data.get(position);
 
+            //myHolder.checkBox.setChecked(selectedItems.get(position, false));
+            //.myBackground.setSelected(selectedItems.get(position, false));
 
 
 
 //            holder.itemView.setBackgroundColor(current.isSelected() ? Color.CYAN : Color.WHITE);
 
 
+
+
+            String s = data.get(position).id;
             myHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
+                    if (selectedItems.get(position, false)) {
+                        //if it is in the array we delete it. So clicking a second time on an item will uncheck it.
+                        selectedItems.delete(position);
+                        al.remove(new Integer(data.get(position).id));
+                        myHolder.checkBox.setChecked(selectedItems.get(position,false));
+
+
+                  //      myHolder.checkBox.setChecked(selectedItems.get(position, false));
+
+                        Log.e("sapared", String.valueOf(al));
+                        Log.e("sapare", String.valueOf(selectedItems));
+                    }
+                    else {
+                        selectedItems.put(position, true);
+                        // here get a ref to the view checkbox and *check* it
+
+                        al.add(new Integer(data.get(position).id));
+                        myHolder.checkBox.setChecked(selectedItems.get(position,true));
+
+                        Log.e("sapared", String.valueOf(al));
+                        Log.e("selecteditems sapare", String.valueOf(selectedItems));
+                    }
+
+//                    SparseBooleanArray selectedItems = new SparseBooleanArray();
+                    // Save the selected positions to the SparseBooleanArray
+//
+//                    if (b==true){
+//
+//                        Log.e("postdat2", String.valueOf(b));
+//
+//                        postdata2.put(data.get(position).id);
+//                         ;   //.put(data.get(position).id);
+//                    //    myHolder.checkBox.setChecked(false);
+//                        Log.e("postdat", String.valueOf(postdata2));
+//
+//                    }
+//
+//                    else
+//                    {
+//                        Log.e("postdat3", String.valueOf(b));
+//                    //    postdata2.remove(data.get(position).id);   //.put(data.get(position).id);
+//                      //  myHolder.checkBox.setChecked(true);
+//                        Log.e("postdat", String.valueOf(postdata2));
+//
+//                    }
 
 //                    claimid = data.get(position).id;
                     postdata2.put(data.get(position).id);
@@ -522,6 +621,10 @@ public class PurchaseTicket extends AppCompatActivity {
         public int getItemCount() {
             return data.size();
         }
+
+
+
+
 
 
         class MyHolder extends RecyclerView.ViewHolder {
@@ -612,6 +715,7 @@ public class PurchaseTicket extends AppCompatActivity {
 //                ten = (TextView) itemView.findViewById(R.id.ten);
 //                ten.setVisibility(View.GONE);
             }
+
 
 
         }
@@ -716,11 +820,17 @@ public class PurchaseTicket extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-
+                                Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
 
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
-                                    Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
+
+
+
                                     Intent intent = new Intent(PurchaseTicket.this,Signin.class);
                                     startActivity(intent);
                                 }
@@ -892,6 +1002,12 @@ public class PurchaseTicket extends AppCompatActivity {
                                 //title = name;
 
                                 if (status.equalsIgnoreCase("401")){
+
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
 
 
                                     Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();

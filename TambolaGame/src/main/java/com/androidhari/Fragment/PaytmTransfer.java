@@ -224,6 +224,10 @@ public class PaytmTransfer extends AppCompatActivity {
 
                                 if (status.equalsIgnoreCase("401")){
 
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
 
                                     Toast.makeText(PaytmTransfer.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(PaytmTransfer.this,Signin.class);

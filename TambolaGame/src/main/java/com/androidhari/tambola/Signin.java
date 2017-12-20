@@ -2,6 +2,7 @@ package com.androidhari.tambola;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -39,10 +40,7 @@ public class Signin extends Activity {
     TextView forgotpass,signup;
     SharedPreferences sp;
     ProgressDialog pd;
-
-
     AwesomeValidation awesomeValidation;
-
     EditText username,pass;
     Button login;
     public static final MediaType MEDIA_TYPE =
@@ -239,12 +237,15 @@ public class Signin extends Activity {
                                 JSONObject json = new JSONObject(mMessage);
                                 String status = json.getString("status");
                                 String message = json.getString("message");
+                                Toast.makeText(Signin.this, message, Toast.LENGTH_SHORT).show();
                                 //title = name;
 
                                 if (status.equalsIgnoreCase("401")){
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
-
-                                    Toast.makeText(Signin.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(Signin.this,Signin.class);
                                     startActivity(intent);
                                 }
@@ -262,11 +263,9 @@ public class Signin extends Activity {
         });
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
 
     }
 }

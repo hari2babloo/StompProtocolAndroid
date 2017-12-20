@@ -1,7 +1,9 @@
 package com.androidhari.tambola;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -176,6 +178,12 @@ public class ChangePassword extends AppCompatActivity {
                                 String message = json.getString("message");
                                 Toast.makeText(ChangePassword.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
+
+                                   SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
                                     Toast.makeText(ChangePassword.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(ChangePassword.this,Signin.class);
                                     startActivity(intent);

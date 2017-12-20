@@ -71,10 +71,10 @@
                 style="@style/tab_item"
                 android:text="History" />
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/tab3"
-                style="@style/tab_item"
-                android:text="Create" />
+            <!--<android.support.design.widget.TabItem-->
+                <!--android:id="@+id/tab3"-->
+                <!--style="@style/tab_item"-->
+                <!--android:text="Create" />-->
 
         </android.support.design.widget.TabLayout>
 

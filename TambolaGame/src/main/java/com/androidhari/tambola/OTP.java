@@ -2,6 +2,7 @@ package com.androidhari.tambola;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -320,6 +321,12 @@ public class OTP extends AppCompatActivity implements OTPListener{
                                 //title = name;
 
                                 if (status.equalsIgnoreCase("401")){
+
+                                 SharedPreferences   sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
 
 
                                     Toast.makeText(OTP.this, message, Toast.LENGTH_SHORT).show();

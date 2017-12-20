@@ -201,6 +201,12 @@ public class Countdown extends AppCompatActivity {
 
                                 if (status.equalsIgnoreCase("401")){
 
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
+
 
                                     Toast.makeText(Countdown.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(Countdown.this,Signin.class);
@@ -540,6 +546,12 @@ public class Countdown extends AppCompatActivity {
                             //title = name;
 
                             if (status.equalsIgnoreCase("401")){
+
+                                sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.clear();
+                                editor.commit();
+
 
 
                                 Toast.makeText(Countdown.this, message, Toast.LENGTH_SHORT).show();
@@ -987,6 +999,13 @@ public class Countdown extends AppCompatActivity {
                                 //title = name;
 
                                 if (status.equalsIgnoreCase("401")){
+
+
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
 
 
                                     Toast.makeText(Countdown.this, message, Toast.LENGTH_SHORT).show();

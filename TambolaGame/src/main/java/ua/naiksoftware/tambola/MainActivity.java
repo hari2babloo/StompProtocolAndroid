@@ -686,11 +686,11 @@ public class MainActivity extends AppCompatActivity {
                                         String s = fd.getString("id");
 
 
-                                        firstlist.add(s);
+                                      //  firstlist.add(s);
 
 
                                     }
-                                    Log.e("firstlist", String.valueOf(firstlist));
+//                                    Log.e("firstlist", String.valueOf(firstlist));
                                     JSONObject json_data2 = jsonArray.getJSONObject(0).getJSONObject("game");
 
 
@@ -1316,18 +1316,14 @@ public class MainActivity extends AppCompatActivity {
 
 
                     if (completednumbers.contains(data.get(position).t2)){
-
                         completednumbers.remove(data.get(position).t2);
                     }
                     else {
-
                         completednumbers.add(data.get(position).t2);
                     }
 
 
                     if (tvSelected2) {
-
-
                         myHolder.two.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected2 = false;
                     }

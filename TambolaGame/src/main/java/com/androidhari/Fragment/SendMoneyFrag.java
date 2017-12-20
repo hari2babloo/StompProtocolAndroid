@@ -176,6 +176,10 @@ public class SendMoneyFrag extends Fragment {
 
                                 if (status.equalsIgnoreCase("401")){
 
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
 
                                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getContext(),Signin.class);
@@ -264,6 +268,10 @@ public class SendMoneyFrag extends Fragment {
                                 //title = name;
 
                                 if (status.equalsIgnoreCase("401")){
+
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
 
                                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();

@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,47 +18,73 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape" />
-        <activity android:name="com.androidhari.tambola.FirstPage" />
-        <activity android:name="com.androidhari.tambola.SignUp" />
-        <activity android:name="com.androidhari.tambola.Signin">
+        <activity
+            android:name="com.androidhari.tambola.FirstPage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.SignUp"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.Signin"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name="com.androidhari.tambola.HomeScreen">
-
-        </activity>
-        <activity android:name="com.androidhari.tambola.ForgotPass" />
-        <activity android:name="com.androidhari.tambola.ResetPass" />
-        <activity android:name="com.androidhari.tambola.Wallet" />
-        <activity android:name="com.androidhari.tambola.GameInfo">
-
-        </activity>
-        <activity android:name="com.androidhari.tambola.WalletPurchasehistory" />
-        <activity android:name="com.androidhari.tambola.PurchaseTicket">
-
-
-        </activity>
-        <activity android:name="com.androidhari.tambola.Countdown" />
-        <activity android:name="com.androidhari.tambola.AddMoney" />
-        <activity android:name="com.androidhari.tambola.TransactionHistory" />
-        <activity android:name="com.androidhari.tambola.Countdown2" />
-        <activity android:name="com.androidhari.tambola.TestautoSelect" />
+        <activity
+            android:name="com.androidhari.tambola.HomeScreen"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.androidhari.tambola.ForgotPass"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.ResetPass"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.Wallet"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.GameInfo"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.androidhari.tambola.WalletPurchasehistory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.PurchaseTicket"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.androidhari.tambola.Countdown"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.AddMoney"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.TransactionHistory"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.Countdown2"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.tambola.TestautoSelect"
+            android:screenOrientation="portrait" />
         <activity android:name=".Main2Activity" />
-        <activity android:name="com.androidhari.ViewPager.MoneyTransactions">
-
-
-
-        </activity>
-        <activity android:name="com.androidhari.Fragment.BankTransfer" />
-        <activity android:name="com.androidhari.Fragment.PaytmTransfer" />
-        <activity android:name="com.androidhari.ViewPager.WalletTransactions">
-
-        </activity>
-        <activity android:name="com.androidhari.tambola.OTP"></activity>
+        <activity
+            android:name="com.androidhari.ViewPager.MoneyTransactions"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.androidhari.Fragment.BankTransfer"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.Fragment.PaytmTransfer"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.androidhari.ViewPager.WalletTransactions"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.androidhari.tambola.OTP"
+            android:screenOrientation="portrait" />
 
         <receiver android:name="com.androidhari.tambola.OtpReader">
             <intent-filter>
@@ -67,7 +92,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.androidhari.tambola.ChangePassword"></activity>
+        <activity
+            android:name="com.androidhari.tambola.ChangePassword"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.androidhari.tambola.Cart"></activity>
     </application>
 
 </manifest>

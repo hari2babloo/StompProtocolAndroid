@@ -41,7 +41,7 @@ public class SignUp extends Activity {
     Button submit;
     ProgressDialog pd;
     TextView loginlink;
-    TinyDB tinydb = new TinyDB(this);
+    TinyDB tinydb;
 
     public static final MediaType MEDIA_TYPE =
             MediaType.parse("application/json");
@@ -53,7 +53,7 @@ public class SignUp extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.sign_up);
 
-
+tinydb  = new TinyDB(this);
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
 

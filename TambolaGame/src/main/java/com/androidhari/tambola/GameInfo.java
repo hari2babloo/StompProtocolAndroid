@@ -232,11 +232,13 @@ public class GameInfo extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-
+                                Toast.makeText(GameInfo.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
-
-                                    Toast.makeText(GameInfo.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(GameInfo.this,Signin.class);
                                     startActivity(intent);
                                 }
@@ -467,11 +469,16 @@ public class GameInfo extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-
+                                Toast.makeText(GameInfo.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
 
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
 
-                                    Toast.makeText(GameInfo.this, message, Toast.LENGTH_SHORT).show();
+
+
                                     Intent intent = new Intent(GameInfo.this,Signin.class);
                                     startActivity(intent);
                                 }

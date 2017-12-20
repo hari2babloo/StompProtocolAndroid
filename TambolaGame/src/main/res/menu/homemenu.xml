@@ -4,19 +4,19 @@
 
     <item
         android:id="@+id/action_item_one"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/home"
         android:title="Send"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_item_two"
+        android:icon="@drawable/wallet"
         android:title="Send"
-        android:icon="@drawable/walleticon"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_item_three"
-        android:icon="@android:drawable/ic_lock_power_off"
+        android:icon="@drawable/logout"
         android:title="Send"
         app:showAsAction="always" />
 
