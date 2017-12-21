@@ -14,16 +14,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidhari.ViewPager.WalletTransactions;
 import com.androidhari.db.TinyDB;
 
 import org.json.JSONArray;
@@ -55,8 +59,10 @@ public class Cart extends AppCompatActivity {
     private AdapterFish Adapter;
     SharedPreferences sp;
     String  pass;
-    String gid,gamestarttime,tkts;
-    Button checkout;
+
+    JSONArray idsarray;
+    String gid,gamestarttime,tkts,ids;
+    Button checkout,addmore;
     RecyclerView mRVFishPrice;
     private AdapterFish mAdapter;
     ArrayList<String> tktrow1 = new ArrayList<String>();
@@ -70,43 +76,66 @@ public class Cart extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart);
-        idss = getIntent().getStringArrayListExtra("ids");
-        tkts = getIntent().getStringExtra("tkts");
-        Log.e("ids", String.valueOf(idss));
+        Intent intent = getIntent();
+        String jsonArray = intent.getStringExtra("ids");
+
+
+
+        try {
+            idsarray = new JSONArray(jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        tkts = intent.getStringExtra("tkts");
+       // Log.e("ids", String.valueOf(idss));
         Log.e("tkts",tkts);
 
-        for (int j = 0; j < idss.size(); j++) {
-            al.add(idss.get(j));
-            Log.e("fdsfsdfsdfsdfsdfsdfsd", String.valueOf(al));
-        }
+
         checkout = (Button)findViewById(R.id.checkout);
+     //   addmore = (Button)findViewById(R.id.addmore);
+        mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
         sp=getSharedPreferences("login",MODE_PRIVATE);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         pass=sp.getString("token",null);
         gid = sp.getString("id",null);
         gamestarttime = sp.getString("gstime",null);
 
        
-Displaycart();
+        Displaycart();
+
+//        addmore.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                moveTaskToBack(true);
+//
+//                Intent in = new Intent(Cart.this,PurchaseTicket.class);
+//                in.putExtra("ids",idsarray.toString());
+//                startActivity(in);
+//
+//            }
+//        });
         
         checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                if (al.size()==0){
+                if (idsarray.length()==0){
 
-                    Toast.makeText(Cart.this, "PLease Select Tickets", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Cart.this, "Please Select Tickets", Toast.LENGTH_SHORT).show();
                 }
-                else if (al.size()<2){
+                else if (idsarray.length()<2){
 
                     Toast.makeText(Cart.this, "Select Minimum Two Tickets", Toast.LENGTH_SHORT).show();
                 }
-                else if(al.size()>2){
+                else if(idsarray.length()>2){
 
-                    Intent inte = new Intent(Cart.this,Cart.class);
-                    startActivity(inte);
+                    Checkout();
                 }
 
 //                if (postdata2.length()==0){
@@ -159,7 +188,7 @@ Displaycart();
 
 
 //                               Log.e("idss2", String.valueOf(idss2));
-                                    if (al.contains(s)){
+                                    if (idsarray.toString().contains(s)){
 
                                         Log.e("foundvalues",val);
                                     }
@@ -167,28 +196,18 @@ Displaycart();
 
 
                                  //   Log.e("idssssss", String.valueOf(idss));
-                                    if (idss2.contains(val)) {
-
-
+                                    if (idsarray.toString().contains(val)) {
 
                                         String ticket = json_data.getString("ticket");
-
-
                                         Log.e("ssasrfgsds", s);
-
-
                                         JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
                                         JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
                                         JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
                                         for (int j = 0; j < row1.length(); j++) {
 
-
                                             tktrow1.add(row1.getString(j));
-
                                             //                                     Log.w("Row 1 ", String.valueOf(tktrow1));
-
                                         }
-
                                         for (int j = 0; j < row2.length(); j++) {
 
 
@@ -197,7 +216,6 @@ Displaycart();
                                             //                                      Log.w("Row 2", String.valueOf(tktrow2));
 
                                         }
-
 
                                         for (int j = 0; j < row3.length(); j++) {
 
@@ -250,7 +268,7 @@ Displaycart();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-        mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
+
         mAdapter = new AdapterFish(Cart.this, filterdata);
         mRVFishPrice.setAdapter(mAdapter);
         mRVFishPrice.setHasFixedSize(true);
@@ -349,6 +367,34 @@ Displaycart();
 //            setHasStableIds(false);
             final DataFish current = data.get(position);
 
+            myHolder.delet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    for (int i = 0; i < idsarray.length(); i++) {
+                        try {
+                            if (idsarray.get(i).equals(data.get(position).id)) {
+                                idsarray.remove(i);
+                                mAdapter.notifyDataSetChanged();
+                                filterdata.clear();
+                                Displaycart();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+//
+//            myHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//
+//
+//                }
+//            });
+
             //myHolder.checkBox.setChecked(selectedItems.get(position, false));
             //.myBackground.setSelected(selectedItems.get(position, false));
 
@@ -362,7 +408,7 @@ Displaycart();
             String s = data.get(position).id;
 
 
-            myHolder.id.setText("Select Ticket " );
+            myHolder.id.setText("Remove Ticket " );
 
 
 //            myHolder.one.setText("Name: " + current.preferredName + "  " + current.surname);
@@ -458,6 +504,7 @@ Displaycart();
             TextView twentyfive;
             TextView twentysix;
             TextView twentyseven;
+            ImageButton delet;
 
 
             // create constructor to get widget reference
@@ -492,8 +539,10 @@ Displaycart();
                 twentysix= (TextView)itemView.findViewById(R.id.t26);
                 twentyseven= (TextView)itemView.findViewById(R.id.t27);
                 checkBox = (CheckBox)itemView.findViewById(R.id.checkedTextView);
+                checkBox.setVisibility(View.GONE);
                 claim = (Button)itemView.findViewById(R.id.claim);
                 claim.setVisibility(View.GONE);
+                delet = (ImageButton)itemView.findViewById(R.id.delete);
 
 
 
@@ -533,7 +582,7 @@ Displaycart();
 
         try {
             postdata.put("gameId", gid);
-          //  postdata.put("ticketIds", postdata2);
+            postdata.put("ticketIds", idsarray);
         } catch(JSONException e){
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -586,7 +635,7 @@ Displaycart();
 
                                 Alert();
 
-//                                Toast.makeText(Cart.this, s, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Cart.this, s, Toast.LENGTH_SHORT).show();
 
                                 //   Toast.makeText(SigninForm.this, s, Toast.LENGTH_SHORT).show();
 //                                Intent in = new Intent(Cart.this,HomeScreen.class);
@@ -616,7 +665,7 @@ Displaycart();
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-
+                                Toast.makeText(Cart.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
 
                                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
@@ -626,7 +675,7 @@ Displaycart();
 
 
 
-                                    Toast.makeText(Cart.this, message, Toast.LENGTH_SHORT).show();
+
                                     Intent intent = new Intent(Cart.this,Signin.class);
                                     startActivity(intent);
                                 }
@@ -662,7 +711,7 @@ Displaycart();
                                         e.commit();
 
                                         Cart.this.finish();
-                                        Intent intent = new Intent(Cart.this,Cart.class);
+                                        Intent intent = new Intent(Cart.this,Countdown.class);
 
                                         startActivity(intent);
 
@@ -679,5 +728,150 @@ Displaycart();
 //        Log.e("Final", String.valueOf(isChecked));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.homemenu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // getMenuInflater().inflate(R.menu.homemenu, (Menu) item);
+        int id = item.getItemId();
+
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+            case R.id.action_item_two:
+
+                Intent intent = new Intent(Cart.this, WalletTransactions.class);
+                startActivity(intent);
+                // Do something
+                return true;
+            case R.id.action_item_one:
+
+                Intent intent2 = new Intent(Cart.this, HomeScreen.class);
+                startActivity(intent2);
+                // Do something
+                return true;
+            case R.id.action_item_three:
+
+                Logout();
+                // Do something
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void Logout() {
+
+        pd = new ProgressDialog(Cart.this);
+        pd.setMessage("Logging You Out");
+        pd.setCancelable(false);
+        pd.show();
+        final OkHttpClient client = new OkHttpClient();
+        JSONObject postdata = new JSONObject();
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                postdata.toString());
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/user/logout")
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization",pass)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                pd.dismiss();
+                pd.cancel();
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                pd.dismiss();
+                pd.cancel();
+                final String mMessage = response.body().string();
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+                                String s = json.getString("message");
+
+
+                                Toast.makeText(Cart.this, s, Toast.LENGTH_SHORT).show();
+
+                                sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.clear();
+                                editor.commit();
+                                //   finish();
+
+                                Intent in = new Intent(Cart.this,FirstPage.class);
+                                startActivity(in);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+                }
+
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                //title = name;
+
+                                if (status.equalsIgnoreCase("401")){
+
+                                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.clear();
+                                    editor.commit();
+
+
+
+                                    Toast.makeText(Cart.this, message, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Cart.this,Signin.class);
+                                    startActivity(intent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+    }
 
 }

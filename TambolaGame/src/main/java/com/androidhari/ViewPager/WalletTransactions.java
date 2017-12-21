@@ -112,6 +112,8 @@ public class WalletTransactions extends AppCompatActivity {
         gameid=sp.getString("gno",null);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         money = (TextView)findViewById(R.id.money);
         addmoney =(Button)findViewById(R.id.addmoney);
@@ -296,6 +298,10 @@ public class WalletTransactions extends AppCompatActivity {
 
 
         switch (item.getItemId()) {
+
+            case android.R.id.home:
+                this.finish();
+                return true;
 
             case R.id.action_item_two:
 

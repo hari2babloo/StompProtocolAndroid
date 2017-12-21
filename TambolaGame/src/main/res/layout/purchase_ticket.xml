@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bbkg"
-        android:text="Checkout"
+        android:text="Add To Cart"
         android:textColor="@color/cardview_light_background" />
 
 </LinearLayout>

@@ -28,6 +28,14 @@
             android:layout_weight="1"
             android:backgroundTint="@color/orange"
             app:buttonTint="@color/cardview_light_background" />
+
+        <ImageButton
+            android:id="@+id/delete"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/dustbin" />
     </LinearLayout>
 
     <LinearLayout

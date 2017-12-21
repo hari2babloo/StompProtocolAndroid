@@ -1,11 +1,13 @@
 package com.androidhari.tambola;
 
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -72,9 +74,10 @@ public class GameInfo extends AppCompatActivity {
         setContentView(R.layout.game_info);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
-
         gid=sp.getString("id",null);
         buytickets = (Button)findViewById(R.id.buyticket);
         buytickets.setEnabled(false);
@@ -174,7 +177,7 @@ public class GameInfo extends AppCompatActivity {
                                             e.putString("gstime",gamestarttime);
 
                                             e.commit();
-                                            GameInfo.this.finish();
+                                        //    GameInfo.this.finish();
                                             Intent in = new Intent(GameInfo.this,PurchaseTicket.class);
                                             startActivity(in);
                                         }
@@ -368,6 +371,13 @@ public class GameInfo extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+          //  case android.R.id.home:
+
+            case android.R.id.home:
+                this.finish();
+                return true;
+
+
             case R.id.action_item_two:
 
                 Intent intent = new Intent(GameInfo.this, WalletTransactions.class);
@@ -442,7 +452,7 @@ public class GameInfo extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sp.edit();
                                 editor.clear();
                                 editor.commit();
-                                finish();
+   //                             finish();
 
                                 Intent in = new Intent(GameInfo.this,FirstPage.class);
                                 startActivity(in);
@@ -493,4 +503,6 @@ public class GameInfo extends AppCompatActivity {
             }
         });
     }
+
+
 }

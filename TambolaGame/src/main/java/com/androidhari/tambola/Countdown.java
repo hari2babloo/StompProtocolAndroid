@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -98,6 +99,9 @@ public class Countdown extends AppCompatActivity {
         setContentView(R.layout.countdown);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
         gameid=sp.getString("gno",null);
@@ -797,6 +801,7 @@ public class Countdown extends AppCompatActivity {
             TextView twentysix;
             TextView twentyseven;
             Button claim;
+            ImageButton del;
 
 
             // create constructor to get widget reference
@@ -809,6 +814,8 @@ public class Countdown extends AppCompatActivity {
                 checkBox.setVisibility(View.GONE);
                 id= (TextView) itemView.findViewById(R.id.id);
                 id.setVisibility(View.GONE);
+                del = (ImageButton)itemView.findViewById(R.id.delete);
+                del.setVisibility(View.GONE);
                 one = (TextView) itemView.findViewById(R.id.t1);
                 two = (TextView) itemView.findViewById(R.id.t2);
             three = (TextView) itemView.findViewById(R.id.t3);
@@ -894,6 +901,11 @@ public class Countdown extends AppCompatActivity {
 
 
         switch (item.getItemId()) {
+
+            case android.R.id.home:
+                this.finish();
+                return true;
+
 
             case R.id.action_item_two:
 

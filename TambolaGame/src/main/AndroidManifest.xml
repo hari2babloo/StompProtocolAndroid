@@ -47,7 +47,20 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.androidhari.tambola.GameInfo"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+
+            android:parentActivityName="com.androidhari.tambola.HomeScreen" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.androidhari.tambola.HomeScreen" />
+
+
+
+
+
+        </activity>
         <activity
             android:name="com.androidhari.tambola.WalletPurchasehistory"
             android:screenOrientation="portrait" />

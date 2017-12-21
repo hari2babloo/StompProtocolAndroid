@@ -65,6 +65,8 @@ public class MoneyTransactions extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         sp=getSharedPreferences("login",MODE_PRIVATE);
         pass=sp.getString("token",null);
 
@@ -145,6 +147,11 @@ public class MoneyTransactions extends AppCompatActivity {
 
 
         switch (item.getItemId()) {
+
+
+            case android.R.id.home:
+                this.finish();
+                return true;
 
             case R.id.action_item_two:
 

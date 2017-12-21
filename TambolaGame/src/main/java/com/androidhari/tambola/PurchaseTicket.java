@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -68,6 +69,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
 
     ProgressDialog pd;
+    JSONArray idsarray;
 
     private AdapterFish mAdapter;
     JSONArray postdata2 = new JSONArray();
@@ -75,7 +77,7 @@ public class PurchaseTicket extends AppCompatActivity {
     ArrayList<String> checkbox2 = new ArrayList<String>();
     List al = new ArrayList();
 
-
+    JSONArray jsonArray5 = new JSONArray();
     ArrayList row1 = new ArrayList();
     ArrayList<String> tktrow1 = new ArrayList<String>();
     ArrayList<String> tktrow2 = new ArrayList<String>();
@@ -95,10 +97,38 @@ public class PurchaseTicket extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.purchase_ticket);
+//        Intent intent = getIntent();
+//        String jsonArray = intent.getStringExtra("ids");
+//
+//        if (jsonArray != null && !jsonArray.isEmpty()) {
+//
+//            try {
+//                idsarray = new JSONArray(jsonArray);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            // doSomething
+//        }
+//
+//        else {
+//
+//            try {
+//                idsarray = new JSONArray(jsonArray);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+
+
+
+
         checkout = (Button)findViewById(R.id.checkout);
         sp=getSharedPreferences("login",MODE_PRIVATE);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
          pass=sp.getString("token",null);
 
          gid = sp.getString("id",null);
@@ -112,7 +142,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
                 if (al.size()==0){
 
-                    Toast.makeText(PurchaseTicket.this, "PLease Select Tickets", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PurchaseTicket.this, "Please Select Tickets", Toast.LENGTH_SHORT).show();
                 }
                 else if (al.size()<2){
 
@@ -121,19 +151,25 @@ public class PurchaseTicket extends AppCompatActivity {
                 else if(al.size()>=2){
 
 
-                    Checkout();
+                  //  Checkout();
 //                    TinyDB tinydb = new TinyDB(PurchaseTicket.this);
 //
 //
-//                    Intent inte = new Intent(PurchaseTicket.this,Cart.class);
+                    Intent inte = new Intent(PurchaseTicket.this,Cart.class);
+                    moveTaskToBack(true);
+
+
+                    inte.putExtra("ids",jsonArray5.toString());
+
 //                    Bundle args = new Bundle();
 //                    inte.putStringArrayListExtra("ids", (ArrayList<String>) al);
-//                    inte.putExtra("tkts",mMessage);
-//
+                   inte.putExtra("tkts",mMessage);
+//                    inte.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    finish();
 //                   // args.putSerializable("ARRAYLIST",(Serializable)object);
 //    //                inte.putExtra("BUNDLE",al);
 //
-//                    startActivity(inte);
+                   startActivity(inte);
                 }
 
 //                if (postdata2.length()==0){
@@ -231,85 +267,105 @@ public class PurchaseTicket extends AppCompatActivity {
 
 
 
+
+
+
                                 for (int i = 0; i < jsonArray.length(); i++){
                                     JSONObject json_data = jsonArray.getJSONObject(i);
                                     DataFish data = new DataFish();
+
+                                    String s = json_data.getString("id");
+                                    String val = new String(json_data.getString("id"));
                                     String ticket = json_data.getString("ticket");
-                                    JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
-                                    JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
-                                    JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
+
+//                                    if (idsarray.toString().contains(val)){
+//
+//                                        Toast.makeText(PurchaseTicket.this, "", Toast.LENGTH_SHORT).show();
+//                                    }
+//
+//                                    else {
+
+                                        JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
+                                        JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
+                                        JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
 
 
 
 //                                    row1.add(dasd.get(0));
 //                                    row2.add(dasd.get(1));
 //                                    row3.add(dasd.get(2));
-                                    String s = json_data.getString("id");
+      //                                  String s = json_data.getString("id");
 
-                                    for ( int j = 0; j <row1.length();j++ ){
-
-
-
-                                        tktrow1.add(row1.getString(j));
-
-                                        Log.w("Row 1 ", String.valueOf(tktrow1));
-
-                                    }
-
-                                    for ( int j = 0; j <row2.length();j++ ){
+                                        for ( int j = 0; j <row1.length();j++ ){
 
 
 
-                                        tktrow2.add(row2.getString(j));
+                                            tktrow1.add(row1.getString(j));
 
-                                        Log.w("Row 2", String.valueOf(tktrow2));
+                                            Log.w("Row 1 ", String.valueOf(tktrow1));
 
-                                    }
+                                        }
 
-
-                                    for ( int j = 0; j <row3.length();j++ ){
-
+                                        for ( int j = 0; j <row2.length();j++ ){
 
 
-                                        tktrow2.add(row3.getString(j));
 
-                                        Log.w("Row 3", String.valueOf(tktrow3));
+                                            tktrow2.add(row2.getString(j));
 
-                                    }
-                                    data.id = s;
-                                    data.t1 = row1.getString(0);
-                                    data.t2 = row1.getString(1);
-                                    data.t3 = row1.getString(2);
-                                    data.t4 = row1.getString(3);
-                                    data.t5 = row1.getString(4);
-                                    data.t6 = row1.getString(5);
-                                    data.t7 = row1.getString(6);
-                                    data.t8 = row1.getString(7);
-                                    data.t9 = row1.getString(8);
-                                    data.t10 = row2.getString(0);
-                                    data.t11 = row2.getString(1);
-                                    data.t12 = row2.getString(2);
-                                    data.t13 = row2.getString(3);
-                                    data.t14 = row2.getString(4);
-                                    data.t15 = row2.getString(5);
-                                    data.t16 = row2.getString(6);
-                                    data.t17 = row2.getString(7);
-                                    data.t18 = row2.getString(8);
-                                    data.t19 = row3.getString(0);
-                                    data.t20 = row3.getString(1);
-                                    data.t21 = row3.getString(2);
-                                    data.t22 = row3.getString(3);
-                                    data.t23 = row3.getString(4);
-                                    data.t24 = row3.getString(5);
-                                    data.t25 = row3.getString(6);
-                                    data.t26 = row3.getString(7);
-                                    data.t27 = row3.getString(8);
+                                            Log.w("Row 2", String.valueOf(tktrow2));
+
+                                        }
 
 
-                                    filterdata.add(data);
+                                        for ( int j = 0; j <row3.length();j++ ){
+
+
+
+                                            tktrow2.add(row3.getString(j));
+
+                                            Log.w("Row 3", String.valueOf(tktrow3));
+
+                                        }
+                                        data.id = s;
+                                        data.t1 = row1.getString(0);
+                                        data.t2 = row1.getString(1);
+                                        data.t3 = row1.getString(2);
+                                        data.t4 = row1.getString(3);
+                                        data.t5 = row1.getString(4);
+                                        data.t6 = row1.getString(5);
+                                        data.t7 = row1.getString(6);
+                                        data.t8 = row1.getString(7);
+                                        data.t9 = row1.getString(8);
+                                        data.t10 = row2.getString(0);
+                                        data.t11 = row2.getString(1);
+                                        data.t12 = row2.getString(2);
+                                        data.t13 = row2.getString(3);
+                                        data.t14 = row2.getString(4);
+                                        data.t15 = row2.getString(5);
+                                        data.t16 = row2.getString(6);
+                                        data.t17 = row2.getString(7);
+                                        data.t18 = row2.getString(8);
+                                        data.t19 = row3.getString(0);
+                                        data.t20 = row3.getString(1);
+                                        data.t21 = row3.getString(2);
+                                        data.t22 = row3.getString(3);
+                                        data.t23 = row3.getString(4);
+                                        data.t24 = row3.getString(5);
+                                        data.t25 = row3.getString(6);
+                                        data.t26 = row3.getString(7);
+                                        data.t27 = row3.getString(8);
+
+
+                                        filterdata.add(data);
 //                                    Log.w("Response", data.t1);
 
-                                }
+                                    }
+
+
+
+
+
+                                //}
 
                                 Log.e("Data", String.valueOf(row1));
                             } catch (JSONException e) {
@@ -343,16 +399,11 @@ public class PurchaseTicket extends AppCompatActivity {
                             String status = json.getString("status");
                             String message = json.getString("message");
                             //title = name;
-
                             if (status.equalsIgnoreCase("401")){
-
                                 sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp.edit();
                                 editor.clear();
                                 editor.commit();
-
-
-
                                 Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(PurchaseTicket.this,Signin.class);
                                 startActivity(intent);
@@ -361,13 +412,10 @@ public class PurchaseTicket extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
 
-
             }
-
 
         });
     }
@@ -503,15 +551,26 @@ public class PurchaseTicket extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
                     if (selectedItems.get(position, false)) {
+
                         //if it is in the array we delete it. So clicking a second time on an item will uncheck it.
                         selectedItems.delete(position);
+
+                        for (int i = 0; i < jsonArray5.length(); i++) {
+                            try {
+                                if (jsonArray5.get(i).equals(data.get(position).id)) {
+                                    jsonArray5.remove(i);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         al.remove(new Integer(data.get(position).id));
                         myHolder.checkBox.setChecked(selectedItems.get(position,false));
 
 
                   //      myHolder.checkBox.setChecked(selectedItems.get(position, false));
 
-                        Log.e("sapared", String.valueOf(al));
+                        Log.e("sapared", String.valueOf(jsonArray5));
                         Log.e("sapare", String.valueOf(selectedItems));
                     }
                     else {
@@ -519,9 +578,12 @@ public class PurchaseTicket extends AppCompatActivity {
                         // here get a ref to the view checkbox and *check* it
 
                         al.add(new Integer(data.get(position).id));
+
+
+                        jsonArray5.put(data.get(position).id);
                         myHolder.checkBox.setChecked(selectedItems.get(position,true));
 
-                        Log.e("sapared", String.valueOf(al));
+                        Log.e("sapared", String.valueOf(jsonArray5));
                         Log.e("selecteditems sapare", String.valueOf(selectedItems));
                     }
 
@@ -661,6 +723,7 @@ public class PurchaseTicket extends AppCompatActivity {
             TextView twentyfive;
             TextView twentysix;
             TextView twentyseven;
+            ImageButton imgbtn;
 
 
             // create constructor to get widget reference
@@ -697,6 +760,8 @@ public class PurchaseTicket extends AppCompatActivity {
                 checkBox = (CheckBox)itemView.findViewById(R.id.checkedTextView);
                 claim = (Button)itemView.findViewById(R.id.claim);
                 claim.setVisibility(View.GONE);
+                imgbtn = (ImageButton)itemView.findViewById(R.id.delete);
+                imgbtn.setVisibility(GONE);
 
 
 
@@ -865,7 +930,7 @@ public class PurchaseTicket extends AppCompatActivity {
 
                                         e.commit();
 
-                                        PurchaseTicket.this.finish();
+                                      //  PurchaseTicket.this.finish();
                                         Intent intent = new Intent(PurchaseTicket.this,Countdown.class);
 
                                         startActivity(intent);
@@ -898,6 +963,10 @@ public class PurchaseTicket extends AppCompatActivity {
 
 
         switch (item.getItemId()) {
+
+            case android.R.id.home:
+                this.finish();
+                return true;
 
             case R.id.action_item_two:
 
@@ -973,7 +1042,7 @@ public class PurchaseTicket extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sp.edit();
                                 editor.clear();
                                 editor.commit();
-                                finish();
+                             //   finish();
 
                                 Intent in = new Intent(PurchaseTicket.this,FirstPage.class);
                                 startActivity(in);
@@ -1025,6 +1094,8 @@ public class PurchaseTicket extends AppCompatActivity {
             }
         });
     }
+
+
 }
 
 

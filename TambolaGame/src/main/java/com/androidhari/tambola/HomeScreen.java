@@ -439,7 +439,7 @@ public class HomeScreen extends AppCompatActivity {
                 e.commit();
 
 
-                HomeScreen.this.finish();
+               // HomeScreen.this.finish();
                 Intent intent = new Intent(HomeScreen.this,GameInfo.class);
                 startActivity(intent);
                 Toast.makeText(HomeScreen.this, mApps.get(getAdapterPosition()).getId(), Toast.LENGTH_SHORT).show();
@@ -668,7 +668,7 @@ Logout();
                                 SharedPreferences.Editor editor = sp.edit();
                                 editor.clear();
                                 editor.commit();
-                                finish();
+                   //             finish();
 
                                 Intent in = new Intent(HomeScreen.this,FirstPage.class);
                                 startActivity(in);

@@ -23,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -1292,21 +1293,19 @@ public class MainActivity extends AppCompatActivity {
                     if (tvSelected1) {
                         myHolder.one.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected1 = false;
+                        completednumbers.add(data.get(position).t1);
                     }
                     else {
                         myHolder.one.setBackground(getDrawable(R.drawable.ticketbrder));
                         tvSelected1 = true;
+                        if (completednumbers.contains(data.get(position).t1)){
+
+                            completednumbers.remove(data.get(position).t1);
+                        }
                     }
 
-                    if (completednumbers.contains(data.get(position).t1)){
 
-                        completednumbers.remove(data.get(position).t1);
-                    }
-                    else {
 
-                        completednumbers.add(data.get(position).t1);
-                    }
-                    Log.d("fdsf0", String.valueOf(completednumbers));
                 }
             });
 
@@ -1315,23 +1314,22 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t2)){
-                        completednumbers.remove(data.get(position).t2);
-                    }
-                    else {
-                        completednumbers.add(data.get(position).t2);
-                    }
+
 
 
                     if (tvSelected2) {
                         myHolder.two.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected2 = false;
+                        completednumbers.add(data.get(position).t2);
                     }
                     else {
 
                         myHolder.two.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected2 = true;
+                        if (completednumbers.contains(data.get(position).t2)){
+                            completednumbers.remove(data.get(position).t2);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1461,24 +1459,23 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    if (completednumbers.contains(data.get(position).t3)){
 
-                        completednumbers.remove(data.get(position).t3);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t3);
-                    }
 
                     if (tvSelected3) {
 
                         myHolder. three.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected3 = false;
+                        completednumbers.add(data.get(position).t3);
                     }
                     else {
 
                         myHolder.three.setBackground(getDrawable(R.drawable.ticketbrder));
                         tvSelected3 = true;
+
+                        if (completednumbers.contains(data.get(position).t3)){
+
+                            completednumbers.remove(data.get(position).t3);
+                        }
                     }
                     Log.d("fdsf0", String.valueOf(completednumbers));
                 }
@@ -1489,14 +1486,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t4)){
 
-                        completednumbers.remove(data.get(position).t4);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t4);
-                    }
 
 
                     if (tvSelected4) {
@@ -1504,12 +1494,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.four.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected4 = false;
+                        completednumbers.add(data.get(position).t4);
                     }
                     else {
 
                         myHolder.four.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected4 = true;
+                        if (completednumbers.contains(data.get(position).t4)){
+
+                            completednumbers.remove(data.get(position).t4);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1522,14 +1517,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t5)){
 
-                        completednumbers.remove(data.get(position).t5);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t5);
-                    }
 
 
                     if (tvSelected5) {
@@ -1537,12 +1525,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.five.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected5 = false;
+                        completednumbers.add(data.get(position).t5);
                     }
                     else {
 
                         myHolder.five.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected5 = true;
+                        if (completednumbers.contains(data.get(position).t5)){
+
+                            completednumbers.remove(data.get(position).t5);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1555,14 +1548,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t6)){
-
-                        completednumbers.remove(data.get(position).t6);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t6);
-                    }
 
 
                     if (tvSelected6) {
@@ -1570,12 +1555,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.six.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected6 = false;
+                        completednumbers.add(data.get(position).t6);
                     }
                     else {
 
                         myHolder.six.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected2 = true;
+                        if (completednumbers.contains(data.get(position).t6)){
+
+                            completednumbers.remove(data.get(position).t6);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1588,14 +1578,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t7)){
 
-                        completednumbers.remove(data.get(position).t7);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t7);
-                    }
 
 
                     if (tvSelected7) {
@@ -1603,12 +1586,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.seven.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected7 = false;
+                        completednumbers.add(data.get(position).t7);
                     }
                     else {
 
                         myHolder.seven.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected7 = true;
+                        if (completednumbers.contains(data.get(position).t7)){
+
+                            completednumbers.remove(data.get(position).t7);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1621,14 +1609,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t8)){
-
-                        completednumbers.remove(data.get(position).t8);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t8);
-                    }
 
 
                     if (tvSelected8) {
@@ -1636,12 +1616,18 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.eight.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected8 = false;
+                        completednumbers.add(data.get(position).t8);
                     }
                     else {
 
                         myHolder.eight.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected8 = true;
+
+                        if (completednumbers.contains(data.get(position).t8)){
+
+                            completednumbers.remove(data.get(position).t8);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1653,14 +1639,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t9)){
-
-                        completednumbers.remove(data.get(position).t9);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t9);
-                    }
 
 
                     if (tvSelected9) {
@@ -1668,12 +1646,18 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.nine.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected9 = false;
+                        completednumbers.add(data.get(position).t9);
                     }
                     else {
 
                         myHolder.nine.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected9 = true;
+
+                        if (completednumbers.contains(data.get(position).t9)){
+
+                            completednumbers.remove(data.get(position).t9);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1686,27 +1670,23 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t10)){
-
-                        completednumbers.remove(data.get(position).t10);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t10);
-                    }
-
 
                     if (tvSelected10) {
 
 
                         myHolder.ten.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected10 = false;
+                        completednumbers.add(data.get(position).t10);
                     }
                     else {
 
                         myHolder.ten.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected10 = true;
+                        if (completednumbers.contains(data.get(position).t10)){
+
+                            completednumbers.remove(data.get(position).t10);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1719,14 +1699,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t11)){
-
-                        completednumbers.remove(data.get(position).t11);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t11);
-                    }
 
 
                     if (tvSelected11) {
@@ -1734,12 +1706,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.eleven.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected11 = false;
+                        completednumbers.add(data.get(position).t11);
                     }
                     else {
 
                         myHolder.eleven.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected11 = true;
+                        if (completednumbers.contains(data.get(position).t11)){
+
+                            completednumbers.remove(data.get(position).t11);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1752,14 +1729,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t12)){
 
-                        completednumbers.remove(data.get(position).t12);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t12);
-                    }
 
 
                     if (tvSelected12) {
@@ -1767,12 +1737,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.twelve.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected12 = false;
+                        completednumbers.add(data.get(position).t12);
                     }
                     else {
 
                         myHolder.twelve.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected12 = true;
+                        if (completednumbers.contains(data.get(position).t12)){
+
+                            completednumbers.remove(data.get(position).t12);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1785,14 +1760,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t13)){
 
-                        completednumbers.remove(data.get(position).t13);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t13);
-                    }
 
 
                     if (tvSelected13) {
@@ -1800,12 +1768,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.thirteen.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected13 = false;
+                        completednumbers.add(data.get(position).t13);
                     }
                     else {
 
                         myHolder.thirteen.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected13 = true;
+                        if (completednumbers.contains(data.get(position).t13)){
+
+                            completednumbers.remove(data.get(position).t13);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1818,14 +1791,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t14)){
 
-                        completednumbers.remove(data.get(position).t14);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t14);
-                    }
 
 
                     if (tvSelected14) {
@@ -1833,12 +1799,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.fourteen.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected14 = false;
+                        completednumbers.add(data.get(position).t14);
                     }
                     else {
 
                         myHolder.fourteen.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected14 = true;
+                        if (completednumbers.contains(data.get(position).t14)){
+
+                            completednumbers.remove(data.get(position).t14);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1851,27 +1822,23 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t15)){
-
-                        completednumbers.remove(data.get(position).t15);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t15);
-                    }
-
 
                     if (tvSelected15) {
 
 
                         myHolder.fifteen.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected15 = false;
+                        completednumbers.add(data.get(position).t15);
                     }
                     else {
 
                         myHolder.fifteen.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected15 = true;
+                        if (completednumbers.contains(data.get(position).t15)){
+
+                            completednumbers.remove(data.get(position).t15);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1884,14 +1851,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t16)){
-
-                        completednumbers.remove(data.get(position).t16);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t16);
-                    }
 
 
                     if (tvSelected16) {
@@ -1899,12 +1858,18 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.sixteen.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected16 = false;
+                        completednumbers.add(data.get(position).t16);
                     }
                     else {
 
                         myHolder.sixteen.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected16 = true;
+
+                        if (completednumbers.contains(data.get(position).t16)){
+
+                            completednumbers.remove(data.get(position).t16);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1917,14 +1882,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t17)){
-
-                        completednumbers.remove(data.get(position).t17);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t17);
-                    }
 
 
                     if (tvSelected17) {
@@ -1932,12 +1889,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.seventeen.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected17 = false;
+                        completednumbers.add(data.get(position).t17);
                     }
                     else {
 
                         myHolder.seventeen.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected17 = true;
+                        if (completednumbers.contains(data.get(position).t17)){
+
+                            completednumbers.remove(data.get(position).t17);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1950,14 +1912,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t18)){
 
-                        completednumbers.remove(data.get(position).t18);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t18);
-                    }
 
 
                     if (tvSelected18) {
@@ -1965,12 +1920,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.eighteen.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected18 = false;
+                        completednumbers.add(data.get(position).t18);
                     }
                     else {
 
                         myHolder.eighteen.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected18 = true;
+                        if (completednumbers.contains(data.get(position).t18)){
+
+                            completednumbers.remove(data.get(position).t18);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -1983,14 +1943,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t19)){
-
-                        completednumbers.remove(data.get(position).t19);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t19);
-                    }
 
 
                     if (tvSelected19) {
@@ -1998,12 +1950,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.nineteen.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected19 = false;
+                        completednumbers.add(data.get(position).t19);
                     }
                     else {
 
                         myHolder.nineteen.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected19 = true;
+                        if (completednumbers.contains(data.get(position).t19)){
+
+                            completednumbers.remove(data.get(position).t19);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -2016,14 +1973,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t20)){
 
-                        completednumbers.remove(data.get(position).t20);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t20);
-                    }
 
 
                     if (tvSelected20) {
@@ -2031,12 +1981,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.twenty.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected20 = false;
+                        completednumbers.add(data.get(position).t20);
                     }
                     else {
 
                         myHolder.twenty.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected20 = true;
+                        if (completednumbers.contains(data.get(position).t20)){
+
+                            completednumbers.remove(data.get(position).t20);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -2049,14 +2004,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t21)){
-
-                        completednumbers.remove(data.get(position).t21);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t21);
-                    }
 
 
                     if (tvSelected21) {
@@ -2064,12 +2011,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.twentyone.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected21 = false;
+                        completednumbers.add(data.get(position).t21);
                     }
                     else {
 
                         myHolder.twentyone.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected21 = true;
+                        if (completednumbers.contains(data.get(position).t21)){
+
+                            completednumbers.remove(data.get(position).t21);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -2082,14 +2034,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t22)){
-
-                        completednumbers.remove(data.get(position).t22);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t22);
-                    }
 
 
                     if (tvSelected22) {
@@ -2097,12 +2041,21 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.twentytwo.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected22 = false;
+                        completednumbers.add(data.get(position).t22);
+
+
+
                     }
                     else {
 
                         myHolder.twentytwo.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected22 = true;
+
+                        if (completednumbers.contains(data.get(position).t22)){
+
+                            completednumbers.remove(data.get(position).t22);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -2115,14 +2068,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t23)){
 
-                        completednumbers.remove(data.get(position).t23);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t23);
-                    }
 
 
                     if (tvSelected23) {
@@ -2130,12 +2076,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.twentythree.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected23 = false;
+                        completednumbers.add(data.get(position).t23);
                     }
                     else {
 
                         myHolder.twentythree.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected23 = true;
+                        if (completednumbers.contains(data.get(position).t23)){
+
+                            completednumbers.remove(data.get(position).t23);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -2149,13 +2100,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t24)){
-
-                        completednumbers.remove(data.get(position).t24);
-                    }
-                    else {
-                        completednumbers.add(data.get(position).t24);
-                    }
 
 
                     if (tvSelected24) {
@@ -2163,12 +2107,18 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.twentyfour.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected24 = false;
+                        completednumbers.add(data.get(position).t24);
                     }
                     else {
 
                         myHolder.twentyfour.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected24 = true;
+
+                        if (completednumbers.contains(data.get(position).t24)){
+
+                            completednumbers.remove(data.get(position).t24);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -2182,14 +2132,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t25)){
 
-                        completednumbers.remove(data.get(position).t25);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t25);
-                    }
 
 
                     if (tvSelected25) {
@@ -2197,12 +2140,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.twentyfive.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected25 = false;
+                        completednumbers.add(data.get(position).t25);
                     }
                     else {
 
                         myHolder.twentyfive.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected25 = true;
+                        if (completednumbers.contains(data.get(position).t25)){
+
+                            completednumbers.remove(data.get(position).t25);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -2215,14 +2163,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t26)){
-
-                        completednumbers.remove(data.get(position).t26);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t26);
-                    }
 
 
                     if (tvSelected26) {
@@ -2230,12 +2170,17 @@ public class MainActivity extends AppCompatActivity {
 
                         myHolder.twentysix.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected26 = false;
+                        completednumbers.add(data.get(position).t26);
                     }
                     else {
 
                         myHolder.twentysix.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected26 = true;
+                        if (completednumbers.contains(data.get(position).t26)){
+
+                            completednumbers.remove(data.get(position).t26);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -2248,27 +2193,23 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                    if (completednumbers.contains(data.get(position).t27)){
-
-                        completednumbers.remove(data.get(position).t27);
-                    }
-                    else {
-
-                        completednumbers.add(data.get(position).t27);
-                    }
-
 
                     if (tvSelected27) {
 
 
                         myHolder.twentyseven.setBackground(getDrawable(R.drawable.ticketborder2));
                         tvSelected27 = false;
+                        completednumbers.add(data.get(position).t27);
                     }
                     else {
 
                         myHolder.twentyseven.setBackground(getDrawable(R.drawable.ticketbrder));
 
                         tvSelected27 = true;
+                        if (completednumbers.contains(data.get(position).t27)){
+
+                            completednumbers.remove(data.get(position).t27);
+                        }
                     }
 
                     Log.d("fdsf0", String.valueOf(completednumbers));
@@ -2612,6 +2553,7 @@ public class MainActivity extends AppCompatActivity {
             TextView twentysix;
             TextView twentyseven;
             Button claim;
+            ImageButton del;
 
 
 
@@ -2626,6 +2568,8 @@ public class MainActivity extends AppCompatActivity {
 
                 id = (TextView)itemView.findViewById(R.id.id);
                 id.setVisibility(View.GONE);
+                del = (ImageButton)itemView.findViewById(R.id.delete);
+                del.setVisibility(View.GONE);
                 one = (TextView) itemView.findViewById(R.id.t1);
                 two = (TextView) itemView.findViewById(R.id.t2);
                 three = (TextView) itemView.findViewById(R.id.t3);
