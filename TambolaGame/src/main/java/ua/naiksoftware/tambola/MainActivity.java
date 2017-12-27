@@ -9,9 +9,13 @@ import android.graphics.Color;
 
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,8 +25,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -137,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
 //    ArrayList<String> tktids = new ArrayList<>();
 
     List<DataFish> filterdata=new ArrayList<>();
+    FloatingActionButton fab;
   //  List<DataFish> refresheddata=new ArrayList<>();
 
     //   private RecyclerView mRVFishPrice;
@@ -146,13 +153,14 @@ public class MainActivity extends AppCompatActivity {
     private List<String> mDataSet = new ArrayList<>();
     private StompClient mStompClient;
     private Disposable mRestPingDisposable;
+    TextView heading;
     private RecyclerView mRVFishPrice;
     TinyDB tinydb;
   //  private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-   // private RecyclerView mRecyclerView;
+  //  private RecyclerView mRecyclerView;
     private Gson mGson = new GsonBuilder().create();
 
-
+    BottomSheetBehavior bottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
 //        pass = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmNAYWJjLmNvbSIsImF1ZGllbmNlIjoid2ViIiwiY3JlYXRlZCI6MTUxMjM4MTY1NTg5MCwiZXhwIjoxNTEyOTg2NDU1fQ.oErSUt_gbWBCQpipqaJ4NAJPLG4kvP5z0wTMY_Fm3IJDuNiS2SzGjqs7_WK8fspAPoy8PVrs-SdqNWo1a3SgCQ";
 //        gameid = "82";
         tinydb = new TinyDB(this);
+
 
         completednumbers = tinydb.getListString(gameid);
 
@@ -243,11 +252,12 @@ public class MainActivity extends AppCompatActivity {
 
 
  //       mRVFishPrice = (RecyclerView)findViewById(R.id.fishPriceList);
-      //  mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mAdapter = new SimpleAdapter(mDataSet);
-        mAdapter.setHasStableIds(true);
-     //   mRecyclerView.setAdapter(mAdapter);
-      //  mRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
+  //     mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+      //  mAdapter = new SimpleAdapter(mDataSet);
+       // mAdapter.setHasStableIds(true);
+
+    //    mRecyclerView.setAdapter(mAdapter);
+     //   mRecyclerView.setLayoutManager(new GridLayoutManager(this, 7));
     }
 
 
@@ -351,11 +361,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-//        if (echoModel.getCompletedNumbers()!=null){
+        if (echoModel.getCompletedNumbers()!=null){
+
+
+
+   //         mDataSet.clear();
 //
 //
+            //      mDataSet.add(echoModel.getCompletedNumbers().toString());
+
+
 //
-//        }
+//
+//        //    mDataSet.add(echoModel.getNumber() + " - " + mTimeFormat.format(new Date()));
+  //          mAdapter.notifyDataSetChanged();
+
+
+            ArrayList<String> newds = new ArrayList<>();
+
+
+
+            newds = echoModel.getCompletedNumbers();
+
+//            ArrayList<String> tempElements = new ArrayList<String>(newds);
+//            Collections.reverse(tempElements);
+//            ArrayList ewe = new ArrayList();
+//
+            Collections.reverse(newds);
+
+
+
+
+            Log.e("newds", String.valueOf(newds));
+
+            GridView myGrid=(GridView)findViewById(R.id.grid);
+
+            myGrid.setAdapter(new ArrayAdapter<String>(this,R.layout.number,newds));
+
+
+        }
 
 
         if (echoModel.getValidClaim()==true){
@@ -375,16 +419,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Game","Game Finished");
         }
 
-
-//        mDataSet.clear();
-//
-//
-//        mDataSet.add(echoModel.getNumber().toString());
-//
-//
-//        //    mDataSet.add(echoModel.getNumber() + " - " + mTimeFormat.format(new Date()));
-//        mAdapter.notifyDataSetChanged();
-     //   mRecyclerView.smoothScrollToPosition(mDataSet.size() - 1);
+ //       mRecyclerView.smoothScrollToPosition(mDataSet.size() - 1);
     }
 
 
@@ -902,12 +937,15 @@ public class MainActivity extends AppCompatActivity {
                             Adapter.setHasStableIds(false);
                             mRVFishPrice.setAdapter(Adapter);
 
+
                             mRVFishPrice.setHasFixedSize(false);
 
   //                          mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
   //                          mRVFishPrice.setLayoutManager(new GridLayoutManager(MainActivity.this,1));
                                  mRVFishPrice.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,true));
-  ///                          Toast.makeText(MainActivity.this, "PASS", Toast.LENGTH_SHORT).show();
+
+//                            recyclerview.scrollToPosition(position)
+                            ///                          Toast.makeText(MainActivity.this, "PASS", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -1275,11 +1313,12 @@ public class MainActivity extends AppCompatActivity {
             // Get current position of item in recyclerview to bind data and assign values from list
             final MyHolder myHolder = (MyHolder) holder;
 
+         //   mRVFishPrice.scrollToPosition(position);
 
         //    holder.setIsRecyclable(true);
             final DataFish current = data.get(position);
 
-            holder.getLayoutPosition();
+          //  holder.getLayoutPosition();
 
         //    setHasStableIds(true);
 
@@ -1372,6 +1411,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("ticketid", String.valueOf(claimid));
 
 
+
+
                     final OkHttpClient client = new OkHttpClient();
                     JSONObject postdata = new JSONObject();
                     try {
@@ -1396,8 +1437,6 @@ public class MainActivity extends AppCompatActivity {
 
                             .build();
                     //        Log.e("dasdasd", body.toString());
-
-
 
                     client.newCall(request).enqueue(new Callback() {
                         @Override

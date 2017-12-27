@@ -3,6 +3,7 @@ package ua.naiksoftware.tambola;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class EchoModel {
     private Object message;
     @SerializedName("completedNumbers")
     @Expose
-    private List<String> completedNumbers = null;
+    private ArrayList<String> completedNumbers = null;
 
     public Integer getNumber() {
         return number;
@@ -112,11 +113,11 @@ public class EchoModel {
         this.message = message;
     }
 
-    public List<String> getCompletedNumbers() {
+    public ArrayList<String> getCompletedNumbers() {
         return completedNumbers;
     }
 
-    public void setCompletedNumbers(List<String> completedNumbers) {
+    public void setCompletedNumbers(ArrayList<String> completedNumbers) {
         this.completedNumbers = completedNumbers;
     }
 

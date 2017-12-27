@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -75,6 +77,10 @@ public class Cart extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.cart);
         Intent intent = getIntent();
         String jsonArray = intent.getStringExtra("ids");
@@ -133,7 +139,7 @@ public class Cart extends AppCompatActivity {
 
                     Toast.makeText(Cart.this, "Select Minimum Two Tickets", Toast.LENGTH_SHORT).show();
                 }
-                else if(idsarray.length()>2){
+                else if(idsarray.length()>= 2){
 
                     Checkout();
                 }

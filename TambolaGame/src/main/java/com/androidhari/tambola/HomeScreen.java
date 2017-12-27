@@ -99,6 +99,8 @@ public class HomeScreen extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
 
+
+
         getuserdetails();
         getdata();
 
@@ -168,6 +170,9 @@ public class HomeScreen extends AppCompatActivity {
                                 String name = json.getString("first_name");
                                 //title = name;
                                 HomeScreen.this.setTitle( "Welcome, "+name);
+                                HomeScreen.this.myToolbar.setSubtitleTextColor(Color.RED);
+//                                myToolbar.setSubtitleTextColor(Color.WHITE);
+
 
 
 

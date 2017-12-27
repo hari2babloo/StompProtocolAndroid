@@ -903,8 +903,10 @@ public class Countdown extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                this.finish();
-                return true;
+
+                Intent intent3 = new Intent(Countdown.this, HomeScreen.class);
+                mCountDown.stop();
+                startActivity(intent3);
 
 
             case R.id.action_item_two:

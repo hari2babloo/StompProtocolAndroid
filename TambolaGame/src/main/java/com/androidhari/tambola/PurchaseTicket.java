@@ -97,6 +97,7 @@ public class PurchaseTicket extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.purchase_ticket);
+
 //        Intent intent = getIntent();
 //        String jsonArray = intent.getStringExtra("ids");
 //
