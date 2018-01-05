@@ -2,6 +2,7 @@
     <string name="app_name">Games365</string>
     <string name="title_activity_passbook">Passbook</string>
     <string name="title_home">Home</string>
+    <string name="empty">Empty</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="errfname">Required Your Name</string>

@@ -5,8 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,14 +59,20 @@ public class Signin extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.signin);
         sp=getSharedPreferences("login",MODE_PRIVATE);
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Welcome To Games365", Snackbar.LENGTH_LONG);
 
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
         login =(Button)findViewById(R.id.submit);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
         username = (EditText)findViewById(R.id.username);
         pass = (EditText)findViewById(R.id.pass);
-
+        addValidationToViews();
 
         forgotpass = (TextView)findViewById(R.id.forgotpass);
         signup = (TextView)findViewById(R.id.signup);
@@ -74,12 +83,10 @@ public class Signin extends Activity {
 
        // String regexPassword = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*[~`!@#\\$%\\^&\\*\\(\\)\\-_\\+=\\{\\}\\[\\]\\|\\;:\"<>,./\\?]).{8,}";
       //  awesomeValidation.addValidation(Signin.this,R.id.pass,regexPassword, R.string.errpass);
-        //awesomeValidation.addValidation(Signin.this,R.id.username,android.util.Patterns.EMAIL_ADDRESS,R.string.errfname);
+        //awesomeValidation.addVa`lidation(Signin.this,R.id.username,android.util.Patterns.EMAIL_ADDRESS,R.string.errfname);
 
         forgotpass.setTypeface(face);
         signup.setTypeface(face);
-
-
 
 
 
@@ -110,6 +117,14 @@ public class Signin extends Activity {
 
     }
 
+    private void addValidationToViews() {
+
+        awesomeValidation.addValidation(this, R.id.username, RegexTemplate.NOT_EMPTY, R.string.empty);
+        awesomeValidation.addValidation(this, R.id.pass, RegexTemplate.NOT_EMPTY, R.string.empty);
+
+
+    }
+
     private void logincheck() {
 
 
@@ -117,7 +132,14 @@ public class Signin extends Activity {
         String pass = sp.getString("token",null);
         if (pass!=null && !pass.isEmpty()){
 
-            Toast.makeText(this, "Welcome Back Gamer", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Welcome Back..", Toast.LENGTH_SHORT).show();
+
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Welcome Back..", Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+            TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
             startActivity(new Intent(this,HomeScreen.class));
 
         }
@@ -129,9 +151,9 @@ public class Signin extends Activity {
             public void onClick(View view) {
 
 
-          //      if (awesomeValidation.validate()){
+               if (awesomeValidation.validate()){
                     Authenticate();
-            //    }
+                }
 
 
             }
@@ -185,6 +207,17 @@ public class Signin extends Activity {
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
 
+
+
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+
+
 //                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
 
             }
@@ -205,7 +238,14 @@ public class Signin extends Activity {
                                 JSONObject json = new JSONObject(mMessage);
                                 String s = json.getJSONObject("data").getString("token");
                                 String st = json.getString("message");
-                                Toast.makeText(Signin.this, st, Toast.LENGTH_SHORT).show();
+                          //      Toast.makeText(Signin.this, st, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), st, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
 
                                 Log.w("Response",st);
                                 //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
@@ -239,7 +279,14 @@ public class Signin extends Activity {
                                 JSONObject json = new JSONObject(mMessage);
                                 String status = json.getString("status");
                                 String message = json.getString("message");
-                                Toast.makeText(Signin.this, message, Toast.LENGTH_SHORT).show();
+                            //    Toast.makeText(Signin.this, message, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 //title = name;
 
                                 if (status.equalsIgnoreCase("401")){
@@ -273,13 +320,25 @@ public class Signin extends Activity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Please click BACK again to exit", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
                 doubleBackToExitPressedOnce=false;
+//                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory( Intent.CATEGORY_HOME );
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
             }
         }, 2000);
     }

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -159,8 +160,14 @@ public class HistoryFrag extends Fragment {
                                 //                              ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
 
                                 String s = json.getJSONObject("data").getString("name");
-                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                      //          Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
 
+                                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

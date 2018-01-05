@@ -307,7 +307,7 @@ public class PurchaseGameFrag extends Fragment {
 //                            .setAction("No action", null).show();
 //                    break;
                 case R.id.status:
-                    Toast.makeText(mContext, "Hllo", Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(mContext, "Hllo", Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -406,7 +406,7 @@ public class PurchaseGameFrag extends Fragment {
                     }
 
 
-                    Toast.makeText(mContext, dataModel.getGstime(), Toast.LENGTH_SHORT).show();
+             //       Toast.makeText(mContext, dataModel.getGstime(), Toast.LENGTH_SHORT).show();
 
                 }
             });

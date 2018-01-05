@@ -36,7 +36,7 @@
             android:backgroundTint="#FF9800"
             android:drawableLeft="@drawable/user"
             android:drawablePadding="10dp"
-            android:hint="Username/Mobile Number"
+            android:hint="Email/Phone Number"
             android:singleLine="true"
             android:textColor="@android:color/background_light"
             android:textColorHighlight="@android:color/background_light"

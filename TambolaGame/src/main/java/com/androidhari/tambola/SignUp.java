@@ -3,6 +3,8 @@ package com.androidhari.tambola;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -154,6 +156,13 @@ tinydb  = new TinyDB(this);
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
             }
 
@@ -172,7 +181,10 @@ pd.dismiss();
 
                             try {
                                 JSONObject json = new JSONObject(mMessage);
+                                JSONObject json2 = new JSONObject(mMessage).getJSONObject("data");
+                                String d = json2.getString("sessionToken");
                                 tinydb.putString("otptype", "signup");
+                                tinydb.putString("sessionToken",json2.getString("sessionToken"));
                                 Intent intent = new Intent(SignUp.this,OTP.class);
                                 startActivity(intent);
                             } catch (JSONException e) {
@@ -197,7 +209,14 @@ pd.dismiss();
 
 
                                 String s = json.getString("message");
-                                Toast.makeText(SignUp.this, s, Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(SignUp.this, s, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

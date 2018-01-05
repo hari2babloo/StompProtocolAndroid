@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -133,11 +135,25 @@ public class Cart extends AppCompatActivity {
 
                 if (idsarray.length()==0){
 
-                    Toast.makeText(Cart.this, "Please Select Tickets", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(Cart.this, "Please Select Tickets", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Please Select Tickets ", Snackbar.LENGTH_LONG);
+
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
                 }
                 else if (idsarray.length()<2){
 
-                    Toast.makeText(Cart.this, "Select Minimum Two Tickets", Toast.LENGTH_SHORT).show();
+              //      Toast.makeText(Cart.this, "Select Minimum Two Tickets", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Select Minimum Two Tickets", Snackbar.LENGTH_LONG);
+
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
                 }
                 else if(idsarray.length()>= 2){
 
@@ -205,7 +221,7 @@ public class Cart extends AppCompatActivity {
                                     if (idsarray.toString().contains(val)) {
 
                                         String ticket = json_data.getString("ticket");
-                                        Log.e("ssasrfgsds", s);
+                                     //   Log.e("ssasrfgsds", s);
                                         JSONArray row1 = (JSONArray) new JSONArray(ticket).get(0);
                                         JSONArray row2 = (JSONArray) new JSONArray(ticket).get(1);
                                         JSONArray row3 = (JSONArray) new JSONArray(ticket).get(2);
@@ -619,6 +635,13 @@ public class Cart extends AppCompatActivity {
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
             }
 
@@ -641,7 +664,14 @@ public class Cart extends AppCompatActivity {
 
                                 Alert();
 
-                                Toast.makeText(Cart.this, s, Toast.LENGTH_SHORT).show();
+                //                Toast.makeText(Cart.this, s, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
 
                                 //   Toast.makeText(SigninForm.this, s, Toast.LENGTH_SHORT).show();
 //                                Intent in = new Intent(Cart.this,HomeScreen.class);
@@ -671,7 +701,14 @@ public class Cart extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-                                Toast.makeText(Cart.this, message, Toast.LENGTH_SHORT).show();
+                             //   Toast.makeText(Cart.this, message, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 if (status.equalsIgnoreCase("401")){
 
                                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
@@ -803,6 +840,13 @@ public class Cart extends AppCompatActivity {
                 pd.cancel();
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
             }
 
@@ -821,8 +865,14 @@ public class Cart extends AppCompatActivity {
                                 String s = json.getString("message");
 
 
-                                Toast.makeText(Cart.this, s, Toast.LENGTH_SHORT).show();
+                            //    Toast.makeText(Cart.this, s, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
 
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp.edit();
                                 editor.clear();
@@ -854,7 +904,15 @@ public class Cart extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
 
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
+                                Intent intent = new Intent(Cart.this,Signin.class);
+                                startActivity(intent);
                                 if (status.equalsIgnoreCase("401")){
 
                                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
@@ -864,9 +922,8 @@ public class Cart extends AppCompatActivity {
 
 
 
-                                    Toast.makeText(Cart.this, message, Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(Cart.this,Signin.class);
-                                    startActivity(intent);
+                               //     Toast.makeText(Cart.this, message, Toast.LENGTH_SHORT).show();
+
                                 }
 
                             } catch (JSONException e) {

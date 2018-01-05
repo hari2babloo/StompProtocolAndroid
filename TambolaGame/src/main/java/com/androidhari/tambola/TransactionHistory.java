@@ -95,6 +95,13 @@ public class TransactionHistory extends AppCompatActivity {
                 pd.dismiss();
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
             }
 
@@ -378,6 +385,13 @@ public class TransactionHistory extends AppCompatActivity {
                 pd.cancel();
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
             }
 
@@ -396,7 +410,14 @@ public class TransactionHistory extends AppCompatActivity {
                                 String s = json.getString("message");
 
 
-                                Toast.makeText(TransactionHistory.this, s, Toast.LENGTH_SHORT).show();
+                     //           Toast.makeText(TransactionHistory.this, s, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
 
                                 sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp.edit();

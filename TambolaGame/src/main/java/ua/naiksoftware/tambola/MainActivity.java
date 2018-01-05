@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -352,12 +353,24 @@ public class MainActivity extends AppCompatActivity {
 
         if (echoModel.getMessage()!=null){
 
-            Toast.makeText(this, echoModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), echoModel.getMessage().toString(), Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+            TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+        //    Toast.makeText(this, echoModel.getMessage().toString(), Toast.LENGTH_SHORT).show();
         }
         else
         if (echoModel.getMessageList()!=null){
 
-            Toast.makeText(this, echoModel.getMessageList().toString(), Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), echoModel.getMessageList().toString(), Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+            TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
+          //  Toast.makeText(this, echoModel.getMessageList().toString(), Toast.LENGTH_SHORT).show();
         }
 
 
@@ -413,7 +426,13 @@ public class MainActivity extends AppCompatActivity {
 
          if (echoModel.getGameCompleted()==true){
             number.setBackgroundColor(Color.RED);
-            Toast.makeText(this, "GAME FINISHED", Toast.LENGTH_SHORT).show();
+             Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "GAME FINISHED", Snackbar.LENGTH_LONG);
+             View snackBarView = snackbar.getView();
+             snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+             TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+             textView.setTextColor(Color.WHITE);
+             snackbar.show();
+//            Toast.makeText(this, "GAME FINISHED", Toast.LENGTH_SHORT).show();
             Intent in = new Intent(MainActivity.this, HomeScreen.class);
             startActivity(in);
             Log.e("Game","Game Finished");
@@ -1383,6 +1402,9 @@ public class MainActivity extends AppCompatActivity {
                     number.setBackground(getDrawable(R.drawable.circle2));
 
 
+
+                    myHolder.claim.setEnabled(false);
+
 //                    completednumbers.add("23");
 //                    completednumbers.add("28");
 //                    completednumbers.add("38");
@@ -1462,8 +1484,15 @@ public class MainActivity extends AppCompatActivity {
                                             JSONObject json = new JSONObject(mMessage);
                                             String s = json.getString("status");
                                             String st = json.getString("message");
-                                            Toast.makeText(MainActivity.this, st, Toast.LENGTH_SHORT).show();
+                                          //  Toast.makeText(MainActivity.this, st, Toast.LENGTH_SHORT).show();
 //
+                                            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), st, Snackbar.LENGTH_LONG);
+                                            View snackBarView = snackbar.getView();
+                                            snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                            TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                            textView.setTextColor(Color.WHITE);
+                                            snackbar.show();
+                                            myHolder.claim.setEnabled(true);
                                             Log.w("Response",st+s);
                                             //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
 
@@ -1480,6 +1509,7 @@ public class MainActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        myHolder.claim.setEnabled(true);
  //d                                       Toast.makeText(MainActivity.this, "Failed to Claim", Toast.LENGTH_SHORT).show();
                                     }
                                 });

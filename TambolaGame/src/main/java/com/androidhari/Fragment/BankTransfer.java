@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidhari.ViewPager.WalletTransactions;
@@ -184,8 +187,15 @@ public class BankTransfer extends AppCompatActivity {
                             try {
                                 JSONObject json = new JSONObject(mMessage);
                                 Log.w("Response", String.valueOf(json));
-                                Toast.makeText(BankTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(BankTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
 
+
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), json.getString("message").toString(), Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                             Intent intent = new Intent(BankTransfer.this,WalletTransactions.class);
                                 startActivity(intent);
                                 //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
@@ -210,7 +220,15 @@ public class BankTransfer extends AppCompatActivity {
                                 JSONObject json = new JSONObject(mMessage);
 
 
-                                Toast.makeText(BankTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(BankTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
+
+
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), json.getString("message").toString(), Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -321,8 +339,15 @@ public class BankTransfer extends AppCompatActivity {
                                 String s = json.getString("message");
 
 
-                                Toast.makeText(BankTransfer.this, s, Toast.LENGTH_SHORT).show();
+     //                           Toast.makeText(BankTransfer.this, s, Toast.LENGTH_SHORT).show();
 
+
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp.edit();
                                 editor.clear();

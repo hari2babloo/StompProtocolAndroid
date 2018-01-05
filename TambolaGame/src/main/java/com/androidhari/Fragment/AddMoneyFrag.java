@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -238,7 +239,7 @@ public class AddMoneyFrag extends Fragment {
 //                            Intent in = new Intent(getContext(), Wallet.class);
 //
 //                            startActivity(in);
-                           Toast.makeText(getContext(), status, Toast.LENGTH_SHORT).show();
+ //                          Toast.makeText(getContext(), status, Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -454,7 +455,7 @@ public class AddMoneyFrag extends Fragment {
                     }
 
 
-                    Toast.makeText(mContext, dataModel.getGstime(), Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(mContext, dataModel.getGstime(), Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -507,6 +508,7 @@ public class AddMoneyFrag extends Fragment {
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
 
+
 //                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
 
             }
@@ -528,7 +530,14 @@ public class AddMoneyFrag extends Fragment {
                             try {
                                 json = new JSONObject(mMessage);
                                 String s = json.getString("message");
-                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+
+                                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 Intent in = new Intent(getContext(), WalletTransactions.class);
                                 startActivity(in);
                             } catch (JSONException e) {
@@ -550,7 +559,16 @@ public class AddMoneyFrag extends Fragment {
                                 JSONObject json = new JSONObject(mMessage);
 
                                 String s = json.getString("message");
-                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+
+
+
+                                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
+                               // Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

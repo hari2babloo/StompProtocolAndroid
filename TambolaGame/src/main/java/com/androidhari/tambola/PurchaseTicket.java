@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -143,11 +145,25 @@ public class PurchaseTicket extends AppCompatActivity {
 
                 if (al.size()==0){
 
-                    Toast.makeText(PurchaseTicket.this, "Please Select Tickets", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(PurchaseTicket.this, "Please Select Tickets", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Please Select Tickets", Snackbar.LENGTH_LONG);
+
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
                 }
                 else if (al.size()<2){
 
-                    Toast.makeText(PurchaseTicket.this, "Select Minimum Two Tickets", Toast.LENGTH_SHORT).show();
+                 //  Toast.makeText(PurchaseTicket.this, "Select Minimum Two Tickets", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Select Minimum Two Tickets", Snackbar.LENGTH_LONG);
+
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
                 }
                 else if(al.size()>=2){
 
@@ -238,6 +254,13 @@ public class PurchaseTicket extends AppCompatActivity {
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
             }
 
             @Override
@@ -583,7 +606,6 @@ public class PurchaseTicket extends AppCompatActivity {
 
                         jsonArray5.put(data.get(position).id);
                         myHolder.checkBox.setChecked(selectedItems.get(position,true));
-
                         Log.e("sapared", String.valueOf(jsonArray5));
                         Log.e("selecteditems sapare", String.valueOf(selectedItems));
                     }
@@ -833,7 +855,14 @@ public class PurchaseTicket extends AppCompatActivity {
                 pd.cancel();
 
                 String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
+                Log.w("failure Response", mMessage);  Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+
 
             }
 
@@ -886,7 +915,14 @@ public class PurchaseTicket extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
-                                Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
+                             //   Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 if (status.equalsIgnoreCase("401")){
 
                                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
@@ -1019,6 +1055,13 @@ public class PurchaseTicket extends AppCompatActivity {
                 pd.cancel();
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
             }
 
@@ -1037,8 +1080,14 @@ public class PurchaseTicket extends AppCompatActivity {
                                 String s = json.getString("message");
 
 
-                                Toast.makeText(PurchaseTicket.this, s, Toast.LENGTH_SHORT).show();
+                          //      Toast.makeText(PurchaseTicket.this, s, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
 
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp.edit();
                                 editor.clear();
@@ -1080,7 +1129,14 @@ public class PurchaseTicket extends AppCompatActivity {
 
 
 
-                                    Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
+                            //        Toast.makeText(PurchaseTicket.this, message, Toast.LENGTH_SHORT).show();
+                                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+
+                                    View snackBarView = snackbar.getView();
+                                    snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                    textView.setTextColor(Color.WHITE);
+                                    snackbar.show();
                                     Intent intent = new Intent(PurchaseTicket.this,Signin.class);
                                     startActivity(intent);
                                 }

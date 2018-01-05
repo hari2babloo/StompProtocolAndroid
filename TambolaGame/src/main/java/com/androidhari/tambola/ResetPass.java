@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.androidhari.db.TinyDB;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,7 +60,7 @@ public class ResetPass extends AppCompatActivity {
         email = (EditText)findViewById(R.id.email);
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-tinydb  = new TinyDB(this);
+        tinydb  = new TinyDB(this);
         addValidationToViews();
 
         Typeface face = Typeface.createFromAsset(getAssets(),
@@ -82,14 +85,14 @@ tinydb  = new TinyDB(this);
     private void addValidationToViews() {
 
 
-        awesomeValidation.addValidation(ResetPass.this,R.id.email, Patterns.EMAIL_ADDRESS,R.string.erremail);
+        awesomeValidation.addValidation(ResetPass.this,R.id.email, RegexTemplate.NOT_EMPTY, R.string.empty);
     }
 
     private void Resetpassword() {
 
 
         pd = new ProgressDialog(ResetPass.this);
-        pd.setMessage("Validating your Email Address");
+        pd.setMessage("Validating your Details");
         pd.setCancelable(false);
         pd.show();
 
@@ -127,6 +130,13 @@ tinydb  = new TinyDB(this);
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
 //                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
 
@@ -146,10 +156,21 @@ tinydb  = new TinyDB(this);
 
                             try {
                                 JSONObject json = new JSONObject(mMessage);
+
+                                JSONObject json2 = new JSONObject(mMessage).getJSONObject("data");
+                                String d = json2.getString("sessionToken");
+                                Log.d(d, String.valueOf(json2));
 //                                String s = json.getJSON   Object("data").getString("token");
                                 String msg = json.getString("message");
                                 String status = json.getString("message");
-                                Toast.makeText(ResetPass.this, msg, Toast.LENGTH_LONG).show();
+                           //     Toast.makeText(ResetPass.this, msg, Toast.LENGTH_LONG).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
 //                                if (status.equalsIgnoreCase("SUCCESS")){
 //
 //                                    tinydb.putString("otptype", "reset");
@@ -163,6 +184,8 @@ tinydb  = new TinyDB(this);
 //                                e.putString("token",s);
 //
 //                                e.commit();
+                                tinydb.putString("sessionToken",json2.getString("sessionToken"));
+                                tinydb.putString("resetidentity",email.getText().toString());
                                 tinydb.putString("otptype", "reset");
                                 Intent in = new Intent(ResetPass.this,OTP.class);
                                 startActivity(in);
@@ -197,7 +220,7 @@ tinydb  = new TinyDB(this);
                                     editor.clear();
                                     editor.commit();
 
-                                    Toast.makeText(ResetPass.this, message, Toast.LENGTH_SHORT).show();
+                                   Toast.makeText(ResetPass.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(ResetPass.this,Signin.class);
                                     startActivity(intent);
                                 }

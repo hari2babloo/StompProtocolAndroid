@@ -4,17 +4,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidhari.db.TinyDB;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,6 +79,7 @@ public class ChangePassword extends AppCompatActivity {
 
     private void addValidationToViews() {
 
+        awesomeValidation.addValidation(ChangePassword.this,R.id.newpass, RegexTemplate.NOT_EMPTY, R.string.empty);
         awesomeValidation.addValidation(ChangePassword.this,R.id.confirmpass,R.id.newpass,R.string.errcnfpass);
     }
 
@@ -91,6 +96,7 @@ public class ChangePassword extends AppCompatActivity {
         try {
             postdata.put("password", newpass.getText().toString());
             postdata.put("token", otp);
+            postdata.put("sessionToken",tinydb.getString("sessionToken"));
         } catch(JSONException e){
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -120,6 +126,13 @@ public class ChangePassword extends AppCompatActivity {
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
 //                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
 
@@ -142,8 +155,14 @@ public class ChangePassword extends AppCompatActivity {
 //                                String s = json.getJSON   Object("data").getString("token");
                                 String msg = json.getString("message");
                                 String status = json.getString("message");
-                                Toast.makeText(ChangePassword.this, msg, Toast.LENGTH_LONG).show();
+               //                 Toast.makeText(ChangePassword.this, msg, Toast.LENGTH_LONG).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG);
 
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
 
 //                                SharedPreferences.Editor e = sp.edit();
@@ -177,6 +196,14 @@ public class ChangePassword extends AppCompatActivity {
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 Toast.makeText(ChangePassword.this, message, Toast.LENGTH_SHORT).show();
+
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 if (status.equalsIgnoreCase("401")){
 
                                    SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
@@ -184,7 +211,7 @@ public class ChangePassword extends AppCompatActivity {
                                     editor.clear();
                                     editor.commit();
 
-                                    Toast.makeText(ChangePassword.this, message, Toast.LENGTH_SHORT).show();
+                                  //  Toast.makeText(ChangePassword.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(ChangePassword.this,Signin.class);
                                     startActivity(intent);
                                 }

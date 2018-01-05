@@ -6,8 +6,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -100,7 +102,14 @@ public class CashoutFrag extends Fragment {
 
                 if(TextUtils.isEmpty(amount.getText().toString()))
                 {
-                    Toast.makeText(getContext(), " Please Enter Amount", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), " Please Enter Amount", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "Please Enter Amount", Snackbar.LENGTH_LONG);
+                    View snackBarView = snackbar.getView();
+                    snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
+
                     return;
                 }
 
@@ -188,8 +197,13 @@ public class CashoutFrag extends Fragment {
 
 if (radioGroup.getCheckedRadioButtonId()==-1){
 
-    Toast.makeText(getContext(), "Select Bank", Toast.LENGTH_SHORT).show();
-
+  //  Toast.makeText(getContext(), "Select Bank", Toast.LENGTH_SHORT).show();
+    Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "Select Bank", Snackbar.LENGTH_LONG);
+    View snackBarView = snackbar.getView();
+    snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+    textView.setTextColor(Color.WHITE);
+    snackbar.show();
     radioGroup.clearCheck();
 
 }

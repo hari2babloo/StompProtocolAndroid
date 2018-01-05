@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +60,7 @@ public class OTP extends AppCompatActivity implements OTPListener{
         otp = (EditText)findViewById(R.id.otp);
         tinydb   = new TinyDB(this);
         otptype = tinydb.getString("otptype");
-        //resend = (TextView)findViewById(R.id.resend);
+        resend = (TextView)findViewById(R.id.resend);
 
 
         int GET_MY_PERMISSION = 1;
@@ -94,7 +96,7 @@ public class OTP extends AppCompatActivity implements OTPListener{
                 int len=0;
                 String str = otp.getText().toString();
                 if(str.length()==6 && len <str.length()){//len check for backspace
-                    Toast.makeText(OTP.this, "6 Digits finished", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(OTP.this, "6 Digits finished", Toast.LENGTH_SHORT).show();
 
                     if (otptype.equalsIgnoreCase("reset")){
 
@@ -113,13 +115,144 @@ public class OTP extends AppCompatActivity implements OTPListener{
 
         });
 
-//        resend.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resendotp();
+            }
+        });
 
+    }
+
+    private void resendotp() {
+
+
+        pd = new ProgressDialog(OTP.this);
+        pd.setMessage("Sending a new OTP..");
+        pd.setCancelable(false);
+        pd.show();
+        otp.getText().clear();
+
+        final OkHttpClient client = new OkHttpClient();
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("email", tinydb.getString("resetidentity"));
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE,
+                postdata.toString());
+
+
+        final Request request = new Request.Builder()
+                .url("http://game-dev.techmech.men:8080/api/resetpassword/mobile")
+                .post(body)
+                .addHeader("Content-Type", "application/json")
+
+                .build();
+
+
+        Log.e("dasdasd", body.toString());
+
+
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                pd.cancel();
+                pd.cancel();
+
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+
+//                Toast.makeText(Signin.this, mMessage, Toast.LENGTH_SHORT).show();
+
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                final String mMessage = response.body().string();
+                pd.cancel();
+                pd.dismiss();
+
+                Log.w("Response", mMessage);
+                if (response.isSuccessful()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            try {
+                                JSONObject json = new JSONObject(mMessage);
+
+                                JSONObject json2 = new JSONObject(mMessage).getJSONObject("data");
+                                String d = json2.getString("sessionToken");
+                                Log.d(d, String.valueOf(json2));
+                                tinydb.putString("sessionToken",d);
+//                                String s = json.getJSON   Object("data").getString("token");
+                                String msg = json.getString("message");
+                                String status = json.getString("message");
+                                Toast.makeText(OTP.this, msg, Toast.LENGTH_LONG).show();
+//                                if (status.equalsIgnoreCase("SUCCESS")){
+//
+//                                    tinydb.putString("otptype", "reset");
+//                                    Intent in = new Intent(ResetPass.this,OTP.class);
+//                                    startActivity(in);
+//                                }
+
+                                //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
+
+//                                SharedPreferences.Editor e = sp.edit();
+//                                e.putString("token",s);
+//
+//                                e.commit();
+//                                tinydb.putString("resetidentity",email.getText().toString());
+//                                tinydb.putString("otptype", "reset");
+//                                Intent in = new Intent(ResetPass.this,OTP.class);
+//                                startActivity(in);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+//                            Toast.makeText(Signin.this, "Success", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+                else {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+
+                                pd.cancel();
+                                pd.dismiss();
+                                JSONObject json = new JSONObject(mMessage);
+                                String status = json.getString("status");
+                                String message = json.getString("message");
+                                Toast.makeText(OTP.this, message, Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    });
+                }
+
+            }
+        });
     }
 
     private void resetotp() {
@@ -134,6 +267,7 @@ public class OTP extends AppCompatActivity implements OTPListener{
         try {
 
             postdata.put("token", otp.getText().toString());
+            postdata.put("sessionToken",tinydb.getString("sessionToken"));
 
 
         } catch(JSONException e){
@@ -159,6 +293,13 @@ public class OTP extends AppCompatActivity implements OTPListener{
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
             }
             @Override
@@ -177,6 +318,7 @@ public class OTP extends AppCompatActivity implements OTPListener{
                                 Log.e("Message",s);
                                 Toast.makeText(OTP.this, s, Toast.LENGTH_SHORT).show();
 
+                               // tinydb.putString("otp",otp.getText().toString());
                                 tinydb.putString("otp",otp.getText().toString());
                                 Log.e("fdsfsdfsd",otp.getText().toString());
                                 Intent intent = new Intent(OTP.this,ChangePassword.class);
@@ -202,10 +344,10 @@ public class OTP extends AppCompatActivity implements OTPListener{
                                 String message = json.getString("message");
                                 //title = name;
 
+                                Toast.makeText(OTP.this, message, Toast.LENGTH_SHORT).show();
                                 if (status.equalsIgnoreCase("401")){
 
 
-                                    Toast.makeText(OTP.this, message, Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(OTP.this,Signin.class);
                                     startActivity(intent);
                                 }
@@ -249,6 +391,7 @@ public class OTP extends AppCompatActivity implements OTPListener{
 
         try {
 
+            postdata.put("sessionToken",tinydb.getString("sessionToken"));
             postdata.put("token", otp.getText().toString());
 
 
@@ -275,6 +418,13 @@ public class OTP extends AppCompatActivity implements OTPListener{
 
                 String mMessage = e.getMessage().toString();
                 Log.w("failure Response", mMessage);
+                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), mMessage, Snackbar.LENGTH_LONG);
+
+                View snackBarView = snackbar.getView();
+                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
 
             }
             @Override
@@ -291,12 +441,18 @@ public class OTP extends AppCompatActivity implements OTPListener{
                                 JSONObject json = new JSONObject(mMessage);
                                 String s = json.getString("message");
                                 Log.e("Message",s);
-                                Toast.makeText(OTP.this, s, Toast.LENGTH_SHORT).show();
+                           //     Toast.makeText(OTP.this, s, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
 
                                 Intent intent = new Intent(OTP.this,Signin.class);
                                 startActivity(intent);
-                                Toast.makeText(OTP.this, s, Toast.LENGTH_SHORT).show();
-                                Toast.makeText(OTP.this, "Now Please Login", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(OTP.this, s, Toast.LENGTH_SHORT).show();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -319,6 +475,14 @@ public class OTP extends AppCompatActivity implements OTPListener{
                                 String status = json.getString("status");
                                 String message = json.getString("message");
                                 //title = name;
+                              //  Toast.makeText(OTP.this, message, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
 
                                 if (status.equalsIgnoreCase("401")){
 
@@ -329,8 +493,7 @@ public class OTP extends AppCompatActivity implements OTPListener{
 
 
 
-                                    Toast.makeText(OTP.this, message, Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(OTP.this,Signin.class);
+                                     Intent intent = new Intent(OTP.this,Signin.class);
                                     startActivity(intent);
                                 }
 

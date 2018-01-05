@@ -4,8 +4,10 @@ package com.androidhari.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -149,7 +151,13 @@ public class SendMoneyFrag extends Fragment {
 
                                Log.e("Result", s);
 
-                                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+   //                             Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), json.getString("message").toString(), Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 Intent in = new Intent(getContext(),WalletTransactions.class);
                                 startActivity(in);
 //

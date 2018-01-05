@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.annotation.IdRes;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -195,8 +197,14 @@ public class PaytmTransfer extends AppCompatActivity {
                             try {
                                 JSONObject json = new JSONObject(mMessage);
                                 Log.w("Response", String.valueOf(json));
-                                Toast.makeText(PaytmTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
+                          //      Toast.makeText(PaytmTransfer.this, json.getString("message").toString(), Toast.LENGTH_SHORT).show();
 
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), json.getString("message").toString(), Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 Intent intent = new Intent(PaytmTransfer.this,WalletTransactions.class);
                                 startActivity(intent);
                                 //   Toast.makeText(Signin.this, s, Toast.LENGTH_SHORT).show();
@@ -340,8 +348,13 @@ public class PaytmTransfer extends AppCompatActivity {
                                 String s = json.getString("message");
 
 
-                                Toast.makeText(PaytmTransfer.this, s, Toast.LENGTH_SHORT).show();
-
+                              //  Toast.makeText(PaytmTransfer.this, s, Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), json.getString("message").toString(), Snackbar.LENGTH_LONG);
+                                View snackBarView = snackbar.getView();
+                                snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setTextColor(Color.WHITE);
+                                snackbar.show();
                                 sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp.edit();
                                 editor.clear();
@@ -367,7 +380,13 @@ public class PaytmTransfer extends AppCompatActivity {
                         public void run() {
                             pd.cancel();
                             pd.dismiss();
-                            Toast.makeText(PaytmTransfer.this, "Fail", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(PaytmTransfer.this, "Fail", Toast.LENGTH_SHORT).show();
+                            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Fail", Snackbar.LENGTH_LONG);
+                            View snackBarView = snackbar.getView();
+                            snackBarView.setBackgroundColor(Color.parseColor("#FF9800"));
+                            TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                            textView.setTextColor(Color.WHITE);
+                            snackbar.show();
                         }
                     });
                 }
