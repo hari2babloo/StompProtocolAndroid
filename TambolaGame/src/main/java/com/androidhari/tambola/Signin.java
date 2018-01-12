@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
-
+import com.skydoves.medal.MedalAnimation;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,6 +39,7 @@ import okhttp3.Response;
 import ua.naiksoftware.tambola.R;
 
 public class Signin extends Activity {
+
 
 
     TextView forgotpass,signup;
@@ -58,6 +59,17 @@ public class Signin extends Activity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.signin);
+
+        MedalAnimation medalAnimation = new MedalAnimation.Builder()
+                .setDirection(MedalAnimation.DEFAULT_DEGREE)
+                .setDegreeX(360)
+                .setDegreeZ(360)
+                .setSpeed(4200)
+                .setTurn(4)
+                .setLoop(10)
+                .build();
+        medalAnimation.startAnimation(findViewById(R.id.imageView));
+
         sp=getSharedPreferences("login",MODE_PRIVATE);
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Welcome To Games365", Snackbar.LENGTH_LONG);
 
@@ -252,6 +264,7 @@ public class Signin extends Activity {
 
                                 SharedPreferences.Editor e = sp.edit();
                                 e.putString("token",s);
+                                Log.e("token",s);
 
                                 e.commit();
                                 Intent in = new Intent(Signin.this,HomeScreen.class);

@@ -19,7 +19,8 @@
             android:layout_weight="1"
             android:paddingRight="10dp"
             android:text="PRIZES"
-            android:textColor="@android:color/background_light" />
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/version_number"

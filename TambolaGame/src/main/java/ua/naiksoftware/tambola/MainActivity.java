@@ -350,6 +350,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+        
+        
+        
 
         if (echoModel.getMessage()!=null){
 
@@ -533,10 +536,10 @@ public class MainActivity extends AppCompatActivity {
 //
 //
 //
-//                                            if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+//                                            if(prizename.equalsIgnoreCase("FULL_HOUSIE"))
 //                                            {
 //
-//                                                fullhouse.setText("FULL_HOUISE: FINISHED "  );
+//                                                fullhouse.setText("FULL_HOUSIE: FINISHED "  );
 //
 //                                            }
 //
@@ -751,7 +754,6 @@ public class MainActivity extends AppCompatActivity {
 
                                 noofplayers.setText( "No of Players:   "+json_data2.getString("noOfPlayers"));
 
-
                                 JSONArray sds = json_data2.getJSONArray("prizes");
                                 LinearLayout linearLayout = new LinearLayout(MainActivity.this);
                                 linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -770,7 +772,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                                        if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+                                        if(prizename.equalsIgnoreCase("FULL_HOUSIE"))
                                         {
 
                                             fullhouse.setText("FULL HOUSE: "+prizecost.toString());
@@ -780,7 +782,7 @@ public class MainActivity extends AppCompatActivity {
                                         if (prizename.equalsIgnoreCase("FIRST_ROW")){
 
 
-                                            firstrow.setText( "FIRST_ROW" +prizecost.toString());
+                                            firstrow.setText( "FIRST_ROW:  " +prizecost.toString());
 
                                         }
 
@@ -813,7 +815,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     if (prizeCompleted.equalsIgnoreCase("TRUE")){
 
-                                        if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+                                        if(prizename.equalsIgnoreCase("FULL_HOUSIE"))
                                         {
 
                                             fullhouse.setText("FULL HOUSE: FINISHED");
@@ -1096,10 +1098,10 @@ public class MainActivity extends AppCompatActivity {
 //                                    if (prizeCompleted.equalsIgnoreCase("true")){
 //
 //
-//                                        if(prizename.equalsIgnoreCase("FULL_HOUISE"))
+//                                        if(prizename.equalsIgnoreCase("FULL_HOUSIE"))
 //                                        {
 //
-//                                            fullhouse.setText("FULL_HOUISE: FINISHED" );
+//                                            fullhouse.setText("FULL_HOUSIE: FINISHED" );
 //
 //                                        }
 //

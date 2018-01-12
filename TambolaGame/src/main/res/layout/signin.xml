@@ -10,13 +10,26 @@
     android:orientation="vertical"
     tools:context="com.androidhari.tambola.Signin">
 
+    <com.skydoves.medal.MedalLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        app:direction="right"
+        app:turn="1"
+        app:speed="1500">
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:background="@drawable/game365_logo"
-        android:contentDescription="" />
+        android:src="@drawable/game365_logo"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+         />
+
+    </com.skydoves.medal.MedalLayout>
+
 
     <LinearLayout
         android:id="@+id/linearLayout"
